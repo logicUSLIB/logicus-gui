@@ -1,0 +1,181 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="./styles/litegraph.css">
+	<script type="text/javascript" src="./js/litegraph.js"></script>
+    <script src="./js/LogicUSApp/AppCoreNew.js"></script>
+    <link rel="stylesheet" href="./styles/d3Tree.css">
+    <link rel="shortcut icon" type="image/x-icon" href="./styles/images/logous.ico" />
+    <title>LogicUS</title>
+</head>
+<body id="body">
+    <div id="app-panel">
+        <div id="app-core"></div>
+    </div>
+    <div id="main-panel">
+        <div id="left-panel" class="left-panel" >
+            <div id="draw-panel">
+                <canvas id='mycanvas' width="1600" height='830'></canvas>
+
+                <div id="desc-node" class="panel desc-panel">
+                    <div id="desc-resizer"></div>
+                    <div>
+                        <span id="desc-node_title"></span></div>
+                        <button id="desc-node-posbtn"></button>
+                    <div id="desc-content"></div>
+                </div>
+            </div>
+            
+            
+            <!-- <div class="error-panel" id="error-panel" style="background-color: #FF000060;">
+                <ul id="error-list">
+                </ul>
+            </div> -->
+        </div>
+        <div id="right-panel" class="right-panel">
+            <div class="right-panel-title"><h2>LogicUS</h2></div>
+            <div id="model-options">
+            <button onclick="loadModel()">LOAD SCHEMA</button>
+            <button onclick="saveModel()"> SAVE SCHEMA</button>
+            <button id='clear-model-button' onclick="clearModel()"> CLEAR SCHEMA</button>
+            <button id="run-model" onclick="runModel()">RUN SCHEMA</button>
+    
+            </div>
+    
+            <div id="panels-options">
+                <button onclick="openSTATEPANEL();"> STATE INFO</button>
+                <button onclick="openTABLESPANEL()"> TABLES PANEL</button>
+                <button onclick="openGRAPHSPANEL()"> GRAPHS PANEL</button>
+                <button onclick="openCSPPANEL()"> CSP PANEL</button>
+                <button onclick="openCHATSPANEL()"> CHAT PANEL</button>
+                <button id="error-panel-button" onclick="openERRORSPANEL()"> ERROR PANEL</button>
+            </div>
+        </div>
+    </div> 
+    
+   
+    <div id="popup">
+        <div id="popup-head">
+            <span id="popup-title">LogicUS</span>
+            <button id="popup-close" onclick="document.getElementById('popup').style.zIndex = 0;">CLOSE</button>
+        </div>
+        <div class="popup-center-light">
+            <div class="logodiv">
+                <img src="styles/images/logologicus.png" alt="logologicus">
+            </div>
+            <div>
+                <h1>Welcome to LogicUS</h1>
+
+                <p>Computational Logic is subject that cuts across many disciplines, ranging from Philosophy to Mathematics, and with particular relevance in Computer Science and Artificial Intelligence.</p>
+
+                <p>LogicUS is a multi-party system developed at the Department of Computer Science and Artificial Intelligence of the University of Seville, that allows working with the standard techniques present in Propositional and First Order Logic (and make it easily extensible to other logics) by means of explanatory mechanisms and adequate representations for both formulas and transformation and deduction mechanisms. Although educationally oriented and self-contained, LogicUS has been designed to also integrate with third-party computational tools to address larger problems. With LogicUS, we aim to provide a tool for a fast prototyping and proofs for research at the same time that help to students' learning in any usual Logic courses.</p>
+
+                <div class="video-div"> 
+                    <!-- <iframe src="https://www.cs.us.es/~vramos/logicusWeb/announcements.html" width="900" height="600" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                     <img src="styles/images/logicUSWebPage.png" alt="LogicUS WebPage image" style="width:90%">
+                    
+                </div>
+                <div style="text-align: center;">
+                    <p style="text-align: center;"><b> LogicUS oficial site:  <a style="color: rgb(158, 134, 0) ;" href="https://logicus-es.github.io/index.html" target="_blank">https://logicus-es.github.io/</a></b></p>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="foot" id="foot"> 
+        <div> 
+            Authored by research group TIC-137 in colaboration with department of Computer Science and AI of University of Seville. Supported by Spanish State Investigation Agency (Agencia Estatal de Investigación), Project PID2019-109152GB-I00/AEI/10.13039/501100011033. 
+        </div>
+    </div>
+
+        <button id="showMenu" class="hide" onclick="showHideMenu(this);">
+            <img class="logo logoh" src="./styles/images/logo2.png">
+            <img class="logo logos" src="./styles/images/logo2gray.png">
+        </button>
+
+<script src="./js/satsolver/sat.js"></script>
+<script src="./js/satsolver/sat_helper.js"></script>
+<script src="./js/fileSaver/FileSaver.js"></script>
+<script src="./js/d3Scripts/jquery-3.6.0.min.js"></script>
+<script src="./js/d3Scripts/d3.v3.min.js"></script>
+<script src="./js/d3Scripts/script.js"></script>
+<script src="./js/d3Scripts/graphlib-dot.min.js"></script>
+<script src="./js/d3Scripts/dagre-d3.min.js"></script>
+<script src="./js/LogicUSApp/background.js"></script>
+<script src="./js/LogicUSApp/nodes-pl.js"></script>
+<script src="./js/LogicUSApp/nodes-fol.js"></script>
+<script src="./js/LogicUSApp/nodes-ltl.js"></script>
+<script src="./js/LogicUSApp/nodes-kl.js"></script>
+<script src="./js/LogicUSApp/nodes-ext.js"></script>
+<script src="./js/LogicUSApp/nodes-setup.js"></script>
+<script id="MathJax-script" async src="./js/mathjax/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>  
+<script>
+ var app = Elm.AppCore.init({
+            node: document.getElementById('app-core')
+        });
+  
+
+    app.ports.sendMessage.subscribe(function (message) { 
+        const response = JSON.parse(message);
+        switch (response.errorCode) {
+            case -1:
+                console.log(response);
+                break;
+
+            default:
+                console.log(response);
+                const targetNode = graph.getNodeById(response.nodeId);
+                if (targetNode) {
+                    targetNode.processResponse(response);
+                }else{
+                    console.log(response);
+                }
+                break;
+        }
+    });
+
+var graph = new LGraph();
+
+var canvas = new LGraphCanvas("#mycanvas", graph);
+
+function resizeCanvas(){
+    footHeight = document.getElementById('foot').getBoundingClientRect().height;
+    leftPanelBounding = document.getElementById("left-panel").getBoundingClientRect()
+    drawPanel = document.getElementById("draw-panel");
+    canvasPanel =  document.getElementById("mycanvas");
+    canvasPanel.width = leftPanelBounding.width -20;
+    canvasPanel.height = window.innerHeight - 20 - footHeight ;
+    drawPanel.style.width = leftPanelBounding.width -20;
+    drawPanel.style.height = window.innerHeight - 20 - footHeight ;
+    graph.setDirtyCanvas(true,true);
+    descPanel = document.getElementById("desc-node");
+    if(descPanel.classList.contains("onright")){
+        descPanel.style.height = drawPanel.style.height;
+    } else {
+        descPanel.style.width = drawPanel.style.width;
+    }
+}
+
+function resizeListener() {
+    resizeCanvas();
+}
+
+function showHideMenu(but) {
+    if (but.className == "hide"){
+        document.getElementById("right-panel").style.display = "flex"; 
+        but.className = "show";
+    } else {
+        document.getElementById("right-panel").style.display = "none"; 
+        but.className = "hide";
+    }
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeListener);
+</script>
+<script src="resizable.js"></script>
+</body>
+</html>

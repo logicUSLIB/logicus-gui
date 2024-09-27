@@ -1,0 +1,48 @@
+
+  div.tooltip {
+  position: fixed;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  pointer-events: none;
+  z-index: 2000;
+}
+
+
+    .node{
+      cursor : pointer;
+    }
+
+      .node circle {
+          /*fill: #fff;
+          stroke: steelblue;*/
+          stroke-width: 3px;    
+      }
+
+      .node text {
+          fill: #000000;
+          -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+              -moz-user-select: none; /* Old versions of Firefox */
+              -ms-user-select: none; /* Internet Explorer/Edge */
+                  user-select: none; /* Non-prefixed version, currently
+                                        supported by Chrome, Edge, Opera and Firefox */
+      }
+
+  .link {
+      fill: none;
+      stroke: #1a2935;
+      stroke-width: 2px;
+  }
+
+  .tree {
+      margin-bottom: 10px;
+      overflow: auto;
+  }
+
+
+

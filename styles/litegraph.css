@@ -1,0 +1,1445 @@
+/* this CSS contains only the basic CSS needed to run the app and use it */
+
+*{
+    box-sizing: border-box;
+}
+
+.lgraphcanvas {
+    /*cursor: crosshair;*/
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+	outline: none;
+    font-family: Tahoma, sans-serif;
+    background-color: rgba(219, 244, 255, 0.685);
+    border: 1px solid #355269;
+    z-index: 10;
+}
+
+
+
+body{
+    overflow: hidden;
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+#app-panel{
+    width: 0px;
+    height: 0px;
+    opacity: 0;
+}
+.lgraphcanvas * {
+    box-sizing: border-box;
+}
+
+.litegraph.litecontextmenu {
+    font-family: Tahoma, sans-serif;
+    position: fixed;
+    top: 100px;
+    left: 100px;
+    min-width: 100px;
+    color: #aaf;
+    padding: 0;
+    box-shadow: 0 0 10px black !important;
+    background-color: #2e2e2e !important;
+	z-index: 10;
+}
+
+.litegraph.litecontextmenu.dark {
+    background-color: #000 !important;
+}
+
+.litegraph.litecontextmenu .litemenu-title img {
+    margin-top: 2px;
+    margin-left: 2px;
+    margin-right: 4px;
+}
+
+.litegraph.litecontextmenu .litemenu-entry {
+    margin: 2px;
+    padding: 2px;
+}
+
+.litegraph.litecontextmenu .litemenu-entry.submenu {
+    background-color: #2e2e2e !important;
+}
+
+.litegraph.litecontextmenu.dark .litemenu-entry.submenu {
+    background-color: #000 !important;
+}
+
+.litegraph .litemenubar ul {
+    font-family: Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.litegraph .litemenubar li {
+    font-size: 14px;
+    color: #999;
+    display: inline-block;
+    min-width: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    cursor: pointer;
+}
+
+.litegraph .litemenubar li:hover {
+    background-color: #777;
+    color: #eee;
+}
+
+.litegraph .litegraph .litemenubar-panel {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    min-width: 100px;
+    background-color: #444;
+    box-shadow: 0 0 3px black;
+    padding: 4px;
+    border-bottom: 2px solid #aaf;
+    z-index: 10;
+}
+
+.litegraph .litemenu-entry,
+.litemenu-title {
+    font-size: 12px;
+    color: #aaa;
+    padding: 0 0 0 4px;
+    margin: 2px;
+    padding-left: 2px;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.litegraph .litemenu-entry .icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 2px;
+    vertical-align: top;
+}
+
+.litegraph .litemenu-entry.checked .icon {
+    background-color: #aaf;
+}
+
+.litegraph .litemenu-entry .more {
+    float: right;
+    padding-right: 5px;
+}
+
+.litegraph .litemenu-entry.disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.litegraph .litemenu-entry.separator {
+    display: block;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #666;
+    width: 100%;
+    height: 0px;
+    margin: 3px 0 2px 0;
+    background-color: transparent;
+    padding: 0 !important;
+    cursor: default !important;
+}
+
+.litegraph .litemenu-entry.has_submenu {
+    border-right: 2px solid cyan;
+}
+
+.litegraph .litemenu-title {
+    color: #dde;
+    background-color: #111;
+    margin: 0;
+    padding: 2px;
+    cursor: default;
+}
+
+.litegraph .litemenu-entry:hover:not(.disabled):not(.separator) {
+    background-color: #444 !important;
+    color: #eee;
+    transition: all 0.2s;
+}
+
+.litegraph .litemenu-entry .property_name {
+    display: inline-block;
+    text-align: left;
+    min-width: 80px;
+    min-height: 1.2em;
+}
+
+.litegraph .litemenu-entry .property_value {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: right;
+    min-width: 80px;
+    min-height: 1.2em;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+.litegraph.litesearchbox {
+    font-family: Tahoma, sans-serif;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 4px;
+}
+
+.litegraph.litesearchbox input,
+.litegraph.litesearchbox select {
+    margin-top: 3px;
+    min-width: 60px;
+    min-height: 1.5em;
+    background-color: black;
+    border: 0;
+    color: white;
+    padding-left: 10px;
+    margin-right: 5px;
+}
+
+.litegraph.litesearchbox .name {
+    display: inline-block;
+    min-width: 60px;
+    min-height: 1.5em;
+    padding-left: 10px;
+}
+
+.litegraph.litesearchbox .helper {
+    overflow: auto;
+    max-height: 200px;
+    margin-top: 2px;
+}
+
+.litegraph.lite-search-item {
+    font-family: Tahoma, sans-serif;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding-top: 2px;
+}
+
+.litegraph.lite-search-item:hover,
+.litegraph.lite-search-item.selected {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}
+
+/* DIALOGs ******/
+
+.litegraph .dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -150px;
+    margin-left: -200px;
+
+    background-color: #2A2A2A;
+
+    min-width: 400px;
+    min-height: 200px;
+	box-shadow: 0 0 4px #111;
+    border-radius: 6px;
+}
+
+.litegraph .dialog.settings {
+	left: 10px;
+	top: 10px;
+	height: calc( 100% - 20px );
+	margin: auto;
+}
+
+.litegraph .dialog .close {
+    float: right;
+	margin: 4px;
+	margin-right: 10px;
+	cursor: pointer;
+	font-size: 1.4em;
+}
+
+.litegraph .dialog .close:hover {
+	color: white;
+}
+
+.litegraph .dialog .dialog-header {
+	color: #AAA;
+	border-bottom: 1px solid #161616;
+}
+
+.litegraph .dialog .dialog-header { height: 40px; }
+.litegraph .dialog .dialog-footer { height: 50px; padding: 10px; border-top: 1px solid #1a1a1a;}
+
+.litegraph .dialog .dialog-header .dialog-title {
+    font: 20px "Arial";
+    margin: 4px;
+    padding: 4px 10px;
+    display: inline-block;
+}
+
+.litegraph .dialog .dialog-content {
+    height: calc(100% - 90px);
+    width: 100%;
+	min-height: 100px;
+    display: inline-block;
+	color: #AAA;
+    /*background-color: black;*/
+}
+
+.litegraph .dialog .dialog-content h3 {
+	margin: 10px;
+}
+
+.litegraph .dialog .dialog-content .connections {
+	flex-direction: row;
+}
+
+.litegraph .dialog .dialog-content .connections .connections_side {
+	width: calc(50% - 5px);
+	min-height: 100px;
+	background-color: black;
+	display: flex;
+}
+
+.litegraph .dialog .node_type {
+	font-size: 1.2em;
+	display: block;
+	margin: 10px;
+}
+
+.litegraph .dialog .node_desc {
+	opacity: 0.5;
+	display: block;
+	margin: 10px;
+}
+
+.litegraph .dialog .separator {
+	display: block;
+	width: calc( 100% - 4px );
+	height: 1px;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #333;
+	margin: 10px 2px;
+	padding: 0;
+}
+
+.litegraph .dialog .property {
+	margin-bottom: 2px;
+	padding: 4px;
+}
+
+.litegraph .dialog .property_name {
+	color: #737373;
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    width: 120px;
+	padding-left: 4px;
+	overflow: hidden;
+}
+
+.litegraph .dialog .property_value {
+    display: inline-block;
+    text-align: right;
+	color: #AAA;
+	background-color: #1A1A1A;
+    width: calc( 100% - 122px );
+	max-height: 300px;
+    padding: 4px;
+	padding-right: 12px;
+	overflow: hidden;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+.litegraph .dialog .property_value:hover {
+	color: white;
+}
+
+.litegraph .dialog .property.boolean .property_value {
+	padding-right: 30px;
+}
+
+.litegraph .dialog .btn {
+	border: 0;
+	border-radius: 4px;
+    padding: 4px 20px;
+    margin-left: 0px;
+    background-color: #060606;
+    color: #8e8e8e;
+}
+
+.litegraph .dialog .btn:hover {
+    background-color: #111;
+    color: #FFF;
+}
+
+.litegraph .dialog .btn.delete:hover {
+    background-color: #F33;
+    color: black;
+}
+
+.litegraph .subgraph_property {
+	padding: 4px;
+}
+
+.litegraph .subgraph_property:hover {
+	background-color: #333;
+}
+
+.litegraph .subgraph_property.extra {
+    margin-top: 8px;
+}
+
+.litegraph .subgraph_property span.name {
+	font-size: 1.3em;
+	padding-left: 4px;
+}
+
+.litegraph .subgraph_property span.type {
+	opacity: 0.5;
+	margin-right: 20px;
+	padding-left: 4px;
+}
+
+.litegraph .subgraph_property span.label {
+	display: inline-block;
+	width: 60px;
+	padding:  0px 10px;
+}
+
+.litegraph .subgraph_property input {
+	width: 140px;
+	color: #999;
+	background-color: #1A1A1A;
+	border-radius: 4px;
+	border: 0;
+	margin-right: 10px;
+	padding: 4px;
+	padding-left: 10px;
+}
+
+.litegraph .subgraph_property button {
+	background-color: #1c1c1c;
+	color: #aaa;
+	border: 0;
+	border-radius: 2px;
+	padding: 4px 10px;
+	cursor: pointer;
+}
+
+.litegraph .subgraph_property.extra {
+	color: #ccc;
+}
+
+.litegraph .subgraph_property.extra input {
+	background-color: #111;
+}
+
+.litegraph .bullet_icon {
+	margin-left: 10px;
+	border-radius: 10px;
+	width: 12px;
+	height: 12px;
+	background-color: #666;
+	display: inline-block;
+	margin-top: 2px;
+	margin-right: 4px;
+    transition: background-color 0.1s ease 0s;
+    -moz-transition: background-color 0.1s ease 0s;
+}
+
+.litegraph .bullet_icon:hover {
+	background-color: #698;
+	cursor: pointer;
+} 
+
+/* OLD */
+
+.graphcontextmenu {
+    padding: 4px;
+    min-width: 100px;
+}
+
+.graphcontextmenu-title {
+    color: #dde;
+    background-color: #222;
+    margin: 0;
+    padding: 2px;
+    cursor: default;
+}
+
+.graphmenu-entry {
+    box-sizing: border-box;
+    margin: 2px;
+    padding-left: 20px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    transition: all linear 0.3s;
+}
+
+.graphmenu-entry.event,
+.litemenu-entry.event {
+    border-left: 8px solid orange;
+    padding-left: 12px;
+}
+
+.graphmenu-entry.disabled {
+    opacity: 0.3;
+}
+
+.graphmenu-entry.submenu {
+    border-right: 2px solid #eee;
+}
+
+.graphmenu-entry:hover {
+    background-color: #555;
+}
+
+.graphmenu-entry.separator {
+    background-color: #111;
+    border-bottom: 1px solid #666;
+    height: 1px;
+    width: calc(100% - 20px);
+    -moz-width: calc(100% - 20px);
+    -webkit-width: calc(100% - 20px);
+}
+
+.graphmenu-entry .property_name {
+    display: inline-block;
+    text-align: left;
+    min-width: 80px;
+    min-height: 1.2em;
+}
+
+.graphmenu-entry .property_value,
+.litemenu-entry .property_value {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: right;
+    min-width: 80px;
+    min-height: 1.2em;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+.graphdialog {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    /*min-height: 2em;*/
+    background-color: #333;
+    font-size: 1.2em;
+    box-shadow: 0 0 10px black !important;
+	z-index: 10;
+}
+
+.graphdialog.rounded {
+    border-radius: 12px;
+    padding-right: 2px;
+}
+
+.graphdialog .name {
+    display: inline-block;
+    min-width: 60px;
+    min-height: 1.5em;
+    padding-left: 10px;
+}
+
+.graphdialog input,
+.graphdialog textarea,
+.graphdialog select {
+    margin: 3px;
+    min-width: 60px;
+    min-height: 1.5em;
+    background-color: black;
+    border: 0;
+    color: white;
+    padding-left: 10px;
+    outline: none;
+}
+
+.graphdialog textarea {
+	min-height: 150px;
+}
+
+.graphdialog button {
+    margin-top: 3px;
+    vertical-align: top;
+    background-color: #999;
+	border: 0;
+}
+
+.graphdialog button.rounded,
+.graphdialog input.rounded {
+    border-radius: 0 12px 12px 0;
+}
+
+.graphdialog .helper {
+    overflow: auto;
+    max-height: 200px;
+}
+
+.graphdialog .help-item {
+    padding-left: 10px;
+}
+
+.graphdialog .help-item:hover,
+.graphdialog .help-item.selected {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+}
+
+
+#main-panel{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    background: url(./images/wallpaper.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+  
+    z-index: 10;
+    margin: 0;
+    padding: 10;
+    top: 0;
+    left: 0;
+}
+
+
+
+.foot{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #355269;
+    font-size: small;
+    color: white;
+    width: calc(100vw);
+    z-index: 100;
+    text-align: justify;
+}
+
+.foot>div{
+    width: calc(100% - 230px);
+}
+
+.left-panel{
+    width: 100%;
+    float : left;
+}
+
+#draw-panel{
+    position: relative;
+}
+
+#info-node{
+    position: absolute;
+    top: 0px;
+    right: 18px;
+    width: 50%;
+    height: 100%;
+    background: rgb(77, 88, 105);
+    display: grid;
+    grid-template-rows: 40px 1fr ;
+    justify-content: stretch;
+    color: whitesmoke;
+} 
+
+#info-node-content{
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 20px;
+    text-align: justify;
+}
+
+#info-node-head{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-bottom: 2px solid whitesmoke;
+}
+
+#info-node-title{
+    color: white;
+    font-variant: small-caps;
+    font-size: large;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+#info-node-close{
+    background-color: #355269;
+    border: 3px solid whitesmoke;
+    border-radius: 5px;
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+#info-node-close:hover{
+    background-color: whitesmoke;
+    color:  #355269;
+}
+
+#showMenu{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0);
+    border: 0;
+}
+
+#showMenu.hide:not(:hover) .logos{
+    display: none;
+}
+
+#showMenu.hide:hover .logoh{
+    display: none;
+}
+
+#showMenu.show:not(:hover) .logoh{
+    display: none;
+}
+
+#showMenu.show:hover .logos{
+    display: none;
+}
+
+#showMenu, #showMenu .logo{
+    width: 150px;
+}
+
+/* #showMenu.hide{
+    width: 150px;
+} */
+
+/* #showMenu.hide:hover{
+    cursor: pointer;
+    width: 200px;
+} */
+
+/* #showMenu.hide .logo, #showMenu.show:hover .logo{
+    width: 150px;
+} */
+
+/* #showMenu.show .logo, #showMenu.hide:hover .logo{
+    width: 200px;
+} */
+
+/* #showMenu.show{
+    width: 200px;
+} */
+
+/* #showMenu.show:hover{
+    cursor: pointer;
+    width: 150px;
+} */
+
+#menu-display-button {
+    position:fixed;
+    left:-40px;
+    top:-40px;
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    z-index: 30;
+}
+
+#menu-display-button.hidden {
+    border:4px solid #355269;
+    background-color: white;
+}
+
+#menu-display-button.show>div{
+    font-size: 30px;
+    top:-15px;
+    left: -10px;
+}
+
+#menu-display-button.hidden:hover{
+    background-color: #355269;
+    border: 4px solid white;
+    color: white;
+    cursor: pointer;
+}
+
+#menu-display-button.show{
+    background-color: #355269;
+    border: 4px solid white;
+    color: white;
+}
+
+#menu-display-button.show:hover {
+    border:4px solid #355269;
+    background-color: white;
+    color:#355269;
+    cursor: pointer;
+}
+
+#menu-display-button.hidden>div>div{
+    border-top: 4px solid #355269;
+}
+
+#menu-display-button.hidden:hover>div>div{
+    border-top: 4px solid white;
+}
+
+#menu-display-button>div{
+    position: relative;
+    left: -15px;
+    top:-25px;
+    width: 40px;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 4px;
+}
+
+
+.right-panel{
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    width: 180px;
+    height: 100vh;
+    display: none;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+    background-color: #6fc8ff;
+    z-index: 20;
+    border: 10px solid #355269;
+
+}
+
+.right-panel.show{
+    display: flex !important;
+}
+
+.right-panel>div{
+    width: 90%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+
+}
+
+.right-panel>div.right-panel-title{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    background-color: #355269;
+    color: white;
+
+    
+}
+
+.right-panel button{
+    background-color: #355269;
+    color: white;
+    text-align: center;
+    width: 100%;
+    padding: 5px;
+    border: 2px solid rgb(35, 44, 51);
+    font-weight: bold;
+    border-radius: 5px;
+    position: relative;
+}
+
+.right-panel button:hover{
+    background-color: rgb(255, 255, 255);
+    color: #355269;
+    cursor: pointer;
+}
+
+#run-model{
+    background-color: #356940;
+    border: 2px solid rgb(35, 44, 51);
+}
+
+#run-model:hover{
+    background-color: #92d3a0;
+    color: rgb(35, 44, 51);
+}
+
+#popup{
+    z-index: 1000;
+    position: fixed;
+    background-color: rgba(29, 21, 28, 0.8);
+    width: 100vw;
+    height: 100vh;
+    top: 0 ;
+    left: 0 ;
+    overflow: hidden;
+}
+
+.popup-center-light{
+    height: 100vh;
+    width: 80%;
+    margin: auto;
+    background-color: rgba(245, 245, 245, 0.801);
+    color: #355269;
+    padding: 5px 20px;
+}
+
+
+#popup-title{
+    color: white;
+    font-variant: small-caps;
+    font-size: large;
+}
+
+#popup-head{
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    background-color: #355269;
+    height: 40px;
+}
+
+
+#popup-close{
+    position: absolute;
+    right: 10;
+    top: 5px;
+    background-color: #355269;
+    border: 3px solid whitesmoke;
+    border-radius: 5px;
+    padding: 5px;
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+#popup-close:hover{
+    background-color: whitesmoke;
+    color:  #355269;
+}
+
+#popup-content{
+    width: 100%;
+    height: calc(100% - 20px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+#popup-content>div{
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    gap: 20px;
+}
+
+#popup-content .table{
+    width: 100%;
+}
+#popup-content .table>div{
+    display: grid;
+    grid-template-columns: 80px calc(100% - 80px);
+    background-color: whitesmoke;
+}
+
+#popup-content .table .head div{
+    background-color: #355269;
+    color: whitesmoke;
+}
+
+#popup-content .table>div>div:not(:first-child){
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#popup-content .table>div>div{
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+#popup-content .table>div>div:nth-child(2n+1){
+    justify-content: center;
+    border-right: 3px solid  #8eb3d1;
+}
+
+#popup-content .table.special .head div{
+    background-color: #7ec5ff;
+    color: #1a2935;
+}
+
+#popup-content .table.special button{
+    background-color: #7ec5ff;
+    color: #1a2935;
+    border: 2px solid #1a2935;
+}
+
+#popup-content .table.special button:hover{
+    color: #7ec5ff;
+    background-color: #1a2935;
+    cursor: pointer;
+}
+
+#popup .select-by-id{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fill, 30px);
+    row-gap: 5px;
+    padding: 10px;
+}
+
+#popup .select-by-id button {
+    padding: 5px;
+    background-color: #7ec5ff;
+    color: #1a2935;
+    border: 2px solid #1a2935;
+    border-radius: 5px;
+}
+
+#popup .select-by-id button.selected {
+    background-color: #f7d464;
+    font-weight: bolder;
+}
+
+#popup .select-by-id button:not(.selected):hover {
+    background-color: #1a2935;
+    color: whitesmoke;
+    cursor: pointer;
+    border-color: whitesmoke;
+}
+
+/* #popup *{
+    outline: 1px solid red;
+} */
+
+#popup #graph-display{
+    background-color: rgb(255, 255, 255);
+    opacity: 80%;
+    overflow: scroll;
+    height: calc(100vh - 90px);
+    border-radius: 5px;
+    display: flex;
+    justify-content: start;
+}
+
+#popup #csp-display{
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    opacity: 80%;
+    overflow: scroll;
+    height: calc(100vh - 90px);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: 20px;
+}
+
+#chat-display{
+    background-color: rgb(255, 255, 255);
+    opacity: 80%;
+    overflow: scroll;
+    height: calc(100vh - 90px);
+    border-radius: 5px;
+    padding: 20px;
+}
+
+
+.bfpl__input textarea{
+    display: block;
+    width: 100%;
+    resize: vertical;
+    background-color: rgb(214, 227, 243);
+    opacity: 1;
+    height: 100px;
+}
+
+.bfpl__result{
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 5px;
+    background-color: #355269;
+}
+
+.bfpl__result__buttons{
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.bfpl__result__buttons button{
+    background-color: #0089be;
+    border: 3px solid whitesmoke;
+    padding: 5px;
+    color: whitesmoke;
+
+}
+
+.bfpl__result__buttons button:hover{
+    background-color: whitesmoke;
+    color:  #355269;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.bfpl__result__texDisplay{
+    background-color: #28445c;
+    color: white;
+    padding: 10px;
+    overflow-x: auto;
+}
+
+.bfpl__result__texDisplay>div{
+    display: flex;
+    justify-content: center;
+}
+
+.bfpl__result__texDisplay>div:first-child{
+    margin-bottom: 20px;
+}
+
+.bfpl__result__texDisplay.error{
+    background-color: rgb(150, 0, 0);
+    opacity: 1;
+}
+
+.csp-display__buttons{
+    display: flex;
+    justify-content: center;
+}
+
+.csp-display__buttons button{
+    background-color: #3577ad;
+    border: 3px solid whitesmoke;
+    border-radius: 5px;
+    padding: 10px;
+    color: whitesmoke;
+}
+
+.csp-display__buttons button:hover{
+    background-color: rgb(119, 212, 255);
+    color:  #355269;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+#popup #popup-content2{
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 70px 1fr;
+
+}
+
+#popup #graph-display{
+    padding: 10px;
+}
+
+#popup #graph-display table{
+    border: 2px solid #1a2935;
+    color: #1a2935;;
+}
+
+#popup #graph-display table th{
+    border: 2px solid #1a2935;
+    color: #1a2935; 
+    min-width: 20px;
+    padding: 5px;
+    color: rgb(26, 41, 53);
+}
+
+#graphContainer .node rect {
+    stroke: #1a2935;
+    stroke-width: 2px;
+    fill: #c1f6ff;
+  }
+  #graphContainer .edgeLabel rect {
+    fill: white;
+    color:#1a2935;
+  }
+  #graphContainer .edgePath {
+    stroke: #1a2935;
+    stroke-width: 1.5px;
+    fill: none;
+  }
+  
+  #graphContainer tspan{
+    fill:#1a2935;
+  }
+
+  #error-panel-button{
+    background-color: rgb(126, 66, 66);
+  }
+
+  #error-panel-button:hover{
+    background-color: rgb(255, 97, 97);
+    color: rgb(85, 37, 37);
+  }
+
+  #popup-head.errors{
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    background-color: #693535;
+    height: 20px;
+}
+
+#popup-head.errors #popup-close{
+    position: absolute;
+    right: 30;
+    top: 5px;
+    background-color: #693535;
+    border: 3px solid whitesmoke;
+    border-radius: 5px;
+    padding: 5px;
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+#popup-head.errors #popup-close:hover{
+    background-color: whitesmoke;
+    color:  #693535;
+    cursor: pointer;
+}
+
+#popup #popup-content2.errors{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffb8b8b9;
+    height: 100%;
+    color: #693535;
+    display: block;
+}
+
+#popup #popup-content2.errors .table{
+    width: 98%;
+   
+}
+
+#popup #popup-content2.errors .tr{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50px 1fr ;
+    background-color: whitesmoke;
+    margin-top: 5px;
+}
+
+#popup #popup-content2.errors .tr div{
+    padding: 5px;
+    scroll-behavior: auto;
+}
+
+#popup #popup-content2.errors .tr div:first-child{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#popup #popup-content2.errors .tr:first-child{
+    background-color: #693535;
+    color: white;
+    font-weight: bold;
+}
+
+#run-model.confirm{
+    background-color: orange;
+}
+
+.popup-center-light{
+    position: relative;
+}
+
+.popup-center-light p{
+    font-size: x-large;
+    text-align: justify;
+}
+
+.popup-center-light>div{
+    position: absolute;
+    padding: 20px;
+}
+
+.popup-center-light .logodiv{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    box-sizing: border-box ;
+}
+
+.popup-center-light .logodiv img{
+    height:90%;
+    opacity: 0.1;
+}
+
+.video-div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#desc-node{
+    border: 1px solid #28445c;
+    background-color: rgb(77, 88, 105);
+    overflow-x: auto;
+    color: white;
+    padding: 10px;
+    font-style: italic;
+}
+
+#desc-node:not(.onright){
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    min-height: 100px;
+    height: 150px;
+}
+
+#desc-resizer{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 5px;
+    background-color: whitesmoke;
+    cursor: ns-resize;
+}
+
+#desc-node.onright{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border: 1px solid #28445c;
+    background-color: rgb(77, 88, 105);
+    margin-top: 0px;
+    min-width: 100px;
+
+}
+
+#desc-node.onright #desc-resizer{
+    position: absolute;
+    width: 5px;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background-color: whitesmoke;
+    cursor: ew-resize;
+}
+
+#desc-node #desc-node-posbtn::after{
+    content: "↹";
+}
+
+#desc-content{
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+#desc-content input{
+    width: 100%;
+}
+
+#desc-content textarea{
+    width: 100%;
+    resize: vertical;
+    overflow-wrap: normal;
+}
+
+#desc-node_title button {
+    background-color: rgb(147, 163, 195);
+    color: rgb(6, 28, 51);
+}
+
+#desc-node-posbtn {
+    position : absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(6, 28, 51);
+}
+
+#desc-node-posbtn:hover{
+    color: white;
+    font-weight: bolder;
+    background-color: rgba(6, 28, 51, 0);
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+#desc-node_title button:hover{
+    color: white;
+    background-color: rgb(2, 51, 95);
+}
+
+#desc-node_title button:hover{
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+#desc-node_title .btOK {
+    background-color: rgb(147, 195, 147);
+    color: rgb(6, 51, 6);
+}
+
+#desc-node_title .btOK:hover {
+    color: white;
+    background-color: rgb(0, 119, 0);
+}
+
+#desc-node_title .btCANCEL {
+    background-color: rgb(195, 147, 147);
+    color: rgb(51, 6, 6);
+}
+
+#desc-node_title .btCANCEL:hover {
+    color: white;
+    background-color: rgb(119,0,0);
+}
+
+.CtxtMenu_MenuFrame{
+    z-index: 100000 !important;
+}
+
+
+
+
+.popup-center-light{
+    overflow: auto;
+}
+
+
+#desc-node.error {
+    background-color: rgb(125, 85, 85);
+    color: white;
+}
+
+#desc-node.uptodate {
+    background-color: rgb(72, 112, 76);
+    color: white;
+}
