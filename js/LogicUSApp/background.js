@@ -456,12 +456,7 @@ function loadModel(){
             var reader = new FileReader();
             reader.readAsText(file, "UTF-8");
             reader.onload = function (evt) {
-                readed = evt.target.result
-                console.log('readed:', readed)
-                console.log(JSON.parse(readed))
-                graph.configure(JSON.parse(readed));
-                graph._nodes.forEach(n => {n.setState("edited"); n.size = n.computeSize();});
-                graph.setDirtyCanvas(true,true)
+                loadSchema(JSON.parse(evt.target.result));
             }
             reader.onerror = function (evt) {
                 alert("error reading file");
@@ -470,6 +465,56 @@ function loadModel(){
     }
     element.click();
     
+}
+
+// It replaces the current schema (and the state of the core) by the given one.
+function loadSchema(schema){
+    graph.clear();
+    for (const k in MEMORY) {
+        MEMORY[k] = {};
+    }
+    for (const k in ERRORS) {
+        delete ERRORS[k];
+    }
+    app.ports.messageReceiver.send(JSON.stringify({ nodeId: 0, nodeType: "ClearModel", content: "" }));
+    graph.configure(schema);
+    graph._nodes.forEach(n => {n.setState("edited"); n.size = n.computeSize();});
+    graph.setDirtyCanvas(true,true);
+}
+
+function openEXAMPLESPANEL(){
+    POPUP.innerHTML = `
+    <div id="popup-head">
+        <span id="popup-title">EXAMPLES</span>
+        <button id="popup-close" onclick="document.getElementById('popup').style.zIndex = 0;">CLOSE</button>
+    </div>
+    <div id="popup-content2"><div id="examples-list">Loading…</div></div>`;
+    POPUP.style.zIndex = 1000;
+    const list = document.getElementById("examples-list");
+    fetch("examples/index.json")
+        .then(r => r.json())
+        .then(examples => {
+            list.innerHTML = examples.map(e => `
+                <div class="example">
+                    <div><b>${e.title}</b><p>${e.description}</p></div>
+                    <button onclick="loadExample('${e.file}')">OPEN</button>
+                </div>`).join("")
+                + "<p>Open an example and press RUN SCHEMA. The files are in the <code>examples</code> folder of LogicUS.</p>";
+        })
+        .catch(() => {
+            list.innerHTML = "<p>The examples can only be listed when LogicUS is served from a web server. "
+                + "You can open them with LOAD SCHEMA from the <code>examples</code> folder.</p>";
+        });
+}
+
+function loadExample(file){
+    fetch(`examples/${file}`)
+        .then(r => r.json())
+        .then(schema => {
+            loadSchema(schema);
+            document.getElementById('popup').style.zIndex = 0;
+        })
+        .catch(e => alert(`The example ${file} could not be loaded: ${e}`));
 }
 
 function runModel(){

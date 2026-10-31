@@ -1,0 +1,22 @@
+[
+    {
+        "file": "examplePL.JSON",
+        "title": "Propositional logic: from formulas to clauses",
+        "description": "Does {p ∨ q ↔ ¬r, ¬p → s, ¬t → q, s ∧ t → u} entail r → u? The set with the negated conclusion is turned into clauses and refuted with resolution and with DPLL; the truth table shows that it has no model."
+    },
+    {
+        "file": "exampleSTFOL.JSON",
+        "title": "First-order semantic tableau with equality",
+        "description": "In a monoid where every element has a right inverse, an element x such that x·y = y for every y is the identity e. The semantic tableau (with equality) of the axioms and the negated claim."
+    },
+    {
+        "file": "provers-groups.JSON",
+        "title": "Automated provers: commutative groups",
+        "description": "In a group where x·x = e for every x, the operation is commutative: Prover9 and E prove it. With x·x·x·x = e it is not: Mace4 finds a counter-model of 8 elements."
+    },
+    {
+        "file": "CSP_8Q.JSON",
+        "title": "Eight queens as a SAT problem",
+        "description": "The puzzle is written as a propositional constraint satisfaction problem, translated to DIMACS and solved with a SAT solver. Open the CSP panel to see and edit the constraints."
+    }
+]

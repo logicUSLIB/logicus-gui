@@ -1,0 +1,28 @@
+/* Examples panel */
+
+#examples-list {
+    background-color: rgb(255, 255, 255);
+    opacity: 90%;
+    border-radius: 5px;
+    padding: 20px;
+    height: calc(100vh - 130px);
+    overflow: auto;
+    color: #1a2935;
+}
+
+#examples-list .example {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid #c8d0d8;
+}
+
+#examples-list .example p {
+    margin: 4px 0 0 0;
+}
+
+#examples-list .example button {
+    flex-shrink: 0;
+}
