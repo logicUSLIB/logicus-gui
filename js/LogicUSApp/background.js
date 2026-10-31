@@ -7,15 +7,11 @@ let MEMORY = {
     'FOL Sets' : {},
     'FOL Clauses' : {},
     'FOL Clause Sets' : {},
-    'LTL Formulas' : {},
-    'LTL Sets' : {},
     'HornRS' : {},
     'CSPs' : {},
     'HerbrandWs' : {},
     'Graphs' : {},
-    'Tables' : {},
-    'KL Formulas' : {},
-    'KL Sets' : {}
+    'Tables' : {}
 }
 
 let ERRORS = {}
@@ -31,12 +27,6 @@ function openSTATEPANEL(){
     let formulasClausesFOLTableRows = ``;
     let formulasClausesSetsFOLTableRows = ``;
     let herbrandTableRows = ``;
-
-    let formulasClausesLTLTableRows = ``;
-    let formulasClausesSetsLTLTableRows = ``;
-
-    let formulasClausesKLTableRows = ``;
-    let formulasClausesSetsKLTableRows = ``;
 
     let graphsTableRows = '';
     let tablesTableRows = '';
@@ -103,34 +93,6 @@ function openSTATEPANEL(){
             `
     }
 
-    for(const k in MEMORY['LTL Formulas']){
-        formulasClausesLTLTableRows += `
-            <div>${k}</div>
-            <div>${MEMORY['LTL Formulas'][k]}</div>
-            `
-    }
-
-    for(const k in MEMORY['KL Formulas']){
-        formulasClausesKLTableRows += `
-            <div>${k}</div>
-            <div>${MEMORY['KL Formulas'][k]}</div>
-            `
-    }
-
-    for(const k in MEMORY['LTL Sets']){
-        formulasClausesSetsLTLTableRows += `
-            <div>${k}</div>
-            <div>${MEMORY['LTL Sets'][k]}</div>
-            `
-    }
-
-    for(const k in MEMORY['KL Sets']){
-        formulasClausesSetsKLTableRows += `
-            <div>${k}</div>
-            <div>${MEMORY['KL Sets'][k]}</div>
-            `
-    }
-
     for(const k in MEMORY['HerbrandWs']){
         herbrandTableRows += `
             <div>${k}</div>
@@ -188,15 +150,6 @@ function openSTATEPANEL(){
                     </div>
                 </div>
 
-                <div class="table">
-                    <div class="head">
-                        <div>ID</div> <div>FORMULA LTL</div>
-                    </div>
-                    <div>
-                        ${formulasClausesLTLTableRows}
-                    </div>
-                </div>
-
                 
 
                 <div class="table">
@@ -248,15 +201,6 @@ function openSTATEPANEL(){
                     </div>
                     <div>
                         ${formulasClausesSetsFOLTableRows}
-                    </div>
-                </div>
-
-                <div class="table">
-                    <div class="head">
-                        <div>ID</div> <div>FORMULA SET LTL</div>
-                    </div>
-                    <div>
-                        ${formulasClausesSetsLTLTableRows}
                     </div>
                 </div>
 

@@ -50,20 +50,6 @@ LiteGraph.registerNodeType("LogicUS-FOL/HerbrandFOL/HerbrandExtensionFOL", Herbr
 LiteGraph.registerNodeType("LogicUS-FOL/Algorithms/SemanticTableauFOL", SemanticTableauFOL);
 LiteGraph.registerNodeType("LogicUS-FOL/Algorithms/Resolution/ResolutionGraphFOL", ResolutionGraphFOL);
 
-// TEMPORAL LOGIC
-
-LiteGraph.registerNodeType("LogicUS-TL/LTL/FormulaLTL", FormulaLTL);
-LiteGraph.registerNodeType("LogicUS-TL/LTL/SetPL", SetLTL);
-LiteGraph.registerNodeType("LogicUS-TL/Algorithms/SemanticTableauLTL/SemanticTableauLTL", SemanticTableauLTL);
-LiteGraph.registerNodeType("LogicUS-TL/Algorithms/SemanticTableauLTL/CheckTableauLTL", CheckTableauLTL);
-
-// EPISTEMIC LOGIC
-
-LiteGraph.registerNodeType("LogicUS-KL/FormulaKL", FormulaKL);
-LiteGraph.registerNodeType("LogicUS-KL/SetKL", SetKL);
-LiteGraph.registerNodeType("LogicUS-KL/Algorithms/SemanticTableauKL/SemanticTableauS5", SemanticTableauS5);
-LiteGraph.registerNodeType("LogicUS-KL/ViewKLModel", ViewKLModel);
-
 // EXTENSIONS
 
 LiteGraph.registerNodeType("LogicUS-EXT/CSP/CSPPL", CSPPL);

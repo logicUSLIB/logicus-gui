@@ -17,17 +17,6 @@ import LogicUS.PL.SyntaxSemantics as LUS_SS
 import PLAlgProcessors exposing (..)
 import PLBasicProcessors exposing (..)
 import ExtProcessors exposing (processConservativeRetractionFPL, processConservativeRetractionSPL, processForeignVarsFPL, processForeignVarsSPL)
-import LogicUS.TL.SyntaxSemanticsLTL exposing (FormulaLTL)
-import LTLProcessors exposing (processFormulaLTLNode)
-import LTLProcessors exposing (processSetLTLNode, processSemanticTableauLTL, processCheckTableauLTL)
-import LogicUS.TL.SemanticTableauxLTL exposing (LTLTableau)
-import LogicUS.KL.SyntaxSemantics as LUSM_SS
-import LogicUS.KL.SyntaxSemantics exposing (MForm)
-import KLBasicProcessors exposing (processFormulaKLNode)
-import KLBasicProcessors exposing (processSetKLNode)
-import LogicUS.KL.SyntaxSemantics exposing (KripkeStructure)
-import KLAlgProcessors exposing (processSemanticTableauS5)
-import KLBasicProcessors exposing (processViewKLModel)
 import ExtProcessors exposing (processP9M4Solver)
 
 
@@ -67,8 +56,6 @@ main =
                     , div [] [ text <| "outputsCSPL:" ++ modelDictToString model.outputsCSPL LUS_CS.csplToString ]
                     , div [] [ text <| "outputsFFOL:" ++ modelDictToString model.outputsFFOL LUSF_SS.ffolToString ]
                     , div [] [ text <| "outputsSFOL:" ++ modelDictToString model.outputsSFOL LUSF_SS.sfolToString ]
-                    , div [] [ text <| "outputsFKL:" ++ modelDictToString model.outputsFKL LUSM_SS.mformToString ]
-                    , div [] [ text <| "outputsSKL:" ++ modelDictToString model.outputsSKL LUSM_SS.mfSetToString ]
                     ]
         , update = update
         , subscriptions = subscriptions
@@ -98,12 +85,6 @@ type alias Model =
     , outputsCFOL : Dict ( Int, Int ) LUSF_CS.ClauseFOL
     , outputsCSFOL : Dict ( Int, Int ) LUSF_CS.ClauseFOLSet
     , outputsCSPPL : Dict ( Int, Int ) (List LUS_CSP.BigFPL)
-    , outputsFLTL : Dict (Int, Int) FormulaLTL
-    , outputsSLTL : Dict (Int, Int) (List FormulaLTL)
-    , outputsSTLTL : Dict (Int, Int) (LTLTableau)
-    , outputsFKL : Dict (Int,Int) MForm
-    , outputsSKL : Dict (Int,Int) (List MForm)
-    , outputsKS : Dict (Int,Int) KripkeStructure
     }
 
 
@@ -122,12 +103,6 @@ init _ =
       , outputsCFOL = Dict.empty
       , outputsCSFOL = Dict.empty
       , outputsCSPPL = Dict.empty
-      , outputsFLTL = Dict.empty
-      , outputsSLTL = Dict.empty
-      , outputsSTLTL = Dict.empty
-      , outputsFKL = Dict.empty
-      , outputsSKL = Dict.empty
-      , outputsKS = Dict.empty
       }
     , Cmd.none
     )
@@ -177,11 +152,6 @@ update msg model =
                                 , outputsCFOL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsCFOL
                                 , outputsCSFOL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsCSFOL
                                 , outputsCSPPL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsCSPPL
-                                , outputsFLTL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsFLTL
-                                , outputsSLTL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsSLTL
-                                , outputsFKL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsFKL
-                                , outputsSKL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsSKL
-                                , outputsKS = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsKS
                               }
                             , Cmd.none
                             )
@@ -220,94 +190,6 @@ update msg model =
 
                                     else
                                         model.outputsSPL
-                              }
-                            , sendMessage <|
-                                JSONE.encode 0 <|
-                                    JSONE.object
-                                        [ ( "errorCode", JSONE.int pq.errorCode )
-                                        , ( "nodeId", JSONE.int q.nodeId )
-                                        , ( "message", pq.message )
-                                        ]
-                            )
-
-                        "FormulaLTL" ->
-                            let
-                                pq =
-                                    processFormulaLTLNode q.content
-                            in
-                            ( { model
-                                | outputsFLTL =
-                                    if pq.errorCode == 0 then
-                                        Dict.insert ( q.nodeId, 0 ) pq.result model.outputsFLTL
-
-                                    else
-                                        model.outputsFLTL
-                              }
-                            , sendMessage <|
-                                JSONE.encode 0 <|
-                                    JSONE.object
-                                        [ ( "errorCode", JSONE.int pq.errorCode )
-                                        , ( "nodeId", JSONE.int q.nodeId )
-                                        , ( "message", pq.message )
-                                        ]
-                            )
-
-                        "FormulaKL" ->
-                            let
-                                pq =
-                                    processFormulaKLNode q.content
-                            in
-                            ( { model
-                                | outputsFKL =
-                                    if pq.errorCode == 0 then
-                                        Dict.insert ( q.nodeId, 0 ) pq.result model.outputsFKL
-
-                                    else
-                                        model.outputsFKL
-                              }
-                            , sendMessage <|
-                                JSONE.encode 0 <|
-                                    JSONE.object
-                                        [ ( "errorCode", JSONE.int pq.errorCode )
-                                        , ( "nodeId", JSONE.int q.nodeId )
-                                        , ( "message", pq.message )
-                                        ]
-                            )
-
-                        "SetLTL" ->
-                            let
-                                pq =
-                                    processSetLTLNode q.content model.outputsFLTL model.outputsSLTL
-                            in
-                            ( { model
-                                | outputsSLTL =
-                                    if pq.errorCode == 0 then
-                                        Dict.insert ( q.nodeId, 0 ) pq.result model.outputsSLTL
-
-                                    else
-                                        model.outputsSLTL
-                              }
-                            , sendMessage <|
-                                JSONE.encode 0 <|
-                                    JSONE.object
-                                        [ ( "errorCode", JSONE.int pq.errorCode )
-                                        , ( "nodeId", JSONE.int q.nodeId )
-                                        , ( "message", pq.message )
-                                        ]
-                            )
-
-                        "SetKL" ->
-                            let
-                                pq =
-                                    processSetKLNode q.content model.outputsFKL model.outputsSKL
-                            in
-                            ( { model
-                                | outputsSKL =
-                                    if pq.errorCode == 0 then
-                                        Dict.insert ( q.nodeId, 0 ) pq.result model.outputsSKL
-
-                                    else
-                                        model.outputsSKL
                               }
                             , sendMessage <|
                                 JSONE.encode 0 <|
@@ -625,92 +507,6 @@ update msg model =
                                             ]
                                 )
                         
-                        "SemanticTableauLTL" ->
-                            let
-                                pq =
-                                    processSemanticTableauLTL q.content model.outputsFLTL model.outputsSLTL
-                            in
-                            if pq.errorCode == 0 then
-
-                                ( {model | outputsSTLTL = Dict.insert (q.nodeId, 0) pq.tableau model.outputsSTLTL}
-                                    , sendMessage <|
-                                        JSONE.encode 0 <|
-                                            JSONE.object
-                                                [ ( "errorCode", JSONE.int pq.errorCode )
-                                                , ( "nodeId", JSONE.int q.nodeId )
-                                                , ( "message", pq.message )
-                                                ]
-                                    )
-                            else 
-                                ( {model | outputsSTLTL = Dict.remove (q.nodeId, 0) model.outputsSTLTL }
-                                    , sendMessage <|
-                                        JSONE.encode 0 <|
-                                            JSONE.object
-                                                [ ( "errorCode", JSONE.int pq.errorCode )
-                                                , ( "nodeId", JSONE.int q.nodeId )
-                                                , ( "message", pq.message )
-                                                ]
-                                    )
-
-                        "CheckTableauLTL" ->
-                            let
-                                pq =
-                                    processCheckTableauLTL q.content model.outputsSTLTL
-                            in
-                             (model
-                                , sendMessage <|
-                                    JSONE.encode 0 <|
-                                        JSONE.object
-                                            [ ( "errorCode", JSONE.int pq.errorCode )
-                                            , ( "nodeId", JSONE.int q.nodeId )
-                                            , ( "message", pq.message )
-                                            ]
-                                )
-
-                        "SemanticTableauS5" ->
-                            let
-                                pq =
-                                    processSemanticTableauS5 q.content model.outputsFKL model.outputsSKL
-                            in
-                            if pq.errorCode == 0 then
-
-                                ( {model | 
-                                    outputsKS = List.foldl (\ (i,m) ac -> Dict.insert (q.nodeId, i) m ac) model.outputsKS <| List.indexedMap Tuple.pair pq.models}
-                                    , sendMessage <|
-                                        JSONE.encode 0 <|
-                                            JSONE.object
-                                                [ ( "errorCode", JSONE.int pq.errorCode )
-                                                , ( "nodeId", JSONE.int q.nodeId )
-                                                , ( "message", pq.message )
-                                                ]
-                                    )
-                            else 
-                                ( {model | 
-                                    outputsKS = Dict.filter (\ (nid,_) _ -> nid /= q.nodeId) model.outputsKS }
-                                    , sendMessage <|
-                                        JSONE.encode 0 <|
-                                            JSONE.object
-                                                [ ( "errorCode", JSONE.int pq.errorCode )
-                                                , ( "nodeId", JSONE.int q.nodeId )
-                                                , ( "message", pq.message )
-                                                ]
-                                    )
-
-                        "ViewKLModel" ->
-                            let
-                                pq =
-                                    processViewKLModel q.content model.outputsKS
-                            in
-                             (model
-                                , sendMessage <|
-                                    JSONE.encode 0 <|
-                                        JSONE.object
-                                            [ ( "errorCode", JSONE.int pq.errorCode )
-                                            , ( "nodeId", JSONE.int q.nodeId )
-                                            , ( "message", pq.message )
-                                            ]
-                                )
-
                         "TruthTablePL" ->
                             let
                                 pq =
