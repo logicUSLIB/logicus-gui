@@ -1058,16 +1058,6 @@ body{
     gap: 20px;
 }
 
-#chat-display{
-    background-color: rgb(255, 255, 255);
-    opacity: 80%;
-    overflow: scroll;
-    height: calc(100vh - 90px);
-    border-radius: 5px;
-    padding: 20px;
-}
-
-
 .bfpl__input textarea{
     display: block;
     width: 100%;

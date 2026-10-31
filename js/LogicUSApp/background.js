@@ -15,8 +15,7 @@ let MEMORY = {
     'Graphs' : {},
     'Tables' : {},
     'KL Formulas' : {},
-    'KL Sets' : {},
-    'Chats' : {}
+    'KL Sets' : {}
 }
 
 let ERRORS = {}
@@ -42,7 +41,6 @@ function openSTATEPANEL(){
     let graphsTableRows = '';
     let tablesTableRows = '';
     let cspsTableRows = '';
-    let chatsTableRows = '';
     
     for(const k in MEMORY['PL Formulas']){
         formulasClausesPLTableRows += `
@@ -162,12 +160,6 @@ function openSTATEPANEL(){
             `
     }
 
-    for(const k in MEMORY['Chats']){
-        chatsTableRows += `
-            <div>${k}</div>
-            <div> CHAT - <button onclick="openCHATSPANEL(); displayChat(${k});">OPEN CHAT</button></div>
-            `
-    }
 
     
 
@@ -285,15 +277,6 @@ function openSTATEPANEL(){
                     </div>
                     <div>
                        ${graphsTableRows}
-                    </div>
-                </div>
-
-                <div class="table special">
-                    <div class="head">
-                        <div>ID</div> <div>CHATS</div>
-                    </div>
-                    <div>
-                        ${chatsTableRows}
                     </div>
                 </div>
             </div>
@@ -473,277 +456,6 @@ function displayCSP(id){
         
     }
 
-}
-
-function openCHATSPANEL(){
-    let memoryChatKeys = []
-    for (const i in MEMORY['Chats']){
-        memoryChatKeys.push(i);
-    }
-    // console.log(memoryGraphKeys)
-    const popupContent = `
-    <div id="popup-head">
-            <span id="popup-title"> LLM - FORMALIZATION ASSISTANT </span>
-            <button id="popup-close" onclick="closeCHATSPANEL();">CLOSE</button>
-        </div>
-        <div id="popup-content2">
-            <div class="select-by-id" id="select-by-id-chat">
-                ${ memoryChatKeys.map(i => `<button id="selectChat${i}" onclick="displayChat(${i})">${i}</button>`).join("\n")}
-                <button id="newChat" onclick="newChat(this);">+</button>
-            </div>
-            <div id="chat-display">
-            </div>
-        </div>`    
-
-    POPUP.innerHTML = popupContent;
-    POPUP.style.zIndex = 1000;
-}
-
-function closeCHATSPANEL() {
-    prevSel = document.querySelector('#select-by-id-chat>.selected');
-    if(prevSel)
-        saveDisplayedChat(prevSel.innerHTML);
-    document.getElementById('popup').style.zIndex = 0;
-}
-
-function newChat(newChatBtn){
-        const id = Object.keys(MEMORY["Chats"]).length;
-
-        MEMORY["Chats"][id] = 
-            { "gpt-api-key":""
-            ,"gpt-model":""
-            ,"gpt-url":""
-            ,"gpt-hist":[]};
-
-        newChatBtn.id = `selectChat${id}`
-        newChatBtn.onclick = ()=>{displayChat(id)};
-        newChatBtn.innerHTML = `${id}`;
-        
-        const newAddChatBtn = document.createElement('button');
-        newAddChatBtn.innerHTML = "+";
-        newAddChatBtn.class = "add-element";
-        newAddChatBtn.onclick = () => {newChat(newAddChatBtn);};
-
-        newChatBtn.parentElement.appendChild(newAddChatBtn);
-
-        displayChat(id);
-}
-
-function displayChat(id){
-    var selChatButi = document.getElementById(`selectChat${id}`);
-    if (!(selChatButi.class == 'selected')){
-        
-        prevSel = document.querySelector('#select-by-id-chat>.selected');
-        chatdisplay = document.getElementById('chat-display');
-        
-        if (prevSel){
-            prevSel.className = '';
-            prevSel.disabled = false;
-            saveDisplayedChat(prevSel.innerHTML);
-        }
-        
-        selChatButi.className = 'selected';
-        selChatButi.disabled = true;
-
-        
-
-        // }
-        const gpt_api_key = MEMORY["Chats"][id]["gpt-api-key"];
-        const gpt_model = MEMORY["Chats"][id]["gpt-model"];
-        const gpt_hist =  MEMORY["Chats"][id]["gpt-hist"];
-        const gpt_connected = gpt_hist.length > 0;
-
-        chatdisplay.innerHTML = `
-        <div style="display: grid; grid-template-columns: 100px 1fr 100px 1fr 100px 1fr; row-gap: 10px; column-gap:20px;" >
-            <b>URL-API:</b>
-            <input type="text" name="gpt-api-url" style="width: 100%;" value="${gpt_api_key}" >
-            <b>API-KEY:</b>
-            <input type="password" name="gpt-api-key" style="width: 100%;" value="${gpt_api_key}" >
-            <b>Model:</b>
-            <input type="text" name="gpt-model" id="gpt-model" style="width: 100%;" value="${gpt_model}">
-            <button class="gpt-connect-btn" style="width: 100%; grid-column: span 6" onclick="gpt_init(this);">${gpt_connected ? "RECONECT" : "CONNECT"}</button>
-        </div>
-
-        <br>
-        `;
-
-        if (gpt_connected) {
-
-            const dialogue_div = document.createElement("div");
-            dialogue_div.style = "border:1px solid black; padding: 2px; display: grid; grid-template-columns: 100px 1fr; row-gap: 10px;";
-            dialogue_div.innerHTML = "";
-            chatdisplay.appendChild(dialogue_div);
-            gpt_hist.forEach((r,i) => gpt_add_entry(dialogue_div, r["role"], r["content"], (i != (gpt_hist.length - 1) || r["role"] != "system" ? 'disabled' : '')));
-        }
-
-       
-    }
-
-}
-
-async function gpt_init(connect_btn) {
-    const chat_div = connect_btn.parentElement.parentElement;
-    const gpt_api_key = chat_div.querySelector("input[name='gpt-api-key']");
-    const gpt_url = chat_div.querySelector("input[name='gpt-api-url']");
-    const gpt_model = chat_div.querySelector("input[name='gpt-model']");
-
-    const old_dialogue_div = chat_div.querySelector("#gpt-dialogue");
-    if (old_dialogue_div) {
-        old_dialogue_div.remove();
-    }
-
-    const dialogue_div = document.createElement("div");
-    dialogue_div.id = "gpt-dialogue";
-    dialogue_div.style = "border:1px solid black; padding: 2px; display: grid; grid-template-columns: 100px 1fr; row-gap: 10px;";
-    dialogue_div.innerHTML = "";
-
-    // Define the data you want to send
-    const data = {
-            messages: [{ role: 'system', content:"Hello, I wan't that this chat serves only for academic purposes on formalization in logic, so you must omit all questions unrelated to this task." }],
-            model: gpt_model.value,
-            stream:false
-            };
-    
-    // Define the headers
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${gpt_api_key.value}` // Replace YOUR_API_KEY with your actual API key
-    };
-   
-        await (fetch(gpt_url.value, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data)
-        }))
-        .then(response => response.json())
-        .then(resp_data => {
-            console.log(resp_data);
-            if (resp_data.error){
-                connect_btn.innerHTML = "RECONECT";
-                chat_div.appendChild(dialogue_div);
-                gpt_add_entry(dialogue_div, "Error", resp_data.error.message);
-            } else {
-                console.log(resp_data);
-                connect_btn.innerHTML = "RECONECT";
-                dialogue_div.innerHTML = "";
-                chat_div.appendChild(dialogue_div);
-                //console.log(data);
-                const response_message= resp_data.choices[0].message;
-                gpt_add_entry(dialogue_div, response_message.role, response_message.content)
-            } 
-        }).catch (error_msg => {
-        connect_btn.innerHTML = "RECONECT";
-        chat_div.appendChild(dialogue_div);
-            gpt_add_entry(dialogue_div, "Error", error_msg);
-        });
-    // Make the request
-    
-}
-
-function gpt_add_entry(dialogue_div, role, message, disabled='disabled') {
-    
-    const submitBtn = dialogue_div.querySelector("button");
-
-    if (submitBtn) {
-        submitBtn.parentElement.remove();
-    }
-
-    if(role == "assistant"){
-        const newEntryRole = document.createElement("div");
-        newEntryRole.innerHTML = "<b>GPT-Agent:</b>";
-        const newEntryMessage = document.createElement("div");
-        newEntryMessage.innerHTML = `<textarea style="width: 100%; resize:vertical;" data-role="assistant" ${disabled}>${message}</textarea>`;
-        dialogue_div.appendChild(newEntryRole);
-        dialogue_div.appendChild(newEntryMessage);
-        const askButton = document.createElement('div');
-        askButton.style = " grid-column: span 2;";
-        askButton.innerHTML = `<button style="width: 100%; grid-column: span 2" onclick="gpt_add_entry(this.parentElement.parentElement, 'system','', '')">CONTINUE ASKING</button>`;
-        dialogue_div.appendChild(askButton);
-        
-    } else if (role == "system") {
-        const newEntryRole = document.createElement("div");
-        newEntryRole.innerHTML = "<b>User:</b>";
-        const newEntryMessage = document.createElement("div");
-        newEntryMessage.innerHTML = `<textarea style="width: 100%; resize:vertical;" data-role="system" ${disabled}>${message}</textarea>`;
-        dialogue_div.appendChild(newEntryRole);
-        dialogue_div.appendChild(newEntryMessage);
-        const askButton = document.createElement('div');
-        askButton.style = " grid-column: span 2;";
-        askButton.innerHTML = `<button style="width: 100%; grid-column: span 2" onclick="gpt_ask(this);">SUBMIT QUERY</button>`;
-        dialogue_div.appendChild(askButton);
-    } else if (role == "Error") {
-        const newEntryRole = document.createElement("div");
-        newEntryRole.className = "error";
-        newEntryRole.innerHTML = "<b>Error:</b>";
-        const newEntryMessage = document.createElement("div");
-        newEntryMessage.innerHTML = `<textarea style="width: 100%; resize:vertical;" data-role="Error" class="error"; ${disabled}>${message}</textarea>`;
-        dialogue_div.appendChild(newEntryRole);
-        dialogue_div.appendChild(newEntryMessage);
-    }
-    
-}
-
-function gpt_ask(connect_btn) {
-    const chat_div = connect_btn.parentElement.parentElement.parentElement;
-    const gpt_api_key = chat_div.querySelector("input[name='gpt-api-key']");
-    const gpt_url = chat_div.querySelector("input[name='gpt-api-url']");
-    const gpt_model = chat_div.querySelector("input[name='gpt-model']");
-    const hist = [];
-    chat_div.querySelectorAll("textarea").forEach(ta => {hist.push({"role":ta.dataset["role"], "content":ta.value}); ta.disabled=true;});
-
-    const dialogue_div = connect_btn.parentElement.parentElement;
-
-    // Define the data you want to send
-    const data = {
-            messages: hist,
-            model: gpt_model.value,
-            stream:false
-            };
-    
-    // Define the headers
-    const headers = {
-        
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${gpt_api_key.value}` // Replace YOUR_API_KEY with your actual API key
-    };
-
-    // Make the request
-    
-    connect_btn.innerHTML = "IN PROGRESS"
-
-    fetch(gpt_url.value, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        connect_btn.parentElement.remove();
-        const response_message= data.choices[0].message;
-        gpt_add_entry(dialogue_div, response_message.role, response_message.content)
-    }
-    )
-    .catch((error) => {
-        chat_div.appendChild(dialogue_div);
-        gpt_add_entry(dialogue_div, "Error", error);
-        
-    });
-}
-
-function saveDisplayedChat(id) {
-    const chat_div = document.getElementById("chat-display");
-    const gpt_api_key = chat_div.querySelector("input[name='gpt-api-key']").value;
-    const gpt_url = chat_div.querySelector("input[name='gpt-api-url']").value;
-    const gpt_model = chat_div.querySelector("input[name='gpt-model']").value;
-    const hist = [];
-    chat_div.querySelectorAll("textarea").forEach(ta => {hist.push({"role":ta.dataset["role"], "content":ta.value}); ta.disabled=true;});
-    
-    MEMORY["Chats"][id] = {
-        "gpt-api-key":gpt_api_key,
-        "gpt-url":gpt_url,
-        "gpt-model":gpt_model,
-        "gpt-hist":hist
-    }
 }
 
 function openERRORSPANEL(){
