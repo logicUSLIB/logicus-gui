@@ -9,6 +9,7 @@ compiled to WebAssembly (wasm32-wasi). Nothing is sent to a server.
 | `mace4.wasm` | Mace4 (finite model search) | same | William McCune | GPL-2.0 |
 | `prooftrans.wasm` | prooftrans (proof formats: parents only, XML, Ivy) | same | William McCune | GPL-2.0 |
 | `interpformat.wasm` | interpformat (model formats: tabular, portable, cooked, XML...) | same | William McCune | GPL-2.0 |
+| `ladr_to_tptp.wasm`, `tptp_to_ladr.wasm` | translation between the LADR and TPTP languages (for E) | same | William McCune | GPL-2.0 |
 | `eprover.wasm` | E (saturation prover) | [E 3.5.4](https://github.com/eprover/eprover/tree/E-3.5.4) | Stephan Schulz and contributors | GPL-2.0-or-later |
 
 They are separate programs, distributed here unmodified except for the portability patches below. Their source code
@@ -48,8 +49,9 @@ copies the stripped `.wasm` files here and writes the `.wasm.js` scripts. The bu
 the same `.wasm` files byte for byte.
 
 It also writes `options.js` (`build/options.py`): every flag and parameter of Prover9 and Mace4, with its default,
-range and the dependencies between them, read from the LADR sources. The PROVER9/MACE4 panel builds its option tabs
-from it.
+range and the dependencies between them, read from the LADR sources; and `eoptions.js` (`build/eoptions.py`): the
+command-line options of E with their descriptions, read from E's sources (`PROVER/e_options.h`). The PROVER9/MACE4
+panel builds its option tabs from them.
 
 The patches:
 

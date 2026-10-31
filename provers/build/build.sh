@@ -1,6 +1,7 @@
 #!/bin/sh
-# Build Prover9, Mace4, prooftrans, interpformat and E for WebAssembly (wasm32-wasi), copy them to provers/ and write the
-# provers/<name>.wasm.js scripts that the page loads (embed.py).
+# Build Prover9, Mace4, prooftrans, interpformat, ladr_to_tptp, tptp_to_ladr and E for WebAssembly (wasm32-wasi),
+# copy them to provers/, and write the provers/<name>.wasm.js scripts that the page loads (embed.py) and the
+# catalogs of options of Prover9 and Mace4 (options.py) and E (eoptions.py).
 #
 #   provers/build/build.sh
 #
@@ -56,8 +57,10 @@ LADR_FLAGS="-DPRIMITIVE_ENVIRONMENT $EMULATION -mllvm -wasm-enable-sjlj -Wno-eve
 (cd "$LADR/mace4.src" && make -s libmace4.a mace4.o CC="$CC" AR="$AR" XFLAGS="$LADR_FLAGS" \
     && $CC -O2 -o mace4.wasm mace4.o libmace4.a ../ladr/libladr.a -lm $EMULATION_LIBS -lsetjmp $STACK)
 PROVER9_OBJS="index_lits.o forward_subsume.o demodulate.o pred_elim.o unfold.o semantics.o giv_select.o white_black.o actions.o search.o utilities.o provers.o foffer.o"
-(cd "$LADR/provers.src" && make -s prover9.o $PROVER9_OBJS CC="$CC" XFLAGS="$LADR_FLAGS" \
-    && $CC -O2 -o prover9.wasm prover9.o $PROVER9_OBJS ../ladr/libladr.a -lm $EMULATION_LIBS -lsetjmp $STACK)
+(cd "$LADR/provers.src" && make -s prover9.o ladr_to_tptp.o tptp_to_ladr.o $PROVER9_OBJS CC="$CC" XFLAGS="$LADR_FLAGS" \
+    && for app in prover9 ladr_to_tptp tptp_to_ladr; do
+           $CC -O2 -o $app.wasm $app.o $PROVER9_OBJS ../ladr/libladr.a -lm $EMULATION_LIBS -lsetjmp $STACK || exit 1
+       done)
 # prooftrans and interpformat: the output formats of proofs and models
 (cd "$LADR/apps.src" && make -s prooftrans.o interpformat.o CC="$CC" XFLAGS="$LADR_FLAGS" \
     && for app in prooftrans interpformat; do
@@ -94,10 +97,12 @@ $E_CC -O2 -c -o "$WORK/stubs.o" "$HERE/compat/stubs.c"
 
 # --- Install ------------------------------------------------------------------------------------------------------
 for f in "$LADR/provers.src/prover9.wasm" "$LADR/mace4.src/mace4.wasm" "$LADR/apps.src/prooftrans.wasm" \
-         "$LADR/apps.src/interpformat.wasm" "$E/PROVER/eprover.wasm"; do
+         "$LADR/apps.src/interpformat.wasm" "$LADR/provers.src/ladr_to_tptp.wasm" "$LADR/provers.src/tptp_to_ladr.wasm" \
+         "$E/PROVER/eprover.wasm"; do
     "$STRIP" --strip-all -o "$OUT/$(basename "$f")" "$f"
 done
 # the scripts that the page loads (provers/<name>.wasm.js), and the options of Prover9 and Mace4 (provers/options.js)
 python3 "$HERE/embed.py"
 python3 "$HERE/options.py" "$LADR"
+python3 "$HERE/eoptions.py" "$E"
 ls -l "$OUT"/*.wasm "$OUT"/*.wasm.js

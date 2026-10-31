@@ -15,12 +15,12 @@ import sys
 
 PROVERS = pathlib.Path(__file__).resolve().parent.parent
 NAMES = {"prover9": "Prover9", "mace4": "Mace4", "prooftrans": "prooftrans (LADR)", "interpformat": "interpformat (LADR)",
-         "eprover": "E"}
+         "ladr_to_tptp": "ladr_to_tptp (LADR)", "tptp_to_ladr": "tptp_to_ladr (LADR)", "eprover": "E"}
 
 if sys.argv[1:] == ["--check"]:
     for name in NAMES:
         script = (PROVERS / f"{name}.wasm.js").read_text()
-        data = re.search(r'register\("[a-z0-9]+", "([A-Za-z0-9+/=]+)"\)', script).group(1)
+        data = re.search(r'register\("[a-z0-9_]+", "([A-Za-z0-9+/=]+)"\)', script).group(1)
         if gzip.decompress(base64.b64decode(data)) != (PROVERS / f"{name}.wasm").read_bytes():
             sys.exit(f"{name}.wasm.js does not match {name}.wasm: run provers/build/embed.py")
     print("ok")
