@@ -63,3 +63,27 @@ test('example: eight queens loads', async ({ page }) => {
     expect(Object.keys(await nodeStates(page))).toHaveLength(3);
     expect(problems).toEqual([]);
 });
+
+test('example: eight queens is solved, with the variables of the problem', async ({ page }) => {
+    const problems = await openApp(page);
+    // SolveDIMACS on the DIMACS file saved in the example (the CSP node is run from the CSP panel)
+    const value = await page.evaluate(() => {
+        loadSchema(JSON.parse(JSON.stringify(LOGICUS_EXAMPLES.find(e => e.file === 'CSP_8Q.JSON').schema)));
+        graph.getNodeById(3).widget2.callback();
+        return graph.getNodeById(3).properties.value_;
+    });
+    expect(value).toMatch(/^SAT\. True variables \(8\): .* The other 56 variables are false\.$/);
+    const queens = [...value.matchAll(/p<sub>(\d),(\d)<\/sub>/g)].map(m => [Number(m[1]), Number(m[2])]);
+    expect(queens).toHaveLength(8);
+    for (const f of [([r]) => r, ([, c]) => c, ([r, c]) => r - c, ([r, c]) => r + c]) {
+        expect(new Set(queens.map(f)).size, 'no two queens attack each other').toBe(8);
+    }
+    const [download] = await Promise.all([
+        page.waitForEvent('download'),
+        page.evaluate(() => graph.getNodeById(3).widget4.callback()),
+    ]);
+    const text = require('fs').readFileSync(await download.path(), 'utf8');
+    expect(text).toMatch(/^SAT\n\nTrue variables \(8\): p_\{0,\d\}, p_\{1,\d\}/);
+    expect(text).toContain('False variables (56): p_{0,');
+    expect(problems).toEqual([]);
+});

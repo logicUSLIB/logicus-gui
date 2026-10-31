@@ -364,22 +364,29 @@ function SolveDIMACS() {
         var problem = source.properties["value_"];
         if(problem){
             var result = cnfSolve(problem);
-            if(result && result.trail){
-                that.properties["value_"] = result.trail;
-                var widget6Index = that.widgets.indexOf(that.widget6);
-                if(widget6Index > -1){that.widgets.splice(widget6Index, 1);};
-                if (!that.widgets.includes(that.widget4)){
-                    that.widgets.push(that.widget4);
-                }
-            } else {
-                that.properties["value_"] = result;
-                var widget4Index = that.widgets.indexOf(that.widget4);
-                if(widget4Index > -1){that.widgets.splice(widget4Index, 1);};
-                if (!that.widgets.includes(that.widget6)){
-                    that.widgets.push(that.widget6);
-                }
+            var widget4Index = that.widgets.indexOf(that.widget4);
+            if(widget4Index > -1){that.widgets.splice(widget4Index, 1);};
+            var widget6Index = that.widgets.indexOf(that.widget6);
+            if(widget6Index > -1){that.widgets.splice(widget6Index, 1);};
+            if (typeof result === "string") {
+                // the DIMACS text could not be read
+                ERRORS[that.id] = result;
+                that.setState("error");
+                return;
             }
-            
+            if(result && result.trail){
+                // the model, sorted by DIMACS variable, and shown with the variables of the problem
+                that.properties["model_"] = result.trail.slice().sort((a, b) => Math.abs(a) - Math.abs(b));
+                that.properties["value_"] = dimacsModelToHTML(that.properties["model_"], source.properties["dvars_"]);
+                that.widgets.push(that.widget4);
+            } else {
+                that.properties["model_"] = null;
+                that.properties["value_"] = "UNSAT: the clauses have no model.";
+                that.widgets.push(that.widget6);
+            }
+            if (ERRORS[that.id]){
+                delete ERRORS[that.id];
+            }
             that.setState("uptodate");
         }
         
@@ -396,21 +403,44 @@ function SolveDIMACS() {
     this.size = this.computeSize();
     
     this.title = "SolveDIMACS";
-    this.desc = "It solves the satisfiability of a set of clauses in DIMACS format"
+    this.desc = "It solves the satisfiability of a set of clauses in DIMACS format. If they are satisfiable, it shows a model with the variables of the problem, and SAT downloads it (also with the DIMACS variable numbers)."
     this.size = [210,38];
     
     this.color = LGraphCanvas.node_colors.yellow.color;
     this.bgcolor = LGraphCanvas.node_colors.yellow.bgcolor;
 }
 
+// The name of DIMACS variable i in the problem (as written in the CSP, e.g. p_{0,5}), or x<i> if it is not known.
+function dimacsVarName(dvars, i) {
+    return (dvars && dvars[i]) || `x${i}`;
+}
+
+function byName(a, b) {
+    return a.localeCompare(b, undefined, { numeric: true });
+}
+
+// A model (DIMACS literals) for the node value: the true variables of the problem, with subscripts.
+function dimacsModelToHTML(model, dvars) {
+    const html = name => escapeHTML(name).replace(/_\{([^}]*)\}/g, "<sub>$1</sub>").replace(/_(\w)/g, "<sub>$1</sub>");
+    const trueVars = model.filter(l => l > 0).map(l => dimacsVarName(dvars, l)).sort(byName);
+    const falseCount = model.filter(l => l < 0).length;
+    return `SAT. True variables (${trueVars.length}): ${trueVars.map(html).join(", ") || "none"}. `
+        + `The other ${falseCount} variables are false.`;
+}
+
 function downloadDIMACSSolutionFile(nodeId) {
     var that = graph.getNodeById(nodeId);
-    var fileData = that.properties["value_"];
-    if(fileData){
+    var model = that.properties["model_"];
+    if(model){
         var dvars = graph.getNodeById(that.properties["sourceID"]).properties["dvars_"];
-        var trueVars = fileData.filter(l => l > 0).map(l => dvars[l]).sort();
-        var falseVars = fileData.filter(l => l < 0).map(l => dvars[-l]).sort();
-        var blob = new Blob([`Raw output: ${JSON.stringify(fileData)}\nProcessed output:\n    True vars: ${JSON.stringify(trueVars)}\n    False vars:${JSON.stringify(falseVars)}\n`], { type: "text/plain;charset=utf-8" });
+        var trueVars = model.filter(l => l > 0).map(l => dimacsVarName(dvars, l)).sort(byName);
+        var falseVars = model.filter(l => l < 0).map(l => dimacsVarName(dvars, -l)).sort(byName);
+        var text = "SAT\n\n"
+            + `True variables (${trueVars.length}): ${trueVars.join(", ")}\n\n`
+            + `False variables (${falseVars.length}): ${falseVars.join(", ")}\n\n`
+            + "The same model with the variable numbers of the DIMACS file (negative = false):\n"
+            + model.join(" ") + "\n";
+        var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
         saveAs(blob, `DIMACSSolution-${that.properties["sourceID"]}.txt`);
     }
 }
