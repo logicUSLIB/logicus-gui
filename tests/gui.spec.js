@@ -39,6 +39,9 @@ test('example: first-order semantic tableau', async ({ page }) => {
     const states = await runSchema(page, 'exampleSTFOL.JSON');
     expectAllUpToDate(states);
     expect(states[8].value).toContain('digraph');
+    // numbered by depth in the branch, with the rules (and Leibniz law) on the edges, like the other tableaux
+    expect(states[8].value).toContain('10. (c₁ = e)');
+    expect(states[8].value).toContain('⊥(𝓛𝓛10(6))');
     expect(problems).toEqual([]);
 });
 
@@ -48,10 +51,11 @@ test('example: ground and free-variable tableaux', async ({ page }) => {
     expectAllUpToDate(states);
     // the ground tableau never instantiates with f(a): some branches are left undecided
     expect(states[8].value).toContain('ⓤ');
+    expect(states[8].value).toContain('"5. (P(a) → Q(f(a)))"');
     // the free-variable tableau closes, and shows the substitution
     expect(states[9].value).toContain('Closed tableau');
     expect(states[9].value).toContain('σ = {x₁/a, x₂/f(a), x₃/f(a)}');
-    expect(states[9].value).toContain('⟂(F₇,F₉){x₂/f(a)}');
+    expect(states[9].value).toContain('⊥(6,8){x₂/f(a)}');
     await page.evaluate(() => { openGRAPHSPANEL(); displayGraph(9); });
     await expect(page.locator('#graphContainer')).toContainText('Closed tableau');
     expect(problems).toEqual([]);
