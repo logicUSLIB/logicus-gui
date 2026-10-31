@@ -40,7 +40,7 @@ processSemanticTableauFOL content outputsFFOL outputsSFOL =
                                             case o.perform_mode of
                                                 "enhanced" -> 
                                                     { errorCode = 0
-                                                    , message = JSONE.string <| LUSF_PLSTEQ.semanticTableauToDOT (LUSF_PLSTEQ.semanticTableauEq s o.maxCU o.maxSD) ""
+                                                    , message = JSONE.string <| LUSF_PLSTEQ.semanticTableauToDOTStyled (LUSF_PLSTEQ.semanticTableauEq s o.maxCU o.maxSD) ""
                                                     }
 
                                                 "basic" -> 
@@ -64,7 +64,7 @@ processSemanticTableauFOL content outputsFFOL outputsSFOL =
                                             case o.perform_mode of
                                                 "enhanced" -> 
                                                     { errorCode = 0
-                                                    , message = JSONE.string <| LUSF_PLSTEQ.semanticTableauToDOT (LUSF_PLSTEQ.semanticTableauEq [f] o.maxCU o.maxSD) ""
+                                                    , message = JSONE.string <| LUSF_PLSTEQ.semanticTableauToDOTStyled (LUSF_PLSTEQ.semanticTableauEq [f] o.maxCU o.maxSD) ""
                                                     }
 
                                                 "basic" -> 

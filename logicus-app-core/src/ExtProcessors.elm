@@ -3,11 +3,11 @@ module ExtProcessors exposing (..)
 import Dict exposing (Dict)
 import Json.Decode as JSOND
 import Json.Encode as JSONE
-import LogicUS.PL.ForeignOperators exposing (canonicFO, fplConservativeRetraction, splConservativeRetraction)
+import ForeignOperators exposing (canonicFO, fplConservativeRetraction, splConservativeRetraction)
 import LogicUS.PL.SyntaxSemantics as LUS_SS exposing (FormulaPL(..), SetPL)
 import LogicUS.FOL.SyntaxSemantics exposing (SetFOL)
-import LogicUS.FOL.SyntaxSemantics exposing (sfol2P9M4Str2)
-import LogicUS.FOL.SyntaxSemantics exposing (sfol2P9M4StrUnsafe)
+import LogicUS.FOL.ToStringP9M4 exposing (sfol2P9M4Str2)
+import LogicUS.FOL.ToStringP9M4 exposing (sfol2P9M4StrUnsafe)
 -- import LogicUS.FOL.SyntaxSemantics exposing (SetFOL, ffol2P9M4Str)
 
 

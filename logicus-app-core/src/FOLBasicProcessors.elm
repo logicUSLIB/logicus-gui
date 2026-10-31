@@ -304,7 +304,7 @@ processQuantifierFOLNode content outputsffol =
                                         { errorCode = 0, result = f, message = JSONE.string (LUSF_SS.ffolToString f) }
 
                                 Err e ->
-                                    { errorCode = 3, result = Insat, message = JSONE.string (Debug.toString e) }
+                                    { errorCode = 3, result = Insat, message = JSONE.string ("\"" ++ c.var ++ "\" is not a variable (variables are written like X, Ys or X_{1,2})") }
 
                         Nothing ->
                             { errorCode = 2, result = Insat, message = JSONE.string ("Unknown source: (" ++ String.fromInt sources.origin1_id ++ ", " ++ String.fromInt sources.origin1_slot ++ ")") }
