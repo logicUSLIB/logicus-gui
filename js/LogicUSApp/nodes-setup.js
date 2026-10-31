@@ -73,7 +73,7 @@ for (var k in LiteGraph.registered_node_types) {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = this.title // + ` <button onclick='openInfoNode(${this.id});'>ⓘ</button>`;
         

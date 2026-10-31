@@ -532,7 +532,7 @@ function runModel(){
 
         app.ports.messageReceiver.send(query);
         
-        runbutton.textContent = 'RUN MODEL';
+        runbutton.textContent = 'RUN SCHEMA';
         runbutton.className = '';
     }else{
         graph._nodes.forEach(n => {n.setState("edited"); n.size = n.computeSize();});
@@ -570,7 +570,7 @@ function clearModel(){
     runbutton.textContent = 'CONFIRM CLEAR';
     runbutton.className = 'confirm';
     
-    setTimeout(() => {  runbutton.textContent = 'RUN MODEL'; runbutton.className = ''; }, 4000);
+    setTimeout(() => {  runbutton.textContent = 'RUN SCHEMA'; runbutton.className = ''; }, 4000);
     
 }
 

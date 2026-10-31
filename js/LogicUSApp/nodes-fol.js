@@ -9,7 +9,7 @@ function FormulaFOL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "Formula FOL - ";
         desc_content.innerHTML = "";
@@ -497,7 +497,7 @@ function SetFOL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "Set FOL - ";
         desc_content.innerHTML = "";
@@ -957,7 +957,7 @@ function ClauseFOL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "Clause FOL - ";
         desc_content.innerHTML = "";
@@ -1088,7 +1088,7 @@ function ClauseSetFOL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "ClauseSet FOL - ";
         desc_content.innerHTML = "";

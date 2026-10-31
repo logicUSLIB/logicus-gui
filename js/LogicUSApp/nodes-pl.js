@@ -9,7 +9,7 @@ function FormulaPL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "Formula PL - ";
         desc_content.innerHTML = "";
@@ -378,7 +378,7 @@ function SetPL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "Set PL - ";
         desc_content.innerHTML = "";
@@ -806,7 +806,7 @@ function ClausePL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "Clause PL - ";
         desc_content.innerHTML = "";
@@ -942,7 +942,7 @@ function ClauseSetPL() {
         const desc_title = document.getElementById("desc-node_title");
         const desc_content = document.getElementById("desc-content");
         const desc_node = document.getElementById("desc-node");
-        desc_node.classList.remove(["uptodate", "error"]);
+        desc_node.classList.remove("uptodate", "error");
 
         desc_title.innerHTML = "ClauseSet PL - ";
         desc_content.innerHTML = "";
