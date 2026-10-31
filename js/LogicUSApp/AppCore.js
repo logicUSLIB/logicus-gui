@@ -5952,7 +5952,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString = function 
 				var _v3 = f.a;
 				var t1 = _v3.a;
 				var t2 = _v3.b;
-				return '(' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termToString(t1) + (' != ' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termToString(t2) + ')')));
+				return '(' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termToString(t1) + (' ≠ ' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termToString(t2) + ')')));
 			} else {
 				var p = f.a;
 				return '¬' + $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(p);
@@ -27636,8 +27636,21 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 		};
 	};
 };
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$universalClosure = function (f) {
+	return A3(
+		$elm$core$List$foldr,
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Forall,
+		f,
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolFreeVars(f));
+};
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableau = F3(
-	function (fs, uMax, dMax) {
+	function (fs0, uMax, dMax) {
+		var fs = A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$universalClosure, fs0);
+		var m = A2(
+			$logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$uniqueConcatList,
+			_List_Nil,
+			$elm$core$List$concat(
+				A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolAllClosedTerms, fs)));
 		var nodes = $elm$core$Dict$fromList(
 			A2(
 				$elm$core$List$indexedMap,
@@ -27658,11 +27671,6 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableau = F3(
 								}));
 					}),
 				fs));
-		var m = A2(
-			$logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$uniqueConcatList,
-			_List_Nil,
-			$elm$core$List$concat(
-				A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolAllClosedTerms, fs)));
 		var edges = $elm$core$Dict$fromList(
 			A2(
 				$elm$core$List$indexedMap,
@@ -29870,6 +29878,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqStep
 			}
 		}
 	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$universalClosure = function (f) {
+	return A3(
+		$elm$core$List$foldr,
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Forall,
+		f,
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolFreeVars(f));
+};
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEq = F3(
 	function (fs, maxConstants, maxSize) {
 		var generateNodeAuxFromF = F2(
@@ -29896,7 +29911,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEq = F
 				generateNodeAuxFromF,
 				A2(
 					$elm$core$List$map,
-					A2($elm$core$Basics$composeL, $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$reduceDN, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolUniversalClosure),
+					A2($elm$core$Basics$composeL, $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$reduceDN, $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$universalClosure),
 					fs)));
 		var tableau = A9(
 			$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux,
@@ -29926,7 +29941,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEq = F
 			_Utils_Tuple2(
 				$elm$core$List$length(fs) - 1,
 				tableau),
-			fs).b;
+			A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$universalClosure, fs)).b;
 		return A2(
 			$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$renameGeneratedConstants,
 			fs,
@@ -31771,8 +31786,15 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$loop = F2(
 			}
 		}
 	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$universalClosure = function (f) {
+	return A3(
+		$elm$core$List$foldr,
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Forall,
+		f,
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolFreeVars(f));
+};
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$semanticTableauFVWith = F2(
-	function (limits, fs) {
+	function (limits, fs0) {
 		var unknown = F4(
 			function (s, byGamma, byDepth, bySteps) {
 				var st = function () {
@@ -31796,8 +31818,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$semanticTableauFVWith
 					$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$Unknown(
 						{G: byDepth, b3: false, aq: byGamma, y: bySteps}));
 			});
-		var st0 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$initState(fs);
 		var maxK = A2($elm$core$Basics$max, 1, limits.aq);
+		var fs = A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$universalClosure, fs0);
+		var st0 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxFV$initState(fs);
 		var depthLimit = A3($elm$core$Basics$clamp, 0, 250, limits.G);
 		var ctx0 = {
 			G: depthLimit,

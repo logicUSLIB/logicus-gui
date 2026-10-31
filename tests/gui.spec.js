@@ -40,6 +40,7 @@ test('example: first-order semantic tableau', async ({ page }) => {
     expectAllUpToDate(states);
     expect(states[8].value).toContain('digraph');
     // numbered by depth in the branch, with the rules (and Leibniz law) on the edges, like the other tableaux
+    expect(states[8].value).toContain('6. (c₁ ≠ e)');
     expect(states[8].value).toContain('10. (c₁ = e)');
     expect(states[8].value).toContain('⊥(𝓛𝓛10(6))');
     expect(problems).toEqual([]);
