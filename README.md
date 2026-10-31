@@ -15,10 +15,11 @@ formula in them.
 
 ![A counter-model found by Mace4: a non-commutative group where x·x·x·x = e](docs/screenshot-mace4.jpg)
 
-The **PROVER9/MACE4** panel is a workbench in the spirit of the classic Prover9-Mace4 GUI: formulas in the LADR
-language, all the options of both programs (with their dependencies), input files that can be saved and loaded, and
-the proofs and models in the formats of prooftrans and interpformat. Opened from a `Prover9Mace4` node (its OPTIONS
-button), it sets the options of that node.
+The **PROVER9/MACE4** panel is a workbench in the spirit of the classic Prover9-Mace4 GUI, with E as a third
+program: formulas in the LADR language (E receives them translated to TPTP), all the options of Prover9 and Mace4
+(with their dependencies) and the main options of E (with the descriptions of `eprover --help`), input files that can
+be saved and loaded (LADR, or TPTP problems), and the proofs and models in the formats of prooftrans and interpformat.
+Opened from a `Prover9Mace4` or `EProver` node (its OPTIONS button), it sets the options of that node.
 
 ## Using it
 

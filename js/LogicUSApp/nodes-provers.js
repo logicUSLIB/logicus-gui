@@ -148,9 +148,10 @@ const ProverNode = {
         },
 
         proverArguments() {
-            // Prover9 and Mace4 get the time limit and the other options in the input file (P9M4.header)
+            // Prover9 and Mace4 get the time limit and the other options in the input file (P9M4.header), E on the
+            // command line (by default --auto --silent --proof-object, and the time limit)
             if (this.properties.mode !== "eprover") return [];
-            return ["--auto", "--proof-object", "-s", `--cpu-limit=${Math.max(1, Math.round(this.properties.seconds))}`];
+            return P9M4.eArgs(P9M4Panel.nodeConfig(this));
         },
 
         // It asks the core for the input of the prover (without running it): callback({ input } or { error }).
@@ -279,13 +280,15 @@ Object.assign(Prover9Mace4.prototype, ProverNode.methods);
 // E
 
 function EProver() {
+    const that = this;
     ProverNode.setup(this, ["eprover"], "tptp");
+    this.widget3 = this.addWidget("button", "OPTIONS", "", function () { P9M4Panel.open(that); });
     this.size = this.computeSize();
     this.title = "EProver";
     this.desc = `<a href='https://eprover.org' target='_blank'>E</a> (by Stephan Schulz) is a saturation prover for
     first-order logic with equality. The sets are translated to the TPTP language, with the conjunction of G as the
     conjecture. E answers with an SZS status: <i>Theorem</i> (G follows from A), <i>CounterSatisfiable</i> (it does
     not), <i>ResourceOut</i> (no answer within the time limit)...
-    <br><br>The program runs in your browser.`;
+    <br><br>OPTIONS opens the panel with the options of E for this node. The program runs in your browser.`;
 }
 Object.assign(EProver.prototype, ProverNode.methods);

@@ -56,7 +56,7 @@ test('options apply their dependencies, and go to the input file', async ({ page
     await domain.fill('3');
     await domain.dispatchEvent('change');
     await page.getByRole('button', { name: 'INPUT FILE', exact: true }).click();
-    const input = await page.locator('pre.p9m4-input').textContent();
+    const input = await page.locator('#p9m4-input-ladr').textContent();
     expect(input).toContain('set(ignore_option_dependencies).');
     expect(input).toMatch(/if\(Prover9\)\.[^]*set\(hyper_resolution\)\.\n\s*set\(pos_hyper_resolution\)\.[^]*end_if\./);
     expect(input).toMatch(/if\(Mace4\)\.[^]*assign\(domain_size, 3\)\.\n\s*assign\(start_size, 3\)\.\n\s*assign\(end_size, 3\)\.[^]*end_if\./);
@@ -72,8 +72,8 @@ test('syntax errors are reported, and a long search can be stopped', async ({ pa
     await expect(page.locator('#p9m4-syntax')).toHaveText(/ERROR/);
     await page.fill('#p9m4-assumptions', GROUP.replace("x' * x = e.\n", '') + 'x * (x * (x * x)) = e.');
     await page.fill('#p9m4-goals', 'x * y = y * x.');
-    await page.fill('#p9m4-run-prover9 [data-option="max_seconds"]', '-1');
-    await page.locator('#p9m4-run-prover9 [data-option="max_seconds"]').dispatchEvent('change');
+    await page.fill('#p9m4-run-prover9 [data-option="time"]', '-1');
+    await page.locator('#p9m4-run-prover9 [data-option="time"]').dispatchEvent('change');
     await page.locator('#p9m4-run-prover9 .p9m4-start').click();
     await page.waitForTimeout(1500);
     await page.locator('#p9m4-run-prover9 .p9m4-stop').click();
@@ -92,6 +92,10 @@ test('an input file is saved and loaded back', async ({ page }) => {
     await page.getByRole('button', { name: 'PROVER9 OPTIONS' }).click();
     const order = page.locator('.p9m4-option', { hasText: /^\s*order/ }).locator('select');
     await order.selectOption('kbo');
+    await page.getByRole('button', { name: 'E OPTIONS' }).click();
+    await page.locator('.p9m4-groups button', { hasText: 'Search' }).click();
+    await page.fill('#p9m4-e-term-ordering-arg', 'KBO6');
+    await page.locator('#p9m4-e-term-ordering-arg').dispatchEvent('change');
     await page.getByRole('button', { name: 'ADDITIONAL INPUT' }).click();
     await page.locator('#p9m4-tab textarea').fill('formulas(hints).\nx * y = y * x.\nend_of_list.');
     await page.locator('#p9m4-tab textarea').dispatchEvent('input');
@@ -99,6 +103,7 @@ test('an input file is saved and loaded back', async ({ page }) => {
     const saved = fs.readFileSync(await download.path(), 'utf8');
     expect(saved).toContain('set(prolog_style_variables).');
     expect(saved).toContain('assign(order, kbo).');
+    expect(saved).toMatch(/^% LogicUS E options: .*--term-ordering=KBO6/m);
     // a new page: load the file
     await page.reload();
     await page.waitForFunction(() => typeof app !== 'undefined');
@@ -108,7 +113,7 @@ test('an input file is saved and loaded back', async ({ page }) => {
     await chooser.setFiles(await download.path());
     await expect(page.locator('#p9m4-assumptions')).toHaveValue(assumptions);
     await page.getByRole('button', { name: 'INPUT FILE', exact: true }).click();
-    expect(await page.locator('pre.p9m4-input').textContent()).toBe(saved);
+    expect(await page.locator('#p9m4-input-ladr').textContent()).toBe(saved);
     expect(await run(page, 'prover9')).toBe('THEOREM PROVED.');
 });
 
@@ -134,5 +139,66 @@ test('a Prover9Mace4 node keeps its options and runs with them', async ({ page }
     const saved = await page.evaluate(() => JSON.stringify(graph.serialize()));
     await page.evaluate(s => loadSchema(JSON.parse(s)), saved);
     expect(await page.evaluate(() => graph.getNodeById(6).properties.p9m4.mace4)).toEqual({ max_models: 2 });
+    expect(problems).toEqual([]);
+});
+
+async function runE(page) {
+    return run(page, 'eprover');
+}
+
+test('E on a free problem: the formulas go to TPTP, the options to the command line', async ({ page }) => {
+    const problems = await openApp(page);
+    await openPanel(page);
+    await page.fill('#p9m4-assumptions', GROUP + 'x * x = e.');
+    await page.fill('#p9m4-goals', 'x * y = y * x.');
+    expect(await runE(page)).toBe('SZS status Theorem.');
+    expect(await page.locator('#p9m4-result-text').textContent()).toMatch(/SZS output start CNFRefutation[^]*SZS output end/);
+    await page.getByRole('button', { name: 'E OPTIONS' }).click();
+    await page.locator('.p9m4-groups button', { hasText: 'Basic' }).click();
+    await page.locator('#p9m4-e-print-statistics').check();
+    await expect(page.locator('.p9m4-tab code').first()).toHaveText(/^eprover .*--print-statistics.* --cpu-limit=60$/);
+    await page.getByRole('button', { name: 'INPUT FILE', exact: true }).click();
+    await expect(page.locator('#p9m4-input-tptp')).toContainText('fof(goals,conjecture,');
+    await page.getByRole('button', { name: 'FORMULAS' }).click();
+    await page.fill('#p9m4-assumptions', 'P(a) | Q(a).');
+    await page.fill('#p9m4-goals', 'P(a).');
+    expect(await runE(page)).toBe('SZS status CounterSatisfiable.');
+    expect(problems).toEqual([]);
+});
+
+test('a TPTP problem is loaded with tptp_to_ladr, keeping its variables', async ({ page }, testInfo) => {
+    await openApp(page);
+    await openPanel(page);
+    const file = testInfo.outputPath('problem.p');
+    // X is a variable of the clause: it must not become a constant in LADR
+    fs.writeFileSync(file, 'cnf(c1, axiom, ~ p(X) | q(X)).\ncnf(c2, axiom, p(a)).\nfof(g, conjecture, q(a)).\n');
+    const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.getByRole('button', { name: 'LOAD INPUT FILE' }).click()]);
+    await chooser.setFiles(file);
+    await expect(page.locator('#p9m4-file-message')).toHaveText(/TPTP problem read/);
+    await expect(page.locator('#p9m4-goals')).toHaveValue(/q\(a\)/);
+    expect(await run(page, 'prover9')).toBe('THEOREM PROVED.');
+    expect(await runE(page)).toBe('SZS status Theorem.');
+});
+
+test('an EProver node keeps its options and runs with them', async ({ page }) => {
+    const problems = await openApp(page);
+    await runSchema(page, 'provers-groups.JSON');
+    await page.evaluate(() => graph.getNodeById(5).widget3.callback());   // OPTIONS of the E node
+    await expect(page.locator('.p9m4-tabs button')).toHaveText(['FORMULAS', 'E OPTIONS', 'INPUT FILE']);
+    await expect(page.locator('.p9m4-run')).toHaveCount(1);
+    await expect(page.locator('pre.p9m4-input')).toContainText('fof(');
+    await page.getByRole('button', { name: 'E OPTIONS' }).click();
+    await page.locator('#p9m4-e-print-statistics').check();
+    expect(await runE(page)).toBe('SZS status Theorem.');
+    await page.getByRole('button', { name: 'CLOSE' }).click();
+    const node = await page.evaluate(() => {
+        const n = graph.getNodeById(5);
+        return { value: n.properties.value_, args: n.proverArguments(), options: n.properties.p9m4.eprover };
+    });
+    expect(node.value).toMatch(/^Theorem/);
+    expect(node.args).toEqual(['--silent', '--proof-object', '--print-statistics', '--auto', '--cpu-limit=10']);
+    const saved = await page.evaluate(() => JSON.stringify(graph.serialize()));
+    await page.evaluate(s => loadSchema(JSON.parse(s)), saved);
+    expect(await page.evaluate(() => graph.getNodeById(5).properties.p9m4.eprover)).toEqual(node.options);
     expect(problems).toEqual([]);
 });

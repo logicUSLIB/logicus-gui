@@ -186,3 +186,42 @@
     font-size: 12px;
     min-height: 120px;
 }
+
+/* options of E: a command-line option per row, with its description from eprover --help */
+
+.p9m4 .p9m4-eoptions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 12px 0;
+}
+
+.p9m4 .p9m4-eoption {
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.p9m4 .p9m4-eoption.changed {
+    background-color: #fdf0c2;
+}
+
+.p9m4 .p9m4-eoption-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: monospace;
+    font-weight: bold;
+}
+
+.p9m4 .p9m4-eoption-head input[type="text"] {
+    width: 160px;
+}
+
+.p9m4 .p9m4-eoption .p9m4-hint {
+    margin-left: 24px;
+}
+
+.p9m4 .p9m4-area input[type="text"] {
+    font-family: monospace;
+    font-weight: normal;
+}
