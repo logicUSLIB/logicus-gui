@@ -10,7 +10,7 @@ test('the examples and the provers work from a local file', async ({ page }) => 
     const problems = await openApp(page, localFile);
     await page.locator('#showMenu').click();
     await page.getByRole('button', { name: 'EXAMPLES' }).click();
-    await expect(page.locator('#examples-list .example')).toHaveCount(4);
+    await expect(page.locator('#examples-list .example')).toHaveCount(5);
     const states = await runSchema(page, 'provers-groups.JSON');
     expectAllUpToDate(states);
     expect(states[4].value).toMatch(/^THEOREM PROVED/);

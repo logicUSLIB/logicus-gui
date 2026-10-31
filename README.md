@@ -35,7 +35,7 @@ JSON files.
 | Group | Nodes |
 |-------|-------|
 | `LogicUS-PL` | formulas, sets, connectives, transformations and normal forms, clauses, Horn knowledge bases (forward and backward chaining), truth tables, semantic tableaux, resolution (several strategies), DPLL |
-| `LogicUS-FOL` | formulas, sets, connectives and quantifiers, transformations (closures, prenex, Skolem, NNF, CNF, DNF), clauses, Herbrand universe, base, interpretations, models and extensions, semantic tableaux (with equality), resolution |
+| `LogicUS-FOL` | formulas, sets, connectives and quantifiers, transformations (closures, prenex, Skolem, NNF, CNF, DNF), clauses, Herbrand universe, base, interpretations, models and extensions, semantic tableaux (ground, with equality, and with free variables and unification), resolution |
 | `LogicUS-EXT` | propositional constraint satisfaction problems (to DIMACS and a SAT solver), variable forgetting, Prover9/Mace4 and E |
 
 ## Development

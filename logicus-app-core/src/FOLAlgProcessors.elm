@@ -7,6 +7,7 @@ import LogicUS.FOL.Clauses exposing (ClauseFOLSet)
 import LogicUS.FOL.Resolution as LUSF_RES
 import LogicUS.FOL.SemanticTableauxEQ as LUSF_PLSTEQ
 import LogicUS.FOL.SemanticTableaux as LUSF_PLST
+import LogicUS.FOL.SemanticTableauxFV as LUSF_PLSTFV
 import LogicUS.FOL.SyntaxSemantics exposing (SetFOL)
 import LogicUS.FOL.SyntaxSemantics exposing (FormulaFOL)
 
@@ -48,6 +49,11 @@ processSemanticTableauFOL content outputsFFOL outputsSFOL =
                                                     , message = JSONE.string <| LUSF_PLST.semanticTableauToDOT (LUSF_PLST.semanticTableau s o.maxCU o.maxSD)
                                                     }
 
+                                                "variables" ->
+                                                    { errorCode = 0
+                                                    , message = JSONE.string <| LUSF_PLSTFV.semanticTableauFVToDOT (LUSF_PLSTFV.semanticTableauFV s o.maxCU o.maxSD)
+                                                    }
+
                                                 _ -> 
                                                     { errorCode = 4
                                                     , message = JSONE.string ("Unknown performMode: (" ++ o.perform_mode ++ ") for SemanticTableauFOL")
@@ -70,6 +76,11 @@ processSemanticTableauFOL content outputsFFOL outputsSFOL =
                                                 "basic" -> 
                                                     { errorCode = 0
                                                     , message = JSONE.string <| LUSF_PLST.semanticTableauToDOT (LUSF_PLST.semanticTableau [f] o.maxCU o.maxSD)
+                                                    }
+
+                                                "variables" ->
+                                                    { errorCode = 0
+                                                    , message = JSONE.string <| LUSF_PLSTFV.semanticTableauFVToDOT (LUSF_PLSTFV.semanticTableauFV [f] o.maxCU o.maxSD)
                                                     }
 
                                                 _ -> 

@@ -13,7 +13,7 @@ test('the examples panel lists and opens the examples', async ({ page }) => {
     await page.locator('#showMenu').click();
     await page.getByRole('button', { name: 'EXAMPLES' }).click();
     const examples = page.locator('#examples-list .example');
-    await expect(examples).toHaveCount(4);
+    await expect(examples).toHaveCount(5);
     // the list fills the panel (it used to be squeezed into the 70px column of the panel grid)
     const width = await page.locator('#examples-list').evaluate(e => e.getBoundingClientRect().width);
     expect(width).toBeGreaterThan(page.viewportSize().width * 0.8);
@@ -39,6 +39,37 @@ test('example: first-order semantic tableau', async ({ page }) => {
     const states = await runSchema(page, 'exampleSTFOL.JSON');
     expectAllUpToDate(states);
     expect(states[8].value).toContain('digraph');
+    expect(problems).toEqual([]);
+});
+
+test('example: ground and free-variable tableaux', async ({ page }) => {
+    const problems = await openApp(page);
+    const states = await runSchema(page, 'exampleFVTableau.JSON');
+    expectAllUpToDate(states);
+    // the ground tableau never instantiates with f(a): some branches are left undecided
+    expect(states[8].value).toContain('ⓤ');
+    // the free-variable tableau closes, and shows the substitution
+    expect(states[9].value).toContain('Closed tableau');
+    expect(states[9].value).toContain('σ = {x₁/a, x₂/f(a), x₃/f(a)}');
+    expect(states[9].value).toContain('⟂(F₇,F₉){x₂/f(a)}');
+    await page.evaluate(() => { openGRAPHSPANEL(); displayGraph(9); });
+    await expect(page.locator('#graphContainer')).toContainText('Closed tableau');
+    expect(problems).toEqual([]);
+});
+
+test('the semantic tableau node has a free-variable mode with the limits maxU and maxD', async ({ page }) => {
+    const problems = await openApp(page);
+    const widgets = await page.evaluate(() => {
+        const n = LiteGraph.createNode('LogicUS-FOL/Algorithms/SemanticTableauFOL');
+        graph.add(n);
+        const names = () => n.widgets.map(w => w.name).filter(x => x.startsWith('max'));
+        const enhanced = names();
+        n.properties.performMode = 'variables';
+        n.onPropertyChanged();
+        return { enhanced, variables: names() };
+    });
+    expect(widgets.enhanced).toEqual(['maxC', 'maxS']);
+    expect(widgets.variables).toEqual(['maxD', 'maxU']);
     expect(problems).toEqual([]);
 });
 

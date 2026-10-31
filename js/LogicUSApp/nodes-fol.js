@@ -1396,7 +1396,7 @@ function SemanticTableauFOL() {
     this.addProperty("maxD", 1);
     this.addProperty("inputMode", "sfol");
     this.addProperty("performMode", "enhanced");
-    this.widget6 = this.addWidget("combo","mode", "enhanced", "performMode", { values:["basic", "enhanced"]} );  //link to property value
+    this.widget6 = this.addWidget("combo","mode", "enhanced", "performMode", { values:["basic", "enhanced", "variables"]} );  //link to property value
     this.widget5 = this.addWidget("combo","inputMode", "sfol", "inputMode", { values:["sfol", "ffol"]} );
     this.widget = this.addWidget("number","maxC", 0, "maxC", { min: 0, step: 10, precision:0} );
     this.widget3 = this.addWidget("number","maxS", 0, "maxS", { min: 0, step: 10, precision:0} );
@@ -1420,7 +1420,7 @@ function SemanticTableauFOL() {
     this.size = this.computeSize();
 
     this.title = "SemanticTableauFOL";
-    this.desc = "Perform Semantic Tableau Algorithm over SFOL or FFOL(it incorporates mechanisms for handling equality in enhanced mode). Due to undecidability of SAT in FOL, it is requested: <ul> <li> A limit both for the number of times a gamma is usable (maxU) and the depth (maxD) of the tableau, in basic mode. </li> <li> A limit both for the maximum size of elements in the universe (maxS) as for the maximum numbers of constants that can be generated (maxC), in enhanced mode.";
+    this.desc = "Perform Semantic Tableau Algorithm over SFOL or FFOL(it incorporates mechanisms for handling equality in enhanced mode). Due to undecidability of SAT in FOL, it is requested: <ul> <li> A limit both for the number of times a gamma is usable (maxU) and the depth (maxD) of the tableau, in basic mode. </li> <li> A limit both for the maximum size of elements in the universe (maxS) as for the maximum numbers of constants that can be generated (maxC), in enhanced mode. </li> <li> In variables mode (free-variable tableau), universal formulas are instantiated with new variables, which get their values by unification when a branch is closed: maxU is the maximum number of uses of each gamma formula in a branch (the search tries 1, 2, ... maxU) and maxD the maximum number of rules applied in a branch (e.g. maxU = 3, maxD = 40). </li> </ul>";
 
     this.color = LGraphCanvas.node_colors.yellow.color;
     this.bgcolor = LGraphCanvas.node_colors.yellow.bgcolor;
@@ -1483,6 +1483,7 @@ SemanticTableauFOL.prototype.onPropertyChanged = function(){
             
         
         case "basic":
+        case "variables":
             var widgetIndex = this.widgets.indexOf(this.widget);
             if(widgetIndex > -1){this.widgets.splice(widgetIndex, 1);};
 
