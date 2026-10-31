@@ -25,7 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Keep only the files of the site
-        run: rm -rf tests logicus-app-core provers/build scripts docs package.json playwright.config.js
+        run: rm -rf tests logicus-app-core provers/build provers/*.wasm scripts docs package.json playwright.config.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

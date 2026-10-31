@@ -1,0 +1,4 @@
+# Generated files: provers compressed into scripts, and the examples bundled for the EXAMPLES panel
+provers/*.wasm.js -diff linguist-generated
+examples/examples.js -diff linguist-generated
+js/LogicUSApp/AppCore.js -diff linguist-generated

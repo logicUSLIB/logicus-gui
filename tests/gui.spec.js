@@ -56,7 +56,7 @@ test('example: automated provers', async ({ page }) => {
 
 test('example: eight queens loads', async ({ page }) => {
     const problems = await openApp(page);
-    await page.evaluate(() => fetch('examples/CSP_8Q.JSON').then(r => r.json()).then(loadSchema));
+    await page.evaluate(() => loadSchema(LOGICUS_EXAMPLES.find(e => e.file === 'CSP_8Q.JSON').schema));
     expect(Object.keys(await nodeStates(page))).toHaveLength(3);
     expect(problems).toEqual([]);
 });

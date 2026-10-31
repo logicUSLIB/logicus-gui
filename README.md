@@ -17,16 +17,9 @@ formula in them.
 
 ## Using it
 
-LogicUS is a static web page: nothing is installed and nothing is sent to a server. Serve this folder with any web
-server and open `LogicUS.html`, for instance:
-
-```sh
-python3 -m http.server 8000
-# open http://localhost:8000/LogicUS.html
-```
-
-(Opening `LogicUS.html` directly as a file works for everything except the provers and the examples panel, which
-browsers block for local files.)
+LogicUS is a static web page: nothing is installed and nothing is sent to a server. Download this folder and open
+`LogicUS.html` in a recent browser. It can also be served by any web server, as
+GitHub Pages does.
 
 Press the logo at the bottom right to show the menu. **EXAMPLES** opens ready-made schemas; drag nodes from the
 right-click menu of the canvas (*Add Node*), connect them, and press **RUN NODE** on a node or **RUN SCHEMA** for all of them.
@@ -47,7 +40,7 @@ js/LogicUSApp/          the nodes (LiteGraph) and the panels
 js/LogicUSApp/AppCore.js  the Elm core, built from logicus-app-core/
 logicus-app-core/       Elm application: runs the algorithms of logicus-pl and logicus-fol for the nodes
 provers/                Prover9, Mace4 and E in WebAssembly, and how to rebuild them (see provers/README.md)
-examples/               example schemas (examples/index.json lists them in the EXAMPLES panel)
+examples/               example schemas, listed in examples/index.json for the EXAMPLES panel
 tests/                  browser tests
 ```
 
@@ -59,6 +52,13 @@ The JavaScript side sends each node's request to the Elm core through a port and
 scripts/build-core.sh
 ```
 
+The examples panel reads `examples/examples.js`, which bundles the example schemas so that the panel also works from
+a local file. After adding or changing an example (and its entry in `examples/index.json`), regenerate it:
+
+```sh
+python3 scripts/build-examples.py
+```
+
 The browser tests use [Playwright](https://playwright.dev):
 
 ```sh
@@ -67,7 +67,8 @@ npx playwright install
 npm test
 ```
 
-GitHub Actions checks that `AppCore.js` matches the Elm sources, runs the tests in Chromium, Firefox and WebKit, and
+GitHub Actions checks that the generated files (`AppCore.js`, `examples/examples.js`, the provers) match their
+sources, runs the tests in Chromium, Firefox and WebKit, and
 publishes the page on GitHub Pages (enable it in *Settings → Pages → Source: GitHub Actions*).
 
 ## Third-party components

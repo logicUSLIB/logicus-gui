@@ -1,5 +1,6 @@
 #!/bin/sh
-# Build Prover9, Mace4 and E for WebAssembly (wasm32-wasi) and copy them to provers/.
+# Build Prover9, Mace4 and E for WebAssembly (wasm32-wasi), copy them to provers/ and write the
+# provers/<name>.wasm.js scripts that the page loads (embed.py).
 #
 #   provers/build/build.sh
 #
@@ -90,4 +91,6 @@ $E_CC -O2 -c -o "$WORK/stubs.o" "$HERE/compat/stubs.c"
 for f in "$LADR/provers.src/prover9.wasm" "$LADR/mace4.src/mace4.wasm" "$E/PROVER/eprover.wasm"; do
     "$STRIP" --strip-all -o "$OUT/$(basename "$f")" "$f"
 done
-ls -l "$OUT"/*.wasm
+# the scripts that the page loads (provers/<name>.wasm.js)
+python3 "$HERE/embed.py"
+ls -l "$OUT"/*.wasm "$OUT"/*.wasm.js

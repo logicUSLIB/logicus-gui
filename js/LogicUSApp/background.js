@@ -483,38 +483,27 @@ function loadSchema(schema){
 }
 
 function openEXAMPLESPANEL(){
+    // LOGICUS_EXAMPLES comes from examples/examples.js (see scripts/build-examples.py)
     POPUP.innerHTML = `
     <div id="popup-head">
         <span id="popup-title">EXAMPLES</span>
         <button id="popup-close" onclick="document.getElementById('popup').style.zIndex = 0;">CLOSE</button>
     </div>
-    <div id="popup-content2"><div id="examples-list">Loading…</div></div>`;
+    <div id="popup-content2"><div id="examples-list">
+        ${LOGICUS_EXAMPLES.map((e, i) => `
+            <div class="example">
+                <div><b>${e.title}</b><p>${e.description}</p></div>
+                <button onclick="loadExample(${i})">OPEN</button>
+            </div>`).join("")}
+        <p>Open an example and press RUN SCHEMA. The files are in the <code>examples</code> folder of LogicUS.</p>
+    </div></div>`;
     POPUP.style.zIndex = 1000;
-    const list = document.getElementById("examples-list");
-    fetch("examples/index.json")
-        .then(r => r.json())
-        .then(examples => {
-            list.innerHTML = examples.map(e => `
-                <div class="example">
-                    <div><b>${e.title}</b><p>${e.description}</p></div>
-                    <button onclick="loadExample('${e.file}')">OPEN</button>
-                </div>`).join("")
-                + "<p>Open an example and press RUN SCHEMA. The files are in the <code>examples</code> folder of LogicUS.</p>";
-        })
-        .catch(() => {
-            list.innerHTML = "<p>The examples can only be listed when LogicUS is served from a web server. "
-                + "You can open them with LOAD SCHEMA from the <code>examples</code> folder.</p>";
-        });
 }
 
-function loadExample(file){
-    fetch(`examples/${file}`)
-        .then(r => r.json())
-        .then(schema => {
-            loadSchema(schema);
-            document.getElementById('popup').style.zIndex = 0;
-        })
-        .catch(e => alert(`The example ${file} could not be loaded: ${e}`));
+function loadExample(i){
+    // a copy, so that running the schema does not change the example
+    loadSchema(JSON.parse(JSON.stringify(LOGICUS_EXAMPLES[i].schema)));
+    document.getElementById('popup').style.zIndex = 0;
 }
 
 function runModel(){

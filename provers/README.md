@@ -14,13 +14,11 @@ is in the repositories above, and `build/` contains everything needed to rebuild
 
 ## How they run
 
-`runner.js` loads a program once, and runs each problem in a new Web Worker (`wasi-worker.js`), which provides the
-few WASI calls the programs use: arguments, clocks, standard input and output. The problem is given on standard input
-and the output is returned when the program exits. If a run does not stop on its own a few seconds after its time
-limit, the worker is terminated.
-
-The page must be served over HTTP (GitHub Pages, or `python3 -m http.server` locally): browsers do not let a page
-opened as a local file load WebAssembly or start workers.
+`runner.js` loads a program the first time it is needed, from `<name>.wasm.js`: the `.wasm` file gzip-compressed and
+base64-encoded into a script (`build/embed.py`), because browsers let a page opened as a local file load scripts but
+not `.wasm` files. Each problem runs in a new Web Worker, which provides the few WASI calls the programs use:
+arguments, clocks, standard input and output. The problem is given on standard input and the output is returned when
+the program exits. If a run does not stop on its own a few seconds after its time limit, the worker is terminated.
 
 ## Differences with the native programs
 
@@ -44,7 +42,8 @@ provers/build/build.sh
 
 The script downloads the [WASI SDK](https://github.com/WebAssembly/wasi-sdk) 25 (or uses `$WASI_SDK_PATH`), fetches
 the sources at the versions above, applies `patch_ladr.py` and `patch_e.py`, builds with the stubs in `compat/`,
-and copies the stripped `.wasm` files here. The build is reproducible: it gives the same files byte for byte.
+copies the stripped `.wasm` files here and writes the `.wasm.js` scripts. The build is reproducible: it gives
+the same `.wasm` files byte for byte.
 
 The patches:
 
