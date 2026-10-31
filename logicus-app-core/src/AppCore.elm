@@ -17,7 +17,7 @@ import LogicUS.PL.SyntaxSemantics as LUS_SS
 import PLAlgProcessors exposing (..)
 import PLBasicProcessors exposing (..)
 import ExtProcessors exposing (processConservativeRetractionFPL, processConservativeRetractionSPL, processForeignVarsFPL, processForeignVarsSPL)
-import ExtProcessors exposing (processP9M4Solver)
+import ProverProcessors exposing (ProverProblem, processMace4Models, processProverProblem)
 
 
 
@@ -85,6 +85,7 @@ type alias Model =
     , outputsCFOL : Dict ( Int, Int ) LUSF_CS.ClauseFOL
     , outputsCSFOL : Dict ( Int, Int ) LUSF_CS.ClauseFOLSet
     , outputsCSPPL : Dict ( Int, Int ) (List LUS_CSP.BigFPL)
+    , proverProblems : Dict Int ProverProblem
     }
 
 
@@ -103,6 +104,7 @@ init _ =
       , outputsCFOL = Dict.empty
       , outputsCSFOL = Dict.empty
       , outputsCSPPL = Dict.empty
+      , proverProblems = Dict.empty
       }
     , Cmd.none
     )
@@ -152,6 +154,7 @@ update msg model =
                                 , outputsCFOL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsCFOL
                                 , outputsCSFOL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsCSFOL
                                 , outputsCSPPL = Dict.filter (\k _ -> Tuple.first k /= q.nodeId) model.outputsCSPPL
+                                , proverProblems = Dict.remove q.nodeId model.proverProblems
                               }
                             , Cmd.none
                             )
@@ -1093,10 +1096,33 @@ update msg model =
                             )
 
                         
-                        "Prover9Mace4" ->
+                        "ProverProblem" ->
                             let
                                 pq =
-                                    processP9M4Solver q.content model.outputsSFOL
+                                    processProverProblem q.content model.outputsSFOL
+                            in
+                            ( { model
+                                | proverProblems =
+                                    case pq.result of
+                                        Just problem ->
+                                            Dict.insert q.nodeId problem model.proverProblems
+
+                                        Nothing ->
+                                            Dict.remove q.nodeId model.proverProblems
+                              }
+                            , sendMessage <|
+                                JSONE.encode 0 <|
+                                    JSONE.object
+                                        [ ( "errorCode", JSONE.int pq.errorCode )
+                                        , ( "nodeId", JSONE.int q.nodeId )
+                                        , ( "message", pq.message )
+                                        ]
+                            )
+
+                        "Mace4Models" ->
+                            let
+                                pq =
+                                    processMace4Models q.content (Dict.get q.nodeId model.proverProblems)
                             in
                             ( model
                             , sendMessage <|

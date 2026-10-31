@@ -60,6 +60,7 @@ LiteGraph.registerNodeType("LogicUS-EXT/Forgetting/ForeignVarsSPL", ForeignVarsS
 LiteGraph.registerNodeType("LogicUS-EXT/Forgetting/ConservativeRetractFPL", ConservativeRetractFPL);
 LiteGraph.registerNodeType("LogicUS-EXT/Forgetting/ConservativeRetractSPL", ConservativeRetractSPL);
 LiteGraph.registerNodeType("LogicUS-EXT/Solvers/Prover9Mace4", Prover9Mace4);
+LiteGraph.registerNodeType("LogicUS-EXT/Solvers/EProver", EProver);
 
 // General behaviours 
 

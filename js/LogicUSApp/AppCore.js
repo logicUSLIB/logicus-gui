@@ -519,11 +519,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.ck.bc === region.bQ.bc)
+	if (region.cw.bo === region.b$.bo)
 	{
-		return 'on line ' + region.ck.bc;
+		return 'on line ' + region.cw.bo;
 	}
-	return 'on lines ' + region.ck.bc + ' through ' + region.bQ.bc;
+	return 'on lines ' + region.cw.bo + ' through ' + region.b$.bo;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cO,
-		impl.c3,
-		impl.c1,
+		impl.cU,
+		impl.c8,
+		impl.c6,
 		function() { return function() {} }
 	);
 });
@@ -2705,8 +2705,8 @@ var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
 		d: func(record.d),
-		bB: record.bB,
-		by: record.by
+		bL: record.bL,
+		bI: record.bI
 	}
 });
 
@@ -2975,10 +2975,10 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 
 		var value = result.a;
 		var message = !tag ? value : tag < 3 ? value.a : value.d;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.bB;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.bL;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.by) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.bI) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3928,11 +3928,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cO,
-		impl.c3,
-		impl.c1,
+		impl.cU,
+		impl.c8,
+		impl.c6,
 		function(sendToApp, initialModel) {
-			var view = impl.c6;
+			var view = impl.c9;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3964,12 +3964,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.cO,
-		impl.c3,
-		impl.c1,
+		impl.cU,
+		impl.c8,
+		impl.c6,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.bz && impl.bz(sendToApp)
-			var view = impl.c6;
+			var divertHrefToApp = impl.bJ && impl.bJ(sendToApp)
+			var view = impl.c9;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3977,12 +3977,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.cy);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.cI);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.c2) && (_VirtualDom_doc.title = title = doc.c2);
+				(title !== doc.c7) && (_VirtualDom_doc.title = title = doc.c7);
 			});
 		}
 	);
@@ -4038,12 +4038,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.cU;
-	var onUrlRequest = impl.cV;
+	var onUrlChange = impl.c_;
+	var onUrlRequest = impl.c$;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		bz: function(sendToApp)
+		bJ: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4059,9 +4059,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ca === next.ca
-							&& curr.bZ === next.bZ
-							&& curr.b6.a === next.b6.a
+							&& curr.cm === next.cm
+							&& curr.b8 === next.b8
+							&& curr.ci.a === next.ci.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4069,13 +4069,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		cO: function(flags)
+		cU: function(flags)
 		{
-			return A3(impl.cO, flags, _Browser_getUrl(), key);
+			return A3(impl.cU, flags, _Browser_getUrl(), key);
 		},
-		c6: impl.c6,
-		c3: impl.c3,
-		c1: impl.c1
+		c9: impl.c9,
+		c8: impl.c8,
+		c6: impl.c6
 	});
 }
 
@@ -4141,17 +4141,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { cM: 'hidden', cB: 'visibilitychange' }
+		? { cS: 'hidden', cK: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { cM: 'mozHidden', cB: 'mozvisibilitychange' }
+		? { cS: 'mozHidden', cK: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { cM: 'msHidden', cB: 'msvisibilitychange' }
+		? { cS: 'msHidden', cK: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { cM: 'webkitHidden', cB: 'webkitvisibilitychange' }
-		: { cM: 'hidden', cB: 'visibilitychange' };
+		? { cS: 'webkitHidden', cK: 'webkitvisibilitychange' }
+		: { cS: 'hidden', cK: 'visibilitychange' };
 }
 
 
@@ -4232,12 +4232,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ch: _Browser_getScene(),
-		cq: {
-			cs: _Browser_window.pageXOffset,
-			ct: _Browser_window.pageYOffset,
-			cr: _Browser_doc.documentElement.clientWidth,
-			bX: _Browser_doc.documentElement.clientHeight
+		ct: _Browser_getScene(),
+		cB: {
+			cD: _Browser_window.pageXOffset,
+			cE: _Browser_window.pageYOffset,
+			cC: _Browser_doc.documentElement.clientWidth,
+			b6: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4247,8 +4247,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		cr: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		bX: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		cC: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		b6: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4271,15 +4271,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ch: {
-				cr: node.scrollWidth,
-				bX: node.scrollHeight
+			ct: {
+				cC: node.scrollWidth,
+				b6: node.scrollHeight
 			},
-			cq: {
-				cs: node.scrollLeft,
-				ct: node.scrollTop,
-				cr: node.clientWidth,
-				bX: node.clientHeight
+			cB: {
+				cD: node.scrollLeft,
+				cE: node.scrollTop,
+				cC: node.clientWidth,
+				b6: node.clientHeight
 			}
 		};
 	});
@@ -4309,18 +4309,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ch: _Browser_getScene(),
-			cq: {
-				cs: x,
-				ct: y,
-				cr: _Browser_doc.documentElement.clientWidth,
-				bX: _Browser_doc.documentElement.clientHeight
+			ct: _Browser_getScene(),
+			cB: {
+				cD: x,
+				cE: y,
+				cC: _Browser_doc.documentElement.clientWidth,
+				b6: _Browser_doc.documentElement.clientHeight
 			},
-			cG: {
-				cs: x + rect.left,
-				ct: y + rect.top,
-				cr: rect.width,
-				bX: rect.height
+			cO: {
+				cD: x + rect.left,
+				cE: y + rect.top,
+				cC: rect.width,
+				b6: rect.height
 			}
 		};
 	});
@@ -4494,8 +4494,8 @@ var _Regex_never = /.^/;
 var _Regex_fromStringWith = F2(function(options, string)
 {
 	var flags = 'g';
-	if (options.cR) { flags += 'm'; }
-	if (options.cz) { flags += 'i'; }
+	if (options.cX) { flags += 'm'; }
+	if (options.cJ) { flags += 'i'; }
 
 	try
 	{
@@ -5029,25 +5029,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.H) {
+		if (!builder.I) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.Q),
+				$elm$core$Elm$JsArray$length(builder.R),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.Q);
+				builder.R);
 		} else {
-			var treeLen = builder.H * $elm$core$Array$branchFactor;
+			var treeLen = builder.I * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.R) : builder.R;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.H);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.S) : builder.S;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.I);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.Q) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.R) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.Q);
+				builder.R);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -5060,7 +5060,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{R: nodeList, H: (len / $elm$core$Array$branchFactor) | 0, Q: tail});
+					{S: nodeList, I: (len / $elm$core$Array$branchFactor) | 0, R: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -5596,7 +5596,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {bU: fragment, bZ: host, b4: path, b6: port_, ca: protocol, cb: query};
+		return {b3: fragment, b8: host, cg: path, ci: port_, cm: protocol, cn: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5993,7 +5993,7 @@ var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$AppCore$init = function (_v0) {
 	return _Utils_Tuple2(
-		{aJ: $elm$core$Dict$empty, aA: $elm$core$Dict$empty, an: $elm$core$Dict$empty, O: $elm$core$Dict$empty, aK: $elm$core$Dict$empty, x: $elm$core$Dict$empty, ao: $elm$core$Dict$empty, j: $elm$core$Dict$empty, ap: $elm$core$Dict$empty, aL: $elm$core$Dict$empty, av: $elm$core$Dict$empty, p: $elm$core$Dict$empty, l: $elm$core$Dict$empty},
+		{aN: $elm$core$Dict$empty, aE: $elm$core$Dict$empty, ap: $elm$core$Dict$empty, P: $elm$core$Dict$empty, aO: $elm$core$Dict$empty, x: $elm$core$Dict$empty, aq: $elm$core$Dict$empty, j: $elm$core$Dict$empty, ar: $elm$core$Dict$empty, aP: $elm$core$Dict$empty, ax: $elm$core$Dict$empty, p: $elm$core$Dict$empty, l: $elm$core$Dict$empty, aS: $elm$core$Dict$empty},
 		$elm$core$Platform$Cmd$none);
 };
 var $author$project$AppCore$modelDictToString = F2(
@@ -6166,7 +6166,7 @@ var $elm$parser$Parser$Advanced$AddRight = F2(
 	});
 var $elm$parser$Parser$Advanced$DeadEnd = F4(
 	function (row, col, problem, contextStack) {
-		return {bM: col, cE: contextStack, b7: problem, cg: row};
+		return {bW: col, cM: contextStack, cj: problem, cs: row};
 	});
 var $elm$parser$Parser$Advanced$Empty = {$: 0};
 var $elm$parser$Parser$Advanced$fromState = F2(
@@ -6174,7 +6174,7 @@ var $elm$parser$Parser$Advanced$fromState = F2(
 		return A2(
 			$elm$parser$Parser$Advanced$AddRight,
 			$elm$parser$Parser$Advanced$Empty,
-			A4($elm$parser$Parser$Advanced$DeadEnd, s.cg, s.bM, x, s.o));
+			A4($elm$parser$Parser$Advanced$DeadEnd, s.cs, s.bW, x, s.o));
 	});
 var $elm$parser$Parser$Advanced$isSubChar = _Parser_isSubChar;
 var $elm$core$Dict$member = F2(
@@ -6197,7 +6197,7 @@ var $elm$parser$Parser$Advanced$varHelp = F7(
 		while (true) {
 			var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, offset, src);
 			if (_Utils_eq(newOffset, -1)) {
-				return {bM: col, o: context, w: indent, g: offset, cg: row, e: src};
+				return {bW: col, o: context, w: indent, h: offset, cs: row, e: src};
 			} else {
 				if (_Utils_eq(newOffset, -2)) {
 					var $temp$isGood = isGood,
@@ -6237,33 +6237,33 @@ var $elm$parser$Parser$Advanced$varHelp = F7(
 	});
 var $elm$parser$Parser$Advanced$variable = function (i) {
 	return function (s) {
-		var firstOffset = A3($elm$parser$Parser$Advanced$isSubChar, i.ck, s.g, s.e);
+		var firstOffset = A3($elm$parser$Parser$Advanced$isSubChar, i.cw, s.h, s.e);
 		if (_Utils_eq(firstOffset, -1)) {
 			return A2(
 				$elm$parser$Parser$Advanced$Bad,
 				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, i.bS));
+				A2($elm$parser$Parser$Advanced$fromState, s, i.b1));
 		} else {
-			var s1 = _Utils_eq(firstOffset, -2) ? A7($elm$parser$Parser$Advanced$varHelp, i.b_, s.g + 1, s.cg + 1, 1, s.e, s.w, s.o) : A7($elm$parser$Parser$Advanced$varHelp, i.b_, firstOffset, s.cg, s.bM + 1, s.e, s.w, s.o);
-			var name = A3($elm$core$String$slice, s.g, s1.g, s.e);
-			return A2($elm$core$Set$member, name, i.cf) ? A2(
+			var s1 = _Utils_eq(firstOffset, -2) ? A7($elm$parser$Parser$Advanced$varHelp, i.b9, s.h + 1, s.cs + 1, 1, s.e, s.w, s.o) : A7($elm$parser$Parser$Advanced$varHelp, i.b9, firstOffset, s.cs, s.bW + 1, s.e, s.w, s.o);
+			var name = A3($elm$core$String$slice, s.h, s1.h, s.e);
+			return A2($elm$core$Set$member, name, i.cr) ? A2(
 				$elm$parser$Parser$Advanced$Bad,
 				false,
-				A2($elm$parser$Parser$Advanced$fromState, s, i.bS)) : A3($elm$parser$Parser$Advanced$Good, true, name, s1);
+				A2($elm$parser$Parser$Advanced$fromState, s, i.b1)) : A3($elm$parser$Parser$Advanced$Good, true, name, s1);
 		}
 	};
 };
 var $elm$parser$Parser$variable = function (i) {
 	return $elm$parser$Parser$Advanced$variable(
-		{bS: $elm$parser$Parser$ExpectingVariable, b_: i.b_, cf: i.cf, ck: i.ck});
+		{b1: $elm$parser$Parser$ExpectingVariable, b9: i.b9, cr: i.cr, cw: i.cw});
 };
 var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$atomName = $elm$parser$Parser$variable(
 	{
-		b_: function (c) {
+		b9: function (c) {
 			return $elm$core$Char$isAlpha(c);
 		},
-		cf: $elm$core$Set$fromList(_List_Nil),
-		ck: $elm$core$Char$isAlpha
+		cr: $elm$core$Set$fromList(_List_Nil),
+		cw: $elm$core$Char$isAlpha
 	});
 var $elm$parser$Parser$Forbidden = 0;
 var $logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$Number = function (a) {
@@ -6642,7 +6642,7 @@ var $elm$parser$Parser$Advanced$consumeBase = _Parser_consumeBase;
 var $elm$parser$Parser$Advanced$consumeBase16 = _Parser_consumeBase16;
 var $elm$parser$Parser$Advanced$bumpOffset = F2(
 	function (newOffset, s) {
-		return {bM: s.bM + (newOffset - s.g), o: s.o, w: s.w, g: newOffset, cg: s.cg, e: s.e};
+		return {bW: s.bW + (newOffset - s.h), o: s.o, w: s.w, h: newOffset, cs: s.cs, e: s.e};
 	});
 var $elm$parser$Parser$Advanced$chompBase10 = _Parser_chompBase10;
 var $elm$parser$Parser$Advanced$isAsciiCode = _Parser_isAsciiCode;
@@ -6678,7 +6678,7 @@ var $elm$parser$Parser$Advanced$finalizeInt = F5(
 			var toValue = handler.a;
 			return _Utils_eq(startOffset, endOffset) ? A2(
 				$elm$parser$Parser$Advanced$Bad,
-				_Utils_cmp(s.g, startOffset) < 0,
+				_Utils_cmp(s.h, startOffset) < 0,
 				A2($elm$parser$Parser$Advanced$fromState, s, invalid)) : A3(
 				$elm$parser$Parser$Advanced$Good,
 				true,
@@ -6702,16 +6702,16 @@ var $elm$parser$Parser$Advanced$finalizeFloat = F6(
 			return A2(
 				$elm$parser$Parser$Advanced$Bad,
 				true,
-				A4($elm$parser$Parser$Advanced$fromInfo, s.cg, s.bM - (floatOffset + s.g), invalid, s.o));
+				A4($elm$parser$Parser$Advanced$fromInfo, s.cs, s.bW - (floatOffset + s.h), invalid, s.o));
 		} else {
-			if (_Utils_eq(s.g, floatOffset)) {
+			if (_Utils_eq(s.h, floatOffset)) {
 				return A2(
 					$elm$parser$Parser$Advanced$Bad,
 					false,
 					A2($elm$parser$Parser$Advanced$fromState, s, expecting));
 			} else {
 				if (_Utils_eq(intOffset, floatOffset)) {
-					return A5($elm$parser$Parser$Advanced$finalizeInt, invalid, intSettings, s.g, intPair, s);
+					return A5($elm$parser$Parser$Advanced$finalizeInt, invalid, intSettings, s.h, intPair, s);
 				} else {
 					if (floatSettings.$ === 1) {
 						var x = floatSettings.a;
@@ -6722,7 +6722,7 @@ var $elm$parser$Parser$Advanced$finalizeFloat = F6(
 					} else {
 						var toValue = floatSettings.a;
 						var _v1 = $elm$core$String$toFloat(
-							A3($elm$core$String$slice, s.g, floatOffset, s.e));
+							A3($elm$core$String$slice, s.h, floatOffset, s.e));
 						if (_v1.$ === 1) {
 							return A2(
 								$elm$parser$Parser$Advanced$Bad,
@@ -6743,43 +6743,43 @@ var $elm$parser$Parser$Advanced$finalizeFloat = F6(
 	});
 var $elm$parser$Parser$Advanced$number = function (c) {
 	return function (s) {
-		if (A3($elm$parser$Parser$Advanced$isAsciiCode, 48, s.g, s.e)) {
-			var zeroOffset = s.g + 1;
+		if (A3($elm$parser$Parser$Advanced$isAsciiCode, 48, s.h, s.e)) {
+			var zeroOffset = s.h + 1;
 			var baseOffset = zeroOffset + 1;
 			return A3($elm$parser$Parser$Advanced$isAsciiCode, 120, zeroOffset, s.e) ? A5(
 				$elm$parser$Parser$Advanced$finalizeInt,
-				c.cP,
-				c.bY,
+				c.cV,
+				c.b7,
 				baseOffset,
 				A2($elm$parser$Parser$Advanced$consumeBase16, baseOffset, s.e),
 				s) : (A3($elm$parser$Parser$Advanced$isAsciiCode, 111, zeroOffset, s.e) ? A5(
 				$elm$parser$Parser$Advanced$finalizeInt,
-				c.cP,
-				c.b3,
+				c.cV,
+				c.cf,
 				baseOffset,
 				A3($elm$parser$Parser$Advanced$consumeBase, 8, baseOffset, s.e),
 				s) : (A3($elm$parser$Parser$Advanced$isAsciiCode, 98, zeroOffset, s.e) ? A5(
 				$elm$parser$Parser$Advanced$finalizeInt,
-				c.cP,
-				c.bH,
+				c.cV,
+				c.bR,
 				baseOffset,
 				A3($elm$parser$Parser$Advanced$consumeBase, 2, baseOffset, s.e),
 				s) : A6(
 				$elm$parser$Parser$Advanced$finalizeFloat,
-				c.cP,
-				c.bS,
-				c.b$,
-				c.bT,
+				c.cV,
+				c.b1,
+				c.ca,
+				c.b2,
 				_Utils_Tuple2(zeroOffset, 0),
 				s)));
 		} else {
 			return A6(
 				$elm$parser$Parser$Advanced$finalizeFloat,
-				c.cP,
-				c.bS,
-				c.b$,
-				c.bT,
-				A3($elm$parser$Parser$Advanced$consumeBase, 10, s.g, s.e),
+				c.cV,
+				c.b1,
+				c.ca,
+				c.b2,
+				A3($elm$parser$Parser$Advanced$consumeBase, 10, s.h, s.e),
 				s);
 		}
 	};
@@ -6788,13 +6788,13 @@ var $elm$parser$Parser$Advanced$int = F2(
 	function (expecting, invalid) {
 		return $elm$parser$Parser$Advanced$number(
 			{
-				bH: $elm$core$Result$Err(invalid),
-				bS: expecting,
-				bT: $elm$core$Result$Err(invalid),
-				bY: $elm$core$Result$Err(invalid),
-				b$: $elm$core$Result$Ok($elm$core$Basics$identity),
-				cP: invalid,
-				b3: $elm$core$Result$Err(invalid)
+				bR: $elm$core$Result$Err(invalid),
+				b1: expecting,
+				b2: $elm$core$Result$Err(invalid),
+				b7: $elm$core$Result$Err(invalid),
+				ca: $elm$core$Result$Ok($elm$core$Basics$identity),
+				cV: invalid,
+				cf: $elm$core$Result$Err(invalid)
 			});
 	});
 var $elm$parser$Parser$int = A2($elm$parser$Parser$Advanced$int, $elm$parser$Parser$ExpectingInt, $elm$parser$Parser$ExpectingInt);
@@ -6860,7 +6860,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 	var expecting = _v0.b;
 	var progress = !$elm$core$String$isEmpty(str);
 	return function (s) {
-		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.g, s.cg, s.bM, s.e);
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, str, s.h, s.cs, s.bW, s.e);
 		var newOffset = _v1.a;
 		var newRow = _v1.b;
 		var newCol = _v1.c;
@@ -6871,7 +6871,7 @@ var $elm$parser$Parser$Advanced$token = function (_v0) {
 			$elm$parser$Parser$Advanced$Good,
 			progress,
 			0,
-			{bM: newCol, o: s.o, w: s.w, g: newOffset, cg: newRow, e: s.e});
+			{bW: newCol, o: s.o, w: s.w, h: newOffset, cs: newRow, e: s.e});
 	};
 };
 var $elm$parser$Parser$Advanced$symbol = $elm$parser$Parser$Advanced$token;
@@ -6959,7 +6959,7 @@ var $elm$parser$Parser$UnexpectedChar = {$: 11};
 var $elm$parser$Parser$Advanced$chompIf = F2(
 	function (isGood, expecting) {
 		return function (s) {
-			var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, s.g, s.e);
+			var newOffset = A3($elm$parser$Parser$Advanced$isSubChar, isGood, s.h, s.e);
 			return _Utils_eq(newOffset, -1) ? A2(
 				$elm$parser$Parser$Advanced$Bad,
 				false,
@@ -6967,11 +6967,11 @@ var $elm$parser$Parser$Advanced$chompIf = F2(
 				$elm$parser$Parser$Advanced$Good,
 				true,
 				0,
-				{bM: 1, o: s.o, w: s.w, g: s.g + 1, cg: s.cg + 1, e: s.e}) : A3(
+				{bW: 1, o: s.o, w: s.w, h: s.h + 1, cs: s.cs + 1, e: s.e}) : A3(
 				$elm$parser$Parser$Advanced$Good,
 				true,
 				0,
-				{bM: s.bM + 1, o: s.o, w: s.w, g: newOffset, cg: s.cg, e: s.e}));
+				{bW: s.bW + 1, o: s.o, w: s.w, h: newOffset, cs: s.cs, e: s.e}));
 		};
 	});
 var $elm$parser$Parser$chompIf = function (isGood) {
@@ -6985,9 +6985,9 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 			if (_Utils_eq(newOffset, -1)) {
 				return A3(
 					$elm$parser$Parser$Advanced$Good,
-					_Utils_cmp(s0.g, offset) < 0,
+					_Utils_cmp(s0.h, offset) < 0,
 					0,
-					{bM: col, o: s0.o, w: s0.w, g: offset, cg: row, e: s0.e});
+					{bW: col, o: s0.o, w: s0.w, h: offset, cs: row, e: s0.e});
 			} else {
 				if (_Utils_eq(newOffset, -2)) {
 					var $temp$isGood = isGood,
@@ -7019,7 +7019,7 @@ var $elm$parser$Parser$Advanced$chompWhileHelp = F5(
 	});
 var $elm$parser$Parser$Advanced$chompWhile = function (isGood) {
 	return function (s) {
-		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.g, s.cg, s.bM, s);
+		return A5($elm$parser$Parser$Advanced$chompWhileHelp, isGood, s.h, s.cs, s.bW, s);
 	};
 };
 var $elm$parser$Parser$chompWhile = $elm$parser$Parser$Advanced$chompWhile;
@@ -7041,7 +7041,7 @@ var $elm$parser$Parser$Advanced$mapChompedString = F2(
 					p,
 					A2(
 						func,
-						A3($elm$core$String$slice, s0.g, s1.g, s0.e),
+						A3($elm$core$String$slice, s0.h, s1.h, s0.e),
 						a),
 					s1);
 			}
@@ -7341,17 +7341,17 @@ var $elm$parser$Parser$Advanced$sequenceEnd = F5(
 var $elm$parser$Parser$Advanced$sequence = function (i) {
 	return A2(
 		$elm$parser$Parser$Advanced$skip,
-		$elm$parser$Parser$Advanced$token(i.ck),
+		$elm$parser$Parser$Advanced$token(i.cw),
 		A2(
 			$elm$parser$Parser$Advanced$skip,
-			i.cj,
+			i.cv,
 			A5(
 				$elm$parser$Parser$Advanced$sequenceEnd,
-				$elm$parser$Parser$Advanced$token(i.bQ),
-				i.cj,
-				i.b0,
-				$elm$parser$Parser$Advanced$token(i.ci),
-				i.co)));
+				$elm$parser$Parser$Advanced$token(i.b$),
+				i.cv,
+				i.cb,
+				$elm$parser$Parser$Advanced$token(i.cu),
+				i.cA)));
 };
 var $elm$parser$Parser$Advanced$Forbidden = 0;
 var $elm$parser$Parser$Advanced$Mandatory = 2;
@@ -7378,12 +7378,12 @@ var $elm$parser$Parser$toToken = function (str) {
 var $elm$parser$Parser$sequence = function (i) {
 	return $elm$parser$Parser$Advanced$sequence(
 		{
-			bQ: $elm$parser$Parser$toToken(i.bQ),
-			b0: i.b0,
-			ci: $elm$parser$Parser$toToken(i.ci),
-			cj: i.cj,
-			ck: $elm$parser$Parser$toToken(i.ck),
-			co: $elm$parser$Parser$toAdvancedTrailing(i.co)
+			b$: $elm$parser$Parser$toToken(i.b$),
+			cb: i.cb,
+			cu: $elm$parser$Parser$toToken(i.cu),
+			cv: i.cv,
+			cw: $elm$parser$Parser$toToken(i.cw),
+			cA: $elm$parser$Parser$toAdvancedTrailing(i.cA)
 		});
 };
 var $elm$parser$Parser$Advanced$spaces = $elm$parser$Parser$Advanced$chompWhile(
@@ -7398,7 +7398,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$atomSubscript = A2(
 		$elm$parser$Parser$succeed($logicUSLIB$logicus_pl$LogicUS$PL$CSP$Atom),
 		$logicUSLIB$logicus_pl$LogicUS$PL$CSP$atomName),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$expressionA, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$expressionA, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $elm$parser$Parser$Advanced$backtrackable = function (_v0) {
 	var parse = _v0;
 	return function (s0) {
@@ -7472,7 +7472,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$compCondition = $elm$parser$
 		]));
 var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$createCondition = F3(
 	function (f, c, s) {
-		return {ba: c, ak: f, al: s};
+		return {bk: c, am: f, an: s};
 	});
 var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$condition = A2(
 	$elm$parser$Parser$keeper,
@@ -7893,10 +7893,10 @@ var $elm$parser$Parser$problem = function (msg) {
 };
 var $elm$parser$Parser$DeadEnd = F3(
 	function (row, col, problem) {
-		return {bM: col, b7: problem, cg: row};
+		return {bW: col, cj: problem, cs: row};
 	});
 var $elm$parser$Parser$problemToDeadEnd = function (p) {
-	return A3($elm$parser$Parser$DeadEnd, p.cg, p.bM, p.b7);
+	return A3($elm$parser$Parser$DeadEnd, p.cs, p.bW, p.cj);
 };
 var $elm$parser$Parser$Advanced$bagToList = F2(
 	function (bag, list) {
@@ -7928,7 +7928,7 @@ var $elm$parser$Parser$Advanced$run = F2(
 	function (_v0, src) {
 		var parse = _v0;
 		var _v1 = parse(
-			{bM: 1, o: _List_Nil, w: 1, g: 0, cg: 1, e: src});
+			{bW: 1, o: _List_Nil, w: 1, h: 0, cs: 1, e: src});
 		if (!_v1.$) {
 			var value = _v1.b;
 			return $elm$core$Result$Ok(value);
@@ -7972,8 +7972,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$valuesParamBigFPL = $elm$parser$Parser
 		[
 			$elm$parser$Parser$sequence(
 			{
-				bQ: '}',
-				b0: $elm$parser$Parser$oneOf(
+				b$: '}',
+				cb: $elm$parser$Parser$oneOf(
 					_List_fromArray(
 						[
 							A2(
@@ -7985,10 +7985,10 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$valuesParamBigFPL = $elm$parser$Parser
 							$logicUSLIB$logicus_pl$LogicUS$PL$CSP$myInt),
 							$logicUSLIB$logicus_pl$LogicUS$PL$CSP$myInt
 						])),
-				ci: ',',
-				cj: $elm$parser$Parser$spaces,
-				ck: '{',
-				co: 1
+				cu: ',',
+				cv: $elm$parser$Parser$spaces,
+				cw: '{',
+				cA: 1
 			}),
 			A2(
 			$elm$parser$Parser$keeper,
@@ -8036,7 +8036,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$paramBigFPL = A2(
 		$elm$parser$Parser$succeed(
 			F2(
 				function (n, v) {
-					return {cS: n, a7: v};
+					return {cY: n, bf: v};
 				})),
 		A2(
 			$elm$parser$Parser$ignorer,
@@ -8044,7 +8044,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$paramBigFPL = A2(
 			$elm$parser$Parser$symbol('\\in'))),
 	$logicUSLIB$logicus_pl$LogicUS$PL$CSP$valuesParamBigFPL);
 var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$listParamBigFPL = $elm$parser$Parser$sequence(
-	{bQ: '', b0: $logicUSLIB$logicus_pl$LogicUS$PL$CSP$paramBigFPL, ci: ',', cj: $elm$parser$Parser$spaces, ck: '', co: 0});
+	{b$: '', cb: $logicUSLIB$logicus_pl$LogicUS$PL$CSP$paramBigFPL, cu: ',', cv: $elm$parser$Parser$spaces, cw: '', cA: 0});
 var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$EquivOp = 3;
 var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$operator = $elm$parser$Parser$oneOf(
 	_List_fromArray(
@@ -8439,8 +8439,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$varsInB_Expr = function (exp
 				var c = expr.a;
 				return A2(
 					$logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$uniqueConcatList,
-					$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$varsInA_Expr(c.ak),
-					$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$varsInA_Expr(c.al));
+					$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$varsInA_Expr(c.am),
+					$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$varsInA_Expr(c.an));
 		}
 	}
 };
@@ -8499,7 +8499,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$isWFFAux = F2(
 						A2(
 							$elm$core$List$map,
 							function ($) {
-								return $.cS;
+								return $.cY;
 							},
 							li));
 					if ($elm_community$list_extra$List$Extra$allDifferent(new_curli) && A2(
@@ -8525,7 +8525,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$isWFFAux = F2(
 						A2(
 							$elm$core$List$map,
 							function ($) {
-								return $.cS;
+								return $.cY;
 							},
 							li));
 					if ($elm_community$list_extra$List$Extra$allDifferent(new_curli) && A2(
@@ -8587,7 +8587,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$isWFF = function (f) {
 				var new_curli = A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cS;
+						return $.cY;
 					},
 					li);
 				return ($elm_community$list_extra$List$Extra$allDifferent(new_curli) && A2(
@@ -8603,7 +8603,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$isWFF = function (f) {
 				var new_curli = A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cS;
+						return $.cY;
 					},
 					li);
 				return ($elm_community$list_extra$List$Extra$allDifferent(new_curli) && A2(
@@ -8715,7 +8715,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$parserErrorToString = F3
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bM;
+						return $.bW;
 					},
 					deadEnds)));
 		var expected = $elm_community$list_extra$List$Extra$unique(
@@ -8724,13 +8724,13 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$parserErrorToString = F3
 				A2(
 					$elm$core$Basics$composeR,
 					function ($) {
-						return $.b7;
+						return $.cj;
 					},
 					$logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$problemToString),
 				A2(
 					$elm$core$List$filter,
 					function (d) {
-						return _Utils_eq(d.bM, furthest);
+						return _Utils_eq(d.bW, furthest);
 					},
 					deadEnds)));
 		var before = A3(
@@ -8832,19 +8832,19 @@ var $elm$core$Maybe$map = F2(
 		}
 	});
 var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$paramToMathString = function (i) {
-	return i.cS + ('\\in \\{' + (A2(
+	return i.cY + ('\\in \\{' + (A2(
 		$elm$core$Maybe$withDefault,
 		'',
 		A2(
 			$elm$core$Maybe$map,
 			$elm$core$String$fromInt,
-			$elm$core$List$head(i.a7))) + ('..' + (A2(
+			$elm$core$List$head(i.bf))) + ('..' + (A2(
 		$elm$core$Maybe$withDefault,
 		'',
 		A2(
 			$elm$core$Maybe$map,
 			$elm$core$String$fromInt,
-			$elm_community$list_extra$List$Extra$last(i.a7))) + '\\}'))));
+			$elm_community$list_extra$List$Extra$last(i.bf))) + '\\}'))));
 };
 var $logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$toMathStringAExpr = function (aExpr) {
 	switch (aExpr.$) {
@@ -8894,10 +8894,10 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$toMathStringComparator = fun
 };
 var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$toMathStringCondition = function (c) {
 	return _Utils_ap(
-		$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$toMathStringAExpr(c.ak),
+		$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$toMathStringAExpr(c.am),
 		_Utils_ap(
-			$logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$toMathStringComparator(c.ba),
-			$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$toMathStringAExpr(c.al)));
+			$logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$toMathStringComparator(c.bk),
+			$logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$toMathStringAExpr(c.an)));
 };
 var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$toMathStringBExpr = function (bexpr) {
 	switch (bexpr.$) {
@@ -9120,7 +9120,7 @@ var $author$project$PLBasicProcessors$processCSPPL = function (content) {
 		$elm$json$Json$Decode$map3,
 		F3(
 			function (x, y, z) {
-				return {bs: y, aH: z, af: x};
+				return {bD: y, aL: z, ah: x};
 			}),
 		A2(
 			$elm$json$Json$Decode$at,
@@ -9140,10 +9140,10 @@ var $author$project$PLBasicProcessors$processCSPPL = function (content) {
 	var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 	if (!_v0.$) {
 		var c = _v0.a;
-		var _v1 = c.af;
+		var _v1 = c.ah;
 		switch (_v1) {
 			case 'checkBFPL':
-				var _v2 = $logicUSLIB$logicus_pl$LogicUS$PL$CSP$bfplReadFromString(c.aH);
+				var _v2 = $logicUSLIB$logicus_pl$LogicUS$PL$CSP$bfplReadFromString(c.aL);
 				if (!_v2.a.$) {
 					var bf = _v2.a.a;
 					var _v3 = $logicUSLIB$logicus_pl$LogicUS$PL$CSP$bfplToMathString2(bf);
@@ -9156,10 +9156,10 @@ var $author$project$PLBasicProcessors$processCSPPL = function (content) {
 								[
 									_Utils_Tuple2(
 									'input',
-									$elm$json$Json$Encode$string(c.aH)),
+									$elm$json$Json$Encode$string(c.aL)),
 									_Utils_Tuple2(
 									'index',
-									$elm$json$Json$Encode$int(c.bs)),
+									$elm$json$Json$Encode$int(c.bD)),
 									_Utils_Tuple2(
 									'outputFormula',
 									$elm$json$Json$Encode$string(outputF)),
@@ -9185,10 +9185,10 @@ var $author$project$PLBasicProcessors$processCSPPL = function (content) {
 								[
 									_Utils_Tuple2(
 									'input',
-									$elm$json$Json$Encode$string(c.aH)),
+									$elm$json$Json$Encode$string(c.aL)),
 									_Utils_Tuple2(
 									'index',
-									$elm$json$Json$Encode$int(c.bs)),
+									$elm$json$Json$Encode$int(c.bD)),
 									_Utils_Tuple2(
 									'outputFormula',
 									$elm$json$Json$Encode$string(errDetails)),
@@ -9209,7 +9209,7 @@ var $author$project$PLBasicProcessors$processCSPPL = function (content) {
 				var _v5 = A2(
 					$elm$json$Json$Decode$decodeString,
 					$elm$json$Json$Decode$list($elm$json$Json$Decode$string),
-					c.aH);
+					c.aL);
 				if (!_v5.$) {
 					var ls = _v5.a;
 					var parsedSet = A2(
@@ -9514,44 +9514,44 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr = F2(
 var $elm$core$Basics$ge = _Utils_ge;
 var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$evalCond = F2(
 	function (c, vals) {
-		var _v0 = c.ba;
+		var _v0 = c.bk;
 		switch (_v0) {
 			case 0:
 				return A3(
 					$elm$core$Maybe$map2,
 					$elm$core$Basics$eq,
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.ak, vals),
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.al, vals));
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.am, vals),
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.an, vals));
 			case 1:
 				return A3(
 					$elm$core$Maybe$map2,
 					$elm$core$Basics$neq,
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.ak, vals),
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.al, vals));
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.am, vals),
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.an, vals));
 			case 2:
 				return A3(
 					$elm$core$Maybe$map2,
 					$elm$core$Basics$gt,
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.ak, vals),
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.al, vals));
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.am, vals),
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.an, vals));
 			case 3:
 				return A3(
 					$elm$core$Maybe$map2,
 					$elm$core$Basics$lt,
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.ak, vals),
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.al, vals));
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.am, vals),
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.an, vals));
 			case 4:
 				return A3(
 					$elm$core$Maybe$map2,
 					$elm$core$Basics$ge,
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.ak, vals),
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.al, vals));
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.am, vals),
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.an, vals));
 			default:
 				return A3(
 					$elm$core$Maybe$map2,
 					$elm$core$Basics$le,
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.ak, vals),
-					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.al, vals));
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.am, vals),
+					A2($logicUSLIB$logicus_pl$LogicUS$PL$A_Expressions$evaluateAExpr, c.an, vals));
 		}
 	});
 var $logicUSLIB$logicus_pl$LogicUS$PL$B_Expressions$evaluateBExpr = F2(
@@ -9689,13 +9689,13 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$bfplExpansionAux = F2(
 				var values = A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.a7;
+						return $.bf;
 					},
 					li);
 				var names = A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cS;
+						return $.cY;
 					},
 					li);
 				var valid_subs = A2(
@@ -9733,13 +9733,13 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$CSP$bfplExpansionAux = F2(
 				var values = A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.a7;
+						return $.bf;
 					},
 					li);
 				var names = A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.cS;
+						return $.cY;
 					},
 					li);
 				var valid_subs = A2(
@@ -10537,7 +10537,7 @@ var $author$project$PLBasicProcessors$processCSPPLToDIMACS = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -10554,7 +10554,7 @@ var $author$project$PLBasicProcessors$processCSPPLToDIMACS = F2(
 			var source = _v0.a;
 			var _v1 = A2(
 				$elm$core$Dict$get,
-				_Utils_Tuple2(source.ag, source.ah),
+				_Utils_Tuple2(source.ai, source.aj),
 				outputsCSPPL);
 			if (!_v1.$) {
 				var cs = _v1.a;
@@ -10594,7 +10594,7 @@ var $author$project$PLBasicProcessors$processCSPPLToDIMACS = F2(
 				return {
 					c: 2,
 					d: $elm$json$Json$Encode$string(
-						'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+						'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 				};
 			}
 		} else {
@@ -10633,7 +10633,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folTermIdentifierSubindexedParse
 		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
 		$logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folTermNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folTermIdentifierParser = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -10679,7 +10679,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folVarSubSuperIndexedParser = A2
 		A2(
 			$elm$parser$Parser$ignorer,
 			$elm$parser$Parser$sequence(
-				{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}),
+				{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}),
 			$elm$parser$Parser$symbol('^{'))),
 	A2(
 		$elm$parser$Parser$ignorer,
@@ -10696,7 +10696,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folVarSubindexedParser = A2(
 				})),
 		$logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folVarNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folVarSupindexedParser = A2(
 	$elm$parser$Parser$keeper,
 	A2(
@@ -10837,7 +10837,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folPredIdentifierSubindexedParse
 		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
 		$logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folPredNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folPredIdentifierParser = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -10935,13 +10935,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$literalParser = $elm$parser$Pars
 			$logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$folTermParser)
 		]));
 var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$cfolParserAux = $elm$parser$Parser$sequence(
-	{bQ: '}', b0: $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$literalParser, ci: ',', cj: $elm$parser$Parser$spaces, ck: '{', co: 1});
+	{b$: '}', cb: $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$literalParser, cu: ',', cv: $elm$parser$Parser$spaces, cw: '{', cA: 1});
 var $elm$parser$Parser$ExpectingEnd = {$: 10};
 var $elm$parser$Parser$Advanced$end = function (x) {
 	return function (s) {
 		return _Utils_eq(
 			$elm$core$String$length(s.e),
-			s.g) ? A3($elm$parser$Parser$Advanced$Good, false, 0, s) : A2(
+			s.h) ? A3($elm$parser$Parser$Advanced$Good, false, 0, s) : A2(
 			$elm$parser$Parser$Advanced$Bad,
 			false,
 			A2($elm$parser$Parser$Advanced$fromState, s, x));
@@ -10995,13 +10995,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$cfolSort = function (cs) {
 };
 var $elm$regex$Regex$Match = F4(
 	function (match, index, number, submatches) {
-		return {bs: index, cQ: match, cT: number, c0: submatches};
+		return {bD: index, cW: match, cZ: number, c5: submatches};
 	});
 var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
 var $elm$regex$Regex$fromString = function (string) {
 	return A2(
 		$elm$regex$Regex$fromStringWith,
-		{cz: false, cR: false},
+		{cJ: false, cX: false},
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
@@ -11073,7 +11073,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$parserErrorToString = F
 				A2(
 					$elm$core$List$map,
 					function ($) {
-						return $.bM;
+						return $.bW;
 					},
 					deadEnds)));
 		var expected = $elm_community$list_extra$List$Extra$unique(
@@ -11082,13 +11082,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$parserErrorToString = F
 				A2(
 					$elm$core$Basics$composeR,
 					function ($) {
-						return $.b7;
+						return $.cj;
 					},
 					$logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$problemToString),
 				A2(
 					$elm$core$List$filter,
 					function (d) {
-						return _Utils_eq(d.bM, furthest);
+						return _Utils_eq(d.bW, furthest);
 					},
 					deadEnds)));
 		var before = A3(
@@ -11229,7 +11229,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$plVarIdentifierSubindexedParser = 
 		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
 		$logicUSLIB$logicus_pl$LogicUS$PL$Clauses$plVarNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$plVarParser = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -11272,7 +11272,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$literalParser = $elm$parser$Parser
 			$logicUSLIB$logicus_pl$LogicUS$PL$Clauses$plVarParser)
 		]));
 var $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$cplParserAux = $elm$parser$Parser$sequence(
-	{bQ: '}', b0: $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$literalParser, ci: ',', cj: $elm$parser$Parser$spaces, ck: '{', co: 1});
+	{b$: '}', cb: $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$literalParser, cu: ',', cv: $elm$parser$Parser$spaces, cw: '{', cA: 1});
 var $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$cplParser = A2(
 	$elm$parser$Parser$keeper,
 	$elm$parser$Parser$succeed($elm$core$Basics$identity),
@@ -12550,11 +12550,11 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers = F2(
 	});
 var $elm_community$graph$Graph$Edge = F3(
 	function (from, to, label) {
-		return {aZ: from, ay: label, a6: to};
+		return {a5: from, aC: label, be: to};
 	});
 var $elm_community$graph$Graph$Node = F2(
 	function (id, label) {
-		return {s: id, ay: label};
+		return {s: id, aC: label};
 	});
 var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$A = function (a) {
 	return {$: 0, a: a};
@@ -12803,11 +12803,11 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 				var g = f.a;
 				var h = f.b;
 				var ret1 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, nid + 1, g);
-				var max_nid1 = nid + $elm$core$List$length(ret1.D);
+				var max_nid1 = nid + $elm$core$List$length(ret1.E);
 				var ret2 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, max_nid1 + 1, h);
-				var max_nid2 = max_nid1 + $elm$core$List$length(ret2.D);
-				var openFormula = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Conj, ret1.bm, ret2.bm);
-				var cuants = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sortWithFirstE, ret1.C, ret2.C);
+				var max_nid2 = max_nid1 + $elm$core$List$length(ret2.E);
+				var openFormula = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Conj, ret1.by, ret2.by);
+				var cuants = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sortWithFirstE, ret1.D, ret2.D);
 				var nodes = _Utils_ap(
 					_List_fromArray(
 						[
@@ -12817,7 +12817,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 							max_nid2 + 1,
 							A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, cuants, openFormula))
 						]),
-					_Utils_ap(ret1.D, ret2.D));
+					_Utils_ap(ret1.E, ret2.E));
 				var edges = _Utils_ap(
 					_List_fromArray(
 						[
@@ -12835,24 +12835,24 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 							$elm_community$graph$Graph$Edge,
 							max_nid1,
 							max_nid2 + 1,
-							_Utils_Tuple2(true, ret1.C)),
+							_Utils_Tuple2(true, ret1.D)),
 							A3(
 							$elm_community$graph$Graph$Edge,
 							max_nid2,
 							max_nid2 + 1,
-							_Utils_Tuple2(false, ret2.C))
+							_Utils_Tuple2(false, ret2.D))
 						]),
-					_Utils_ap(ret1.Y, ret2.Y));
-				return {C: cuants, Y: edges, bm: openFormula, D: nodes};
+					_Utils_ap(ret1._, ret2._));
+				return {D: cuants, _: edges, by: openFormula, E: nodes};
 			case 4:
 				var g = f.a;
 				var h = f.b;
 				var ret1 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, nid + 1, g);
-				var max_nid1 = nid + $elm$core$List$length(ret1.D);
+				var max_nid1 = nid + $elm$core$List$length(ret1.E);
 				var ret2 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, max_nid1 + 1, h);
-				var max_nid2 = max_nid1 + $elm$core$List$length(ret2.D);
-				var openFormula = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Disj, ret1.bm, ret2.bm);
-				var cuants = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sortWithFirstE, ret1.C, ret2.C);
+				var max_nid2 = max_nid1 + $elm$core$List$length(ret2.E);
+				var openFormula = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Disj, ret1.by, ret2.by);
+				var cuants = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sortWithFirstE, ret1.D, ret2.D);
 				var nodes = _Utils_ap(
 					_List_fromArray(
 						[
@@ -12862,7 +12862,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 							max_nid2 + 1,
 							A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, cuants, openFormula))
 						]),
-					_Utils_ap(ret1.D, ret2.D));
+					_Utils_ap(ret1.E, ret2.E));
 				var edges = _Utils_ap(
 					_List_fromArray(
 						[
@@ -12880,27 +12880,27 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 							$elm_community$graph$Graph$Edge,
 							max_nid1,
 							max_nid2 + 1,
-							_Utils_Tuple2(true, ret1.C)),
+							_Utils_Tuple2(true, ret1.D)),
 							A3(
 							$elm_community$graph$Graph$Edge,
 							max_nid2,
 							max_nid2 + 1,
-							_Utils_Tuple2(false, ret2.C))
+							_Utils_Tuple2(false, ret2.D))
 						]),
-					_Utils_ap(ret1.Y, ret2.Y));
-				return {C: cuants, Y: edges, bm: openFormula, D: nodes};
+					_Utils_ap(ret1._, ret2._));
+				return {D: cuants, _: edges, by: openFormula, E: nodes};
 			case 5:
 				var g = f.a;
 				var h = f.b;
 				var ret1 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, nid + 1, g);
-				var max_nid1 = nid + $elm$core$List$length(ret1.D);
+				var max_nid1 = nid + $elm$core$List$length(ret1.E);
 				var ret2 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, max_nid1 + 1, h);
-				var max_nid2 = max_nid1 + $elm$core$List$length(ret2.D);
-				var openFormula = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Impl, ret1.bm, ret2.bm);
+				var max_nid2 = max_nid1 + $elm$core$List$length(ret2.E);
+				var openFormula = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Impl, ret1.by, ret2.by);
 				var cuants = A2(
 					$logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sortWithFirstE,
-					A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$contraryQuantifier, ret1.C),
-					ret2.C);
+					A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$contraryQuantifier, ret1.D),
+					ret2.D);
 				var nodes = _Utils_ap(
 					_List_fromArray(
 						[
@@ -12910,7 +12910,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 							max_nid2 + 1,
 							A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, cuants, openFormula))
 						]),
-					_Utils_ap(ret1.D, ret2.D));
+					_Utils_ap(ret1.E, ret2.E));
 				var edges = _Utils_ap(
 					_List_fromArray(
 						[
@@ -12930,15 +12930,15 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 							max_nid2 + 1,
 							_Utils_Tuple2(
 								true,
-								A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$contraryQuantifier, ret1.C))),
+								A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$contraryQuantifier, ret1.D))),
 							A3(
 							$elm_community$graph$Graph$Edge,
 							max_nid2,
 							max_nid2 + 1,
-							_Utils_Tuple2(false, ret2.C))
+							_Utils_Tuple2(false, ret2.D))
 						]),
-					_Utils_ap(ret1.Y, ret2.Y));
-				return {C: cuants, Y: edges, bm: openFormula, D: nodes};
+					_Utils_ap(ret1._, ret2._));
+				return {D: cuants, _: edges, by: openFormula, E: nodes};
 			default:
 				var g = f;
 				var _v1 = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$extractHeaderQuantifiers(g);
@@ -12946,18 +12946,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 				var h = _v1.b;
 				if ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolIsOpen(h)) {
 					return {
-						C: cuants1,
-						Y: _List_Nil,
-						bm: h,
-						D: _List_fromArray(
+						D: cuants1,
+						_: _List_Nil,
+						by: h,
+						E: _List_fromArray(
 							[
 								A2($elm_community$graph$Graph$Node, nid, f)
 							])
 					};
 				} else {
 					var ret1 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, nid + 1, h);
-					var max_nid1 = nid + $elm$core$List$length(ret1.D);
-					var cuants = _Utils_ap(cuants1, ret1.C);
+					var max_nid1 = nid + $elm$core$List$length(ret1.E);
+					var cuants = _Utils_ap(cuants1, ret1.D);
 					var nodes = _Utils_ap(
 						_List_fromArray(
 							[
@@ -12965,9 +12965,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 								A2(
 								$elm_community$graph$Graph$Node,
 								max_nid1 + 1,
-								A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, cuants, ret1.bm))
+								A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, cuants, ret1.by))
 							]),
-						ret1.D);
+						ret1.E);
 					var edges = _Utils_ap(
 						_List_fromArray(
 							[
@@ -12982,8 +12982,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux = F2(
 								max_nid1 + 1,
 								_Utils_Tuple2(false, _List_Nil))
 							]),
-						ret1.Y);
-					return {C: cuants, Y: edges, bm: ret1.bm, D: nodes};
+						ret1._);
+					return {D: cuants, _: edges, by: ret1.by, E: nodes};
 				}
 		}
 	});
@@ -12992,7 +12992,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenex = function (f) 
 	var f2 = $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolRenameVars(f1);
 	var f3 = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolInteriorizeNeg(f2);
 	var ret1 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenexAux, 3, f3);
-	return A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, ret1.C, ret1.bm);
+	return A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, ret1.D, ret1.by);
 };
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolHasFreeInstanceOfVar = F2(
 	function (f, v) {
@@ -13260,7 +13260,7 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -13275,12 +13275,12 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = c.af;
+			var _v1 = c.ah;
 			switch (_v1) {
 				case 'fromFile':
 					var parsedSet = function () {
 						var _v5 = $elm_community$list_extra$List$Extra$unconsLast(
-							A2($elm$core$String$split, '.', c.aH));
+							A2($elm$core$String$split, '.', c.aL));
 						if (!_v5.$) {
 							if (_v5.a.a === '') {
 								if (!_v5.a.b.b) {
@@ -13361,7 +13361,7 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 								_List_fromArray(
 									['origin_slot']),
 								$elm$json$Json$Decode$int)));
-					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v9.$) {
 						var sources = _v9.a;
 						var cls = A2(
@@ -13435,7 +13435,7 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 								_List_fromArray(
 									['origin_slot']),
 								$elm$json$Json$Decode$int)));
-					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v13.$) {
 						var sources = _v13.a;
 						var clss = A2(
@@ -13503,7 +13503,7 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 						$elm$json$Json$Decode$map2,
 						F2(
 							function (x, y) {
-								return {ag: x, ah: y};
+								return {ai: x, aj: y};
 							}),
 						A2(
 							$elm$json$Json$Decode$at,
@@ -13515,12 +13515,12 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 							_List_fromArray(
 								['origin_slot']),
 							$elm$json$Json$Decode$int));
-					var _v18 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v18 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v18.$) {
 						var source = _v18.a;
 						var _v19 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(source.ag, source.ah),
+							_Utils_Tuple2(source.ai, source.aj),
 							outputsSFOL);
 						if (!_v19.$) {
 							var s = _v19.a;
@@ -13569,7 +13569,7 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (',' + ($elm$core$String$fromInt(source.ah) + ')')))),
+									'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (',' + ($elm$core$String$fromInt(source.aj) + ')')))),
 								i: _List_Nil
 							};
 						}
@@ -13587,7 +13587,7 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 						$elm$json$Json$Decode$map2,
 						F2(
 							function (x, y) {
-								return {ag: x, ah: y};
+								return {ai: x, aj: y};
 							}),
 						A2(
 							$elm$json$Json$Decode$at,
@@ -13599,12 +13599,12 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 							_List_fromArray(
 								['origin_slot']),
 							$elm$json$Json$Decode$int));
-					var _v21 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v21 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v21.$) {
 						var source = _v21.a;
 						var _v22 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(source.ag, source.ah),
+							_Utils_Tuple2(source.ai, source.aj),
 							outputsSFOL);
 						if (!_v22.$) {
 							var s = _v22.a;
@@ -13619,7 +13619,7 @@ var $author$project$FOLBasicProcessors$processClauseSetFOLNode = F4(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (',' + ($elm$core$String$fromInt(source.ah) + ')')))),
+									'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (',' + ($elm$core$String$fromInt(source.aj) + ')')))),
 								i: _List_Nil
 							};
 						}
@@ -13655,7 +13655,7 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -13670,12 +13670,12 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = c.af;
+			var _v1 = c.ah;
 			switch (_v1) {
 				case 'fromFile':
 					var parsedSet = function () {
 						var _v5 = $elm_community$list_extra$List$Extra$unconsLast(
-							A2($elm$core$String$split, '.', c.aH));
+							A2($elm$core$String$split, '.', c.aL));
 						if (!_v5.$) {
 							if (_v5.a.a === '') {
 								if (!_v5.a.b.b) {
@@ -13756,7 +13756,7 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 								_List_fromArray(
 									['origin_slot']),
 								$elm$json$Json$Decode$int)));
-					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v9.$) {
 						var sources = _v9.a;
 						var cls = A2(
@@ -13830,7 +13830,7 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 								_List_fromArray(
 									['origin_slot']),
 								$elm$json$Json$Decode$int)));
-					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v13.$) {
 						var sources = _v13.a;
 						var clss = A2(
@@ -13898,7 +13898,7 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 						$elm$json$Json$Decode$map2,
 						F2(
 							function (x, y) {
-								return {ag: x, ah: y};
+								return {ai: x, aj: y};
 							}),
 						A2(
 							$elm$json$Json$Decode$at,
@@ -13910,12 +13910,12 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 							_List_fromArray(
 								['origin_slot']),
 							$elm$json$Json$Decode$int));
-					var _v18 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v18 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v18.$) {
 						var source = _v18.a;
 						var _v19 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(source.ag, source.ah),
+							_Utils_Tuple2(source.ai, source.aj),
 							outputsSPL);
 						if (!_v19.$) {
 							var s = _v19.a;
@@ -13964,7 +13964,7 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (',' + ($elm$core$String$fromInt(source.ah) + ')')))),
+									'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (',' + ($elm$core$String$fromInt(source.aj) + ')')))),
 								i: _List_Nil
 							};
 						}
@@ -13982,7 +13982,7 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 						$elm$json$Json$Decode$map2,
 						F2(
 							function (x, y) {
-								return {ag: x, ah: y};
+								return {ai: x, aj: y};
 							}),
 						A2(
 							$elm$json$Json$Decode$at,
@@ -13994,12 +13994,12 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 							_List_fromArray(
 								['origin_slot']),
 							$elm$json$Json$Decode$int));
-					var _v21 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v21 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v21.$) {
 						var source = _v21.a;
 						var _v22 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(source.ag, source.ah),
+							_Utils_Tuple2(source.ai, source.aj),
 							outputsSPL);
 						if (!_v22.$) {
 							var s = _v22.a;
@@ -14014,7 +14014,7 @@ var $author$project$PLBasicProcessors$processClauseSetPLNode = F4(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (',' + ($elm$core$String$fromInt(source.ah) + ')')))),
+									'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (',' + ($elm$core$String$fromInt(source.aj) + ')')))),
 								i: _List_Nil
 							};
 						}
@@ -14064,7 +14064,7 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 			$elm$json$Json$Decode$map4,
 			F4(
 				function (x, y, z, u) {
-					return {K: x, L: y, M: z, N: u};
+					return {L: x, M: y, N: z, O: u};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -14090,7 +14090,7 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -14105,15 +14105,15 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var sources = _v1.a;
-				var _v2 = c.af;
+				var _v2 = c.ah;
 				switch (_v2) {
 					case 'neg':
 						var _v3 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsffol);
 						if (!_v3.$) {
 							var f = _v3.a;
@@ -14128,20 +14128,20 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+									'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 								i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 							};
 						}
 					case 'conj':
 						var _v4 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsffol);
 						if (!_v4.$) {
 							var f1 = _v4.a;
 							var _v5 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v5.$) {
 								var f2 = _v5.a;
@@ -14156,27 +14156,27 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v6 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v6.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
@@ -14184,13 +14184,13 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 					case 'disj':
 						var _v7 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsffol);
 						if (!_v7.$) {
 							var f1 = _v7.a;
 							var _v8 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v8.$) {
 								var f2 = _v8.a;
@@ -14205,27 +14205,27 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v9 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v9.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
@@ -14233,13 +14233,13 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 					case 'impl':
 						var _v10 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsffol);
 						if (!_v10.$) {
 							var f1 = _v10.a;
 							var _v11 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v11.$) {
 								var f2 = _v11.a;
@@ -14254,27 +14254,27 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v12 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v12.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
@@ -14282,13 +14282,13 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 					case 'equi':
 						var _v13 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsffol);
 						if (!_v13.$) {
 							var f1 = _v13.a;
 							var _v14 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v14.$) {
 								var f2 = _v14.a;
@@ -14303,27 +14303,27 @@ var $author$project$FOLBasicProcessors$processConnectiveFOLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v15 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsffol);
 							if (!_v15.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 								};
 							}
@@ -14373,7 +14373,7 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 			$elm$json$Json$Decode$map4,
 			F4(
 				function (x, y, z, u) {
-					return {K: x, L: y, M: z, N: u};
+					return {L: x, M: y, N: z, O: u};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -14399,7 +14399,7 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -14414,15 +14414,15 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var sources = _v1.a;
-				var _v2 = c.af;
+				var _v2 = c.ah;
 				switch (_v2) {
 					case 'neg':
 						var _v3 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsFPL);
 						if (!_v3.$) {
 							var f = _v3.a;
@@ -14437,20 +14437,20 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+									'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 								i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 							};
 						}
 					case 'conj':
 						var _v4 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsFPL);
 						if (!_v4.$) {
 							var f1 = _v4.a;
 							var _v5 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v5.$) {
 								var f2 = _v5.a;
@@ -14465,27 +14465,27 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v6 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v6.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
@@ -14493,13 +14493,13 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 					case 'disj':
 						var _v7 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsFPL);
 						if (!_v7.$) {
 							var f1 = _v7.a;
 							var _v8 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v8.$) {
 								var f2 = _v8.a;
@@ -14514,27 +14514,27 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v9 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v9.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
@@ -14542,13 +14542,13 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 					case 'impl':
 						var _v10 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsFPL);
 						if (!_v10.$) {
 							var f1 = _v10.a;
 							var _v11 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v11.$) {
 								var f2 = _v11.a;
@@ -14563,27 +14563,27 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v12 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v12.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
@@ -14591,13 +14591,13 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 					case 'equi':
 						var _v13 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(sources.K, sources.L),
+							_Utils_Tuple2(sources.L, sources.M),
 							outputsFPL);
 						if (!_v13.$) {
 							var f1 = _v13.a;
 							var _v14 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v14.$) {
 								var f2 = _v14.a;
@@ -14612,27 +14612,27 @@ var $author$project$PLBasicProcessors$processConnectivePLNode = F2(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
 						} else {
 							var _v15 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFPL);
 							if (!_v15.$) {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown sources: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ('). (' + ($elm$core$String$fromInt(sources.M) + (', ' + ($elm$core$String$fromInt(sources.N) + ')')))))))),
+										'Unknown sources: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ('). (' + ($elm$core$String$fromInt(sources.N) + (', ' + ($elm$core$String$fromInt(sources.O) + ')')))))))),
 									i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 								};
 							}
@@ -15306,7 +15306,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$plVarIdentifierSubindexedP
 		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
 		$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$plVarNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$plVarParser = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -15526,7 +15526,7 @@ var $author$project$ExtProcessors$processConservativeRetractionFPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -15542,7 +15542,7 @@ var $author$project$ExtProcessors$processConservativeRetractionFPL = F2(
 			$elm$json$Json$Decode$map3,
 			F3(
 				function (x, y, z) {
-					return {aH: y, af: x, aO: z};
+					return {aL: y, ah: x, aU: z};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -15562,19 +15562,19 @@ var $author$project$ExtProcessors$processConservativeRetractionFPL = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsFPL);
 				if (!_v2.$) {
 					var f = _v2.a;
 					var varsLecture = A2(
 						$elm$core$List$map,
 						$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplReadFromString,
-						A2($elm$core$String$split, ',', c.aO));
+						A2($elm$core$String$split, ',', c.aU));
 					if (A2(
 						$elm$core$List$any,
 						function (_v3) {
@@ -15607,7 +15607,7 @@ var $author$project$ExtProcessors$processConservativeRetractionFPL = F2(
 									return A2($elm$core$Maybe$withDefault, $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, x);
 								},
 								varsLecture));
-						var _v5 = c.af;
+						var _v5 = c.ah;
 						if (_v5 === 'canonicFO') {
 							var f_ = A2($author$project$ForeignOperators$fplConservativeRetraction, f, vars);
 							return {
@@ -15619,7 +15619,7 @@ var $author$project$ExtProcessors$processConservativeRetractionFPL = F2(
 						} else {
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for ConservativeRetractionFPL')),
+								d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for ConservativeRetractionFPL')),
 								i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 							};
 						}
@@ -15628,7 +15628,7 @@ var $author$project$ExtProcessors$processConservativeRetractionFPL = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')')))),
 						i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 					};
 				}
@@ -15679,7 +15679,7 @@ var $author$project$ExtProcessors$processConservativeRetractionSPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -15695,7 +15695,7 @@ var $author$project$ExtProcessors$processConservativeRetractionSPL = F2(
 			$elm$json$Json$Decode$map3,
 			F3(
 				function (x, y, z) {
-					return {aH: y, af: x, aO: z};
+					return {aL: y, ah: x, aU: z};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -15715,19 +15715,19 @@ var $author$project$ExtProcessors$processConservativeRetractionSPL = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsSPL);
 				if (!_v2.$) {
 					var fs = _v2.a;
 					var varsLecture = A2(
 						$elm$core$List$map,
 						$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplReadFromString,
-						A2($elm$core$String$split, ',', c.aO));
+						A2($elm$core$String$split, ',', c.aU));
 					if (A2(
 						$elm$core$List$any,
 						function (_v3) {
@@ -15760,7 +15760,7 @@ var $author$project$ExtProcessors$processConservativeRetractionSPL = F2(
 									return A2($elm$core$Maybe$withDefault, $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, x);
 								},
 								varsLecture));
-						var _v5 = c.af;
+						var _v5 = c.ah;
 						if (_v5 === 'canonicFO') {
 							var fs_ = A2($author$project$ForeignOperators$splConservativeRetraction, fs, vars);
 							return {
@@ -15777,7 +15777,7 @@ var $author$project$ExtProcessors$processConservativeRetractionSPL = F2(
 						} else {
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for ConservativeRetractionSPL')),
+								d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for ConservativeRetractionSPL')),
 								i: _List_Nil
 							};
 						}
@@ -15786,7 +15786,7 @@ var $author$project$ExtProcessors$processConservativeRetractionSPL = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')')))),
 						i: _List_Nil
 					};
 				}
@@ -15812,7 +15812,7 @@ var $author$project$ExtProcessors$processConservativeRetractionSPL = F2(
 var $elm_community$graph$Graph$Graph = $elm$core$Basics$identity;
 var $elm_community$graph$Graph$NodeContext = F3(
 	function (node, incoming, outgoing) {
-		return {t: incoming, aa: node, r: outgoing};
+		return {t: incoming, ac: node, r: outgoing};
 	});
 var $elm_community$intdict$IntDict$Empty = {$: 0};
 var $elm_community$intdict$IntDict$empty = $elm_community$intdict$IntDict$Empty;
@@ -15827,7 +15827,7 @@ var $elm_community$intdict$IntDict$size = function (dict) {
 			return 1;
 		default:
 			var i = dict.a;
-			return i.bA;
+			return i.bK;
 	}
 };
 var $elm_community$intdict$IntDict$inner = F3(
@@ -15846,7 +15846,7 @@ var $elm_community$intdict$IntDict$inner = F3(
 						m: l,
 						q: p,
 						n: r,
-						bA: $elm_community$intdict$IntDict$size(l) + $elm_community$intdict$IntDict$size(r)
+						bK: $elm_community$intdict$IntDict$size(l) + $elm_community$intdict$IntDict$size(r)
 					});
 			}
 		}
@@ -15875,7 +15875,7 @@ var $elm_community$intdict$IntDict$isBranchingBitSet = function (p) {
 		$elm$core$Bitwise$xor($elm_community$intdict$IntDict$signBit),
 		A2(
 			$elm$core$Basics$composeR,
-			$elm$core$Bitwise$and(p.aW),
+			$elm$core$Bitwise$and(p.a0),
 			$elm$core$Basics$neq(0)));
 };
 var $elm_community$intdict$IntDict$higherBitMask = function (branchingBit) {
@@ -15886,7 +15886,7 @@ var $elm_community$intdict$IntDict$lcp = F2(
 		var branchingBit = $elm_community$intdict$IntDict$highestBitSet(x ^ y);
 		var mask = $elm_community$intdict$IntDict$higherBitMask(branchingBit);
 		var prefixBits = x & mask;
-		return {aW: branchingBit, ax: prefixBits};
+		return {a0: branchingBit, aA: prefixBits};
 	});
 var $elm_community$intdict$IntDict$Leaf = function (a) {
 	return {$: 1, a: a};
@@ -15894,13 +15894,13 @@ var $elm_community$intdict$IntDict$Leaf = function (a) {
 var $elm_community$intdict$IntDict$leaf = F2(
 	function (k, v) {
 		return $elm_community$intdict$IntDict$Leaf(
-			{b1: k, aC: v});
+			{cc: k, aG: v});
 	});
 var $elm_community$intdict$IntDict$prefixMatches = F2(
 	function (p, n) {
 		return _Utils_eq(
-			n & $elm_community$intdict$IntDict$higherBitMask(p.aW),
-			p.ax);
+			n & $elm_community$intdict$IntDict$higherBitMask(p.a0),
+			p.aA);
 	});
 var $elm_community$intdict$IntDict$update = F3(
 	function (key, alter, dict) {
@@ -15927,13 +15927,13 @@ var $elm_community$intdict$IntDict$update = F3(
 				return alteredNode($elm$core$Maybe$Nothing);
 			case 1:
 				var l = dict.a;
-				return _Utils_eq(l.b1, key) ? alteredNode(
-					$elm$core$Maybe$Just(l.aC)) : A2(
+				return _Utils_eq(l.cc, key) ? alteredNode(
+					$elm$core$Maybe$Just(l.aG)) : A2(
 					join,
 					_Utils_Tuple2(
 						key,
 						alteredNode($elm$core$Maybe$Nothing)),
-					_Utils_Tuple2(l.b1, dict));
+					_Utils_Tuple2(l.cc, dict));
 			default:
 				var i = dict.a;
 				return A2($elm_community$intdict$IntDict$prefixMatches, i.q, key) ? (A2($elm_community$intdict$IntDict$isBranchingBitSet, i.q, key) ? A3(
@@ -15949,7 +15949,7 @@ var $elm_community$intdict$IntDict$update = F3(
 					_Utils_Tuple2(
 						key,
 						alteredNode($elm$core$Maybe$Nothing)),
-					_Utils_Tuple2(i.q.ax, dict));
+					_Utils_Tuple2(i.q.aA, dict));
 		}
 	});
 var $elm_community$intdict$IntDict$insert = F3(
@@ -15970,7 +15970,7 @@ var $elm_community$intdict$IntDict$get = F2(
 					return $elm$core$Maybe$Nothing;
 				case 1:
 					var l = dict.a;
-					return _Utils_eq(l.b1, key) ? $elm$core$Maybe$Just(l.aC) : $elm$core$Maybe$Nothing;
+					return _Utils_eq(l.cc, key) ? $elm$core$Maybe$Just(l.aG) : $elm$core$Maybe$Nothing;
 				default:
 					var i = dict.a;
 					if (!A2($elm_community$intdict$IntDict$prefixMatches, i.q, key)) {
@@ -16020,29 +16020,29 @@ var $elm_community$graph$Graph$fromNodesAndEdges = F2(
 					return _Utils_update(
 						ctx,
 						{
-							r: A3($elm_community$intdict$IntDict$insert, edge.a6, edge.ay, ctx.r)
+							r: A3($elm_community$intdict$IntDict$insert, edge.be, edge.aC, ctx.r)
 						});
 				};
 				var updateIncoming = function (ctx) {
 					return _Utils_update(
 						ctx,
 						{
-							t: A3($elm_community$intdict$IntDict$insert, edge.aZ, edge.ay, ctx.t)
+							t: A3($elm_community$intdict$IntDict$insert, edge.a5, edge.aC, ctx.t)
 						});
 				};
 				return A3(
 					$elm_community$intdict$IntDict$update,
-					edge.a6,
+					edge.be,
 					$elm$core$Maybe$map(updateIncoming),
 					A3(
 						$elm_community$intdict$IntDict$update,
-						edge.aZ,
+						edge.a5,
 						$elm$core$Maybe$map(updateOutgoing),
 						rep));
 			});
 		var addEdgeIfValid = F2(
 			function (edge, rep) {
-				return (A2($elm_community$intdict$IntDict$member, edge.aZ, rep) && A2($elm_community$intdict$IntDict$member, edge.a6, rep)) ? A2(addEdge, edge, rep) : rep;
+				return (A2($elm_community$intdict$IntDict$member, edge.a5, rep) && A2($elm_community$intdict$IntDict$member, edge.be, rep)) ? A2(addEdge, edge, rep) : rep;
 			});
 		return A3($elm$core$List$foldl, addEdgeIfValid, nodeRep, edges_);
 	});
@@ -16294,7 +16294,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$DPLL$dpll = function (cs) {
 };
 var $elm_community$graph$Graph$DOT$Styles = F4(
 	function (rankdir, graph, node, edge) {
-		return {bP: edge, bW: graph, aa: node, cc: rankdir};
+		return {b_: edge, b5: graph, ac: node, co: rankdir};
 	});
 var $elm_community$graph$Graph$DOT$TB = 0;
 var $elm_community$graph$Graph$DOT$defaultStyles = A4($elm_community$graph$Graph$DOT$Styles, 0, '', '', '');
@@ -16307,7 +16307,7 @@ var $elm_community$intdict$IntDict$foldl = F3(
 					return acc;
 				case 1:
 					var l = dict.a;
-					return A3(f, l.b1, l.aC, acc);
+					return A3(f, l.cc, l.aG, acc);
 				default:
 					var i = dict.a;
 					var $temp$f = f,
@@ -16336,7 +16336,7 @@ var $elm_community$graph$Graph$edges = function (graph) {
 				F2(
 					function (node2, e) {
 						return $elm$core$List$cons(
-							{aZ: node1, ay: e, a6: node2});
+							{a5: node1, aC: e, be: node2});
 					}),
 				ctx.r);
 		});
@@ -16362,7 +16362,7 @@ var $elm_community$intdict$IntDict$foldr = F3(
 					return acc;
 				case 1:
 					var l = dict.a;
-					return A3(f, l.b1, l.aC, acc);
+					return A3(f, l.cc, l.aG, acc);
 				default:
 					var i = dict.a;
 					var $temp$f = f,
@@ -16393,7 +16393,7 @@ var $elm_community$graph$Graph$nodes = A2(
 		$elm_community$intdict$IntDict$values,
 		$elm$core$List$map(
 			function ($) {
-				return $.aa;
+				return $.ac;
 			})));
 var $elm_community$graph$Graph$DOT$outputWithStylesAndAttributes = F4(
 	function (styles, nodeAttrs, edgeAttrs, graph) {
@@ -16417,14 +16417,14 @@ var $elm_community$graph$Graph$DOT$outputWithStylesAndAttributes = F4(
 		var edges = function () {
 			var compareEdge = F2(
 				function (a, b) {
-					var _v1 = A2($elm$core$Basics$compare, a.aZ, b.aZ);
+					var _v1 = A2($elm$core$Basics$compare, a.a5, b.a5);
 					switch (_v1) {
 						case 0:
 							return 0;
 						case 2:
 							return 2;
 						default:
-							return A2($elm$core$Basics$compare, a.a6, b.a6);
+							return A2($elm$core$Basics$compare, a.be, b.be);
 					}
 				});
 			return A2(
@@ -16448,8 +16448,8 @@ var $elm_community$graph$Graph$DOT$outputWithStylesAndAttributes = F4(
 			return $elm$core$Dict$isEmpty(d) ? '' : (' [' + (attrAssocs(d) + ']'));
 		};
 		var edge = function (e) {
-			return '  ' + ($elm$core$String$fromInt(e.aZ) + (' -> ' + ($elm$core$String$fromInt(e.a6) + makeAttrs(
-				edgeAttrs(e.ay)))));
+			return '  ' + ($elm$core$String$fromInt(e.a5) + (' -> ' + ($elm$core$String$fromInt(e.be) + makeAttrs(
+				edgeAttrs(e.aC)))));
 		};
 		var edgesString = A2(
 			$elm$core$String$join,
@@ -16457,7 +16457,7 @@ var $elm_community$graph$Graph$DOT$outputWithStylesAndAttributes = F4(
 			A2($elm$core$List$map, edge, edges));
 		var node = function (n) {
 			return '  ' + ($elm$core$String$fromInt(n.s) + makeAttrs(
-				nodeAttrs(n.ay)));
+				nodeAttrs(n.aC)));
 		};
 		var nodesString = A2(
 			$elm$core$String$join,
@@ -16469,10 +16469,10 @@ var $elm_community$graph$Graph$DOT$outputWithStylesAndAttributes = F4(
 			_List_fromArray(
 				[
 					'digraph G {',
-					'  rankdir=' + rankDirToString(styles.cc),
-					'  graph [' + (styles.bW + ']'),
-					'  node [' + (styles.aa + ']'),
-					'  edge [' + (styles.bP + ']'),
+					'  rankdir=' + rankDirToString(styles.co),
+					'  graph [' + (styles.b5 + ']'),
+					'  node [' + (styles.ac + ']'),
+					'  edge [' + (styles.b_ + ']'),
 					'',
 					edgesString,
 					'',
@@ -16533,7 +16533,7 @@ var $author$project$PLAlgProcessors$processDPLLGraphPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -16550,7 +16550,7 @@ var $author$project$PLAlgProcessors$processDPLLGraphPL = F2(
 			var source = _v0.a;
 			var _v1 = A2(
 				$elm$core$Dict$get,
-				_Utils_Tuple2(source.ag, source.ah),
+				_Utils_Tuple2(source.ai, source.aj),
 				outputsCSPL);
 			if (!_v1.$) {
 				var cs = _v1.a;
@@ -16564,7 +16564,7 @@ var $author$project$PLAlgProcessors$processDPLLGraphPL = F2(
 				return {
 					c: 2,
 					d: $elm$json$Json$Encode$string(
-						'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+						'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 				};
 			}
 		} else {
@@ -16582,7 +16582,7 @@ var $author$project$ExtProcessors$processForeignVarsFPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -16598,7 +16598,7 @@ var $author$project$ExtProcessors$processForeignVarsFPL = F2(
 			$elm$json$Json$Decode$map3,
 			F3(
 				function (x, y, z) {
-					return {aH: y, af: x, aO: z};
+					return {aL: y, ah: x, aU: z};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -16618,19 +16618,19 @@ var $author$project$ExtProcessors$processForeignVarsFPL = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsFPL);
 				if (!_v2.$) {
 					var f = _v2.a;
 					var varsLecture = A2(
 						$elm$core$List$map,
 						$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplReadFromString,
-						A2($elm$core$String$split, ',', c.aO));
+						A2($elm$core$String$split, ',', c.aU));
 					if (A2(
 						$elm$core$List$any,
 						function (_v3) {
@@ -16663,7 +16663,7 @@ var $author$project$ExtProcessors$processForeignVarsFPL = F2(
 									return A2($elm$core$Maybe$withDefault, $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, x);
 								},
 								varsLecture));
-						var _v5 = c.af;
+						var _v5 = c.ah;
 						if (_v5 === 'canonicFO') {
 							var f_ = A3(
 								$elm$core$List$foldl,
@@ -16682,7 +16682,7 @@ var $author$project$ExtProcessors$processForeignVarsFPL = F2(
 						} else {
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for ForeignVarsFPL')),
+								d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for ForeignVarsFPL')),
 								i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 							};
 						}
@@ -16691,7 +16691,7 @@ var $author$project$ExtProcessors$processForeignVarsFPL = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')')))),
 						i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 					};
 				}
@@ -16720,7 +16720,7 @@ var $author$project$ExtProcessors$processForeignVarsSPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -16736,7 +16736,7 @@ var $author$project$ExtProcessors$processForeignVarsSPL = F2(
 			$elm$json$Json$Decode$map3,
 			F3(
 				function (x, y, z) {
-					return {aH: y, af: x, aO: z};
+					return {aL: y, ah: x, aU: z};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -16756,19 +16756,19 @@ var $author$project$ExtProcessors$processForeignVarsSPL = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsSPL);
 				if (!_v2.$) {
 					var fs = _v2.a;
 					var varsLecture = A2(
 						$elm$core$List$map,
 						$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplReadFromString,
-						A2($elm$core$String$split, ',', c.aO));
+						A2($elm$core$String$split, ',', c.aU));
 					if (A2(
 						$elm$core$List$any,
 						function (_v3) {
@@ -16801,7 +16801,7 @@ var $author$project$ExtProcessors$processForeignVarsSPL = F2(
 									return A2($elm$core$Maybe$withDefault, $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, x);
 								},
 								varsLecture));
-						var _v5 = c.af;
+						var _v5 = c.ah;
 						if (_v5 === 'canonicFO') {
 							var fs_ = A3(
 								$elm$core$List$foldl,
@@ -16830,7 +16830,7 @@ var $author$project$ExtProcessors$processForeignVarsSPL = F2(
 						} else {
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for ForeignVarsSPL')),
+								d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for ForeignVarsSPL')),
 								i: _List_Nil
 							};
 						}
@@ -16839,7 +16839,7 @@ var $author$project$ExtProcessors$processForeignVarsSPL = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')')))),
 						i: _List_Nil
 					};
 				}
@@ -17077,7 +17077,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folTermIdentifierSubinde
 		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
 		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folTermNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folTermIdentifierParser = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -17123,7 +17123,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folVarSubSuperIndexedPar
 		A2(
 			$elm$parser$Parser$ignorer,
 			$elm$parser$Parser$sequence(
-				{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}),
+				{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}),
 			$elm$parser$Parser$symbol('^{'))),
 	A2(
 		$elm$parser$Parser$ignorer,
@@ -17140,7 +17140,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folVarSubindexedParser =
 				})),
 		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folVarNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folVarSupindexedParser = A2(
 	$elm$parser$Parser$keeper,
 	A2(
@@ -17281,7 +17281,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folPredIdentifierSubinde
 		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
 		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folPredNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$folPredIdentifierParser = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -17943,7 +17943,7 @@ var $author$project$FOLBasicProcessors$processHerbrandBaseFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -17959,7 +17959,7 @@ var $author$project$FOLBasicProcessors$processHerbrandBaseFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: x, at: y};
+					return {aL: x, av: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -17974,16 +17974,16 @@ var $author$project$FOLBasicProcessors$processHerbrandBaseFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsSFOL);
 				if (!_v2.$) {
 					var fs = _v2.a;
-					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandBase, fs, c.at);
+					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandBase, fs, c.av);
 					if (!_v3.$) {
 						var s = _v3.a;
 						return {
@@ -18001,7 +18001,7 @@ var $author$project$FOLBasicProcessors$processHerbrandBaseFOLNode = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 					};
 				}
 			} else {
@@ -18143,7 +18143,7 @@ var $author$project$FOLBasicProcessors$processHerbrandExtensionFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18159,7 +18159,7 @@ var $author$project$FOLBasicProcessors$processHerbrandExtensionFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: x, at: y};
+					return {aL: x, av: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18174,16 +18174,16 @@ var $author$project$FOLBasicProcessors$processHerbrandExtensionFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsSFOL);
 				if (!_v2.$) {
 					var fs = _v2.a;
-					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandExtension, fs, c.at);
+					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandExtension, fs, c.av);
 					if (!_v3.$) {
 						var s = _v3.a;
 						return {
@@ -18203,7 +18203,7 @@ var $author$project$FOLBasicProcessors$processHerbrandExtensionFOLNode = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')')))),
 						i: _List_Nil
 					};
 				}
@@ -18259,7 +18259,7 @@ var $author$project$FOLBasicProcessors$processHerbrandInterpretationsFOLNode = F
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18275,7 +18275,7 @@ var $author$project$FOLBasicProcessors$processHerbrandInterpretationsFOLNode = F
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: x, at: y};
+					return {aL: x, av: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18290,16 +18290,16 @@ var $author$project$FOLBasicProcessors$processHerbrandInterpretationsFOLNode = F
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsSFOL);
 				if (!_v2.$) {
 					var fs = _v2.a;
-					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandInterpretations, fs, c.at);
+					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandInterpretations, fs, c.av);
 					if (!_v3.$) {
 						var s = _v3.a;
 						return {
@@ -18320,7 +18320,7 @@ var $author$project$FOLBasicProcessors$processHerbrandInterpretationsFOLNode = F
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 					};
 				}
 			} else {
@@ -18433,7 +18433,7 @@ var $author$project$FOLBasicProcessors$processHerbrandModelsFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18449,7 +18449,7 @@ var $author$project$FOLBasicProcessors$processHerbrandModelsFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: x, at: y};
+					return {aL: x, av: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18464,16 +18464,16 @@ var $author$project$FOLBasicProcessors$processHerbrandModelsFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsSFOL);
 				if (!_v2.$) {
 					var fs = _v2.a;
-					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandModels, fs, c.at);
+					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandModels, fs, c.av);
 					if (!_v3.$) {
 						var _v4 = _v3.a;
 						var s = _v4.b;
@@ -18495,7 +18495,7 @@ var $author$project$FOLBasicProcessors$processHerbrandModelsFOLNode = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 					};
 				}
 			} else {
@@ -18521,7 +18521,7 @@ var $author$project$FOLBasicProcessors$processHerbrandUniverseFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18537,7 +18537,7 @@ var $author$project$FOLBasicProcessors$processHerbrandUniverseFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: x, at: y};
+					return {aL: x, av: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -18552,16 +18552,16 @@ var $author$project$FOLBasicProcessors$processHerbrandUniverseFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsSFOL);
 				if (!_v2.$) {
 					var fs = _v2.a;
-					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandUniverse, fs, c.at);
+					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Herbrand$sfolHerbrandUniverse, fs, c.av);
 					if (!_v3.$) {
 						var s = _v3.a;
 						return {
@@ -18579,7 +18579,7 @@ var $author$project$FOLBasicProcessors$processHerbrandUniverseFOLNode = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 					};
 				}
 			} else {
@@ -19047,16 +19047,16 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingAux1 = F6(
 				_List_fromArray(
 					[
 						{
-						aX: $elm$core$Maybe$Nothing,
-						aE: _List_Nil,
-						J: $elm$core$Maybe$Nothing,
-						aI: A2(
+						a2: $elm$core$Maybe$Nothing,
+						aI: _List_Nil,
+						K: $elm$core$Maybe$Nothing,
+						aM: A2(
 							$elm$core$List$map,
 							function (y) {
 								return _Utils_Tuple2(false, y);
 							},
 							cancelOpened),
-						aq: step
+						as: step
 					}
 					]));
 		} else {
@@ -19069,10 +19069,10 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingAux1 = F6(
 					_List_fromArray(
 						[
 							{
-							aX: $elm$core$Maybe$Just($elm$core$Set$empty),
-							aE: _List_Nil,
-							J: $elm$core$Maybe$Nothing,
-							aI: _Utils_ap(
+							a2: $elm$core$Maybe$Just($elm$core$Set$empty),
+							aI: _List_Nil,
+							K: $elm$core$Maybe$Nothing,
+							aM: _Utils_ap(
 								A2(
 									$elm$core$List$map,
 									function (y) {
@@ -19085,7 +19085,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingAux1 = F6(
 										return _Utils_Tuple2(false, y);
 									},
 									cancelOpened)),
-							aq: step
+							as: step
 						}
 						]));
 			} else {
@@ -19178,10 +19178,10 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingAux1 = F6(
 					A2(
 						$elm$core$List$cons,
 						{
-							aX: $elm$core$Maybe$Just(x),
-							aE: descendents,
-							J: $elm$core$Maybe$Just(g),
-							aI: _Utils_ap(
+							a2: $elm$core$Maybe$Just(x),
+							aI: descendents,
+							K: $elm$core$Maybe$Just(g),
+							aM: _Utils_ap(
 								A2(
 									$elm$core$List$map,
 									function (y) {
@@ -19194,7 +19194,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingAux1 = F6(
 										return _Utils_Tuple2(false, y);
 									},
 									cancelOpened)),
-							aq: step
+							as: step
 						},
 						tableRows));
 			}
@@ -19204,7 +19204,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChaining1 = F3(
 	function (rules, facts, goal) {
 		var avRules = A2($logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$uniqueConcatList, _List_Nil, rules);
 		if (A2($elm$core$Set$member, goal, facts)) {
-			return {J: goal, ae: facts, k: true, ai: avRules, aj: _List_Nil};
+			return {K: goal, ag: facts, k: true, ak: avRules, al: _List_Nil};
 		} else {
 			var _v0 = A6(
 				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingAux1,
@@ -19221,7 +19221,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChaining1 = F3(
 				1);
 			var res = _v0.a;
 			var table = _v0.b;
-			return {J: goal, ae: facts, k: res, ai: avRules, aj: table};
+			return {K: goal, ag: facts, k: res, ak: avRules, al: table};
 		}
 	});
 var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactToString = function (_v0) {
@@ -19277,8 +19277,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 			';',
 			_List_fromArray(
 				[
-					$elm$core$String$fromInt(row.aq),
-					$elm$core$List$isEmpty(row.aI) ? '-' : A2(
+					$elm$core$String$fromInt(row.as),
+					$elm$core$List$isEmpty(row.aM) ? '-' : A2(
 					$elm$core$String$join,
 					', ',
 					A2(
@@ -19288,7 +19288,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 							var gs = _v0.b;
 							return ncancel ? ('{' + ($logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringComma(gs) + '}')) : ('<del>{' + ($logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringComma(gs) + '}</del>'));
 						},
-						row.aI)),
+						row.aM)),
 					A2(
 					$elm$core$Maybe$withDefault,
 					'-',
@@ -19297,12 +19297,12 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 						function (x) {
 							return '{' + ($logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringComma(x) + '}');
 						},
-						row.aX)),
+						row.a2)),
 					A2(
 					$elm$core$Maybe$withDefault,
 					'-',
-					A2($elm$core$Maybe$map, $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactToString, row.J)),
-					$elm$core$List$isEmpty(row.aE) ? '-' : A2(
+					A2($elm$core$Maybe$map, $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactToString, row.K)),
+					$elm$core$List$isEmpty(row.aI) ? '-' : A2(
 					$elm$core$String$join,
 					', ',
 					A2(
@@ -19335,7 +19335,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 									},
 									gs)) + '})</del>'))));
 						},
-						row.aE))
+						row.aI))
 				]));
 	};
 	var rules = A2(
@@ -19344,7 +19344,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 		_List_fromArray(
 			[
 				'Rules',
-				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornRulesToString(res.ai)
+				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornRulesToString(res.ak)
 			]));
 	var result = A2(
 		$elm$core$String$join,
@@ -19360,7 +19360,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 		_List_fromArray(
 			[
 				'Initial facts',
-				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringWedge(res.ae)
+				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringWedge(res.ag)
 			]));
 	var goal = A2(
 		$elm$core$String$join,
@@ -19368,7 +19368,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 		_List_fromArray(
 			[
 				'Goal',
-				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactToString(res.J)
+				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactToString(res.K)
 			]));
 	return _List_fromArray(
 		[
@@ -19379,7 +19379,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$backwardChainingResultToString = fu
 			A2(
 				$elm$core$List$cons,
 				'Step;Opened ways;Selected way;Selected Goal;New Ways',
-				A2($elm$core$List$map, bchrowToTableString, res.aj)))
+				A2($elm$core$List$map, bchrowToTableString, res.al)))
 		]);
 };
 var $elm$json$Json$Decode$map6 = _Json_map6;
@@ -19389,7 +19389,7 @@ var $author$project$PLAlgProcessors$processHornBwChPL = F4(
 			$elm$json$Json$Decode$map6,
 			F6(
 				function (rid, rsl, kbid, kbsl, gid, gsl) {
-					return {a$: gid, a0: gsl, a1: kbid, a2: kbsl, a3: rid, a4: rsl};
+					return {a7: gid, a8: gsl, a9: kbid, ba: kbsl, bb: rid, bc: rsl};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -19427,22 +19427,22 @@ var $author$project$PLAlgProcessors$processHornBwChPL = F4(
 			var _v1 = _Utils_Tuple3(
 				A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.a3, source.a4),
+					_Utils_Tuple2(source.bb, source.bc),
 					outputsRSHRS),
 				A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.a1, source.a2),
+					_Utils_Tuple2(source.a9, source.ba),
 					outputsKBHRS),
 				A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.a$, source.a0),
+					_Utils_Tuple2(source.a7, source.a8),
 					outputsFHRS));
 			if (_v1.a.$ === 1) {
 				var _v2 = _v1.a;
 				return {
 					c: 2,
 					d: $elm$json$Json$Encode$string(
-						'Unknown source rule set: (' + ($elm$core$String$fromInt(source.a3) + (', ' + ($elm$core$String$fromInt(source.a4) + ')'))))
+						'Unknown source rule set: (' + ($elm$core$String$fromInt(source.bb) + (', ' + ($elm$core$String$fromInt(source.bc) + ')'))))
 				};
 			} else {
 				if (_v1.b.$ === 1) {
@@ -19450,7 +19450,7 @@ var $author$project$PLAlgProcessors$processHornBwChPL = F4(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source KB (fact set): (' + ($elm$core$String$fromInt(source.a1) + (', ' + ($elm$core$String$fromInt(source.a2) + ')'))))
+							'Unknown source KB (fact set): (' + ($elm$core$String$fromInt(source.a9) + (', ' + ($elm$core$String$fromInt(source.ba) + ')'))))
 					};
 				} else {
 					if (_v1.c.$ === 1) {
@@ -19458,7 +19458,7 @@ var $author$project$PLAlgProcessors$processHornBwChPL = F4(
 						return {
 							c: 2,
 							d: $elm$json$Json$Encode$string(
-								'Unknown source goal (fact): (' + ($elm$core$String$fromInt(source.a$) + (', ' + ($elm$core$String$fromInt(source.a0) + ')'))))
+								'Unknown source goal (fact): (' + ($elm$core$String$fromInt(source.a7) + (', ' + ($elm$core$String$fromInt(source.a8) + ')'))))
 						};
 					} else {
 						var rs = _v1.a.a;
@@ -19505,7 +19505,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactSubindexedParser = A2(
 		$elm$parser$Parser$succeed($elm$core$Tuple$pair),
 		$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactSymbParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactParser = $elm$parser$Parser$oneOf(
 	_List_fromArray(
 		[
@@ -19618,7 +19618,7 @@ var $author$project$PLBasicProcessors$processHornFactSetPLNode = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -19633,13 +19633,13 @@ var $author$project$PLBasicProcessors$processHornFactSetPLNode = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = c.af;
+			var _v1 = c.ah;
 			switch (_v1) {
 				case 'spec':
 					var parsedSet = A2(
 						$elm$core$List$map,
 						$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactReadFromString,
-						A2($elm$core$String$split, ',', c.aH));
+						A2($elm$core$String$split, ',', c.aL));
 					if (A2(
 						$elm$core$List$any,
 						function (_v2) {
@@ -19677,7 +19677,7 @@ var $author$project$PLBasicProcessors$processHornFactSetPLNode = F3(
 						};
 					}
 				case 'collect':
-					var _v4 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v4 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v4.$) {
 						var sources = _v4.a;
 						var fs = A2(
@@ -19738,7 +19738,7 @@ var $author$project$PLBasicProcessors$processHornFactSetPLNode = F3(
 						};
 					}
 				case 'union':
-					var _v8 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v8 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v8.$) {
 						var sources = _v8.a;
 						var fss = A2(
@@ -19844,11 +19844,11 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingAux1 = F4(
 					shooted)),
 			kb);
 		var row = {
-			aP: A2($elm$core$List$map, $elm$core$Tuple$first, avRules),
-			bb: kb,
-			aR: newFacts,
-			aU: A2($elm$core$List$map, $elm$core$Tuple$first, shooted),
-			aq: step
+			aV: A2($elm$core$List$map, $elm$core$Tuple$first, avRules),
+			bn: kb,
+			aX: newFacts,
+			a_: A2($elm$core$List$map, $elm$core$Tuple$first, shooted),
+			as: step
 		};
 		if ($elm$core$Set$isEmpty(newFacts)) {
 			return _Utils_Tuple2(
@@ -19880,7 +19880,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChaining1 = F3(
 	function (rules, facts, goal) {
 		var avRules = A2($logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$uniqueConcatList, _List_Nil, rules);
 		if (A2($elm$core$Set$member, goal, facts)) {
-			return {J: goal, ae: facts, k: true, ai: avRules, aj: _List_Nil};
+			return {K: goal, ag: facts, k: true, ak: avRules, al: _List_Nil};
 		} else {
 			var _v0 = A4(
 				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingAux1,
@@ -19902,7 +19902,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChaining1 = F3(
 				1);
 			var res = _v0.a;
 			var table = _v0.b;
-			return {J: goal, ae: facts, k: res, ai: avRules, aj: table};
+			return {K: goal, ag: facts, k: res, ak: avRules, al: table};
 		}
 	});
 var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingAux2 = F4(
@@ -19931,11 +19931,11 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingAux2 = F4(
 					shooted)),
 			kb);
 		var row = {
-			aP: A2($elm$core$List$map, $elm$core$Tuple$first, avRules),
-			bb: kb,
-			aR: newFacts,
-			aU: A2($elm$core$List$map, $elm$core$Tuple$first, shooted),
-			aq: step
+			aV: A2($elm$core$List$map, $elm$core$Tuple$first, avRules),
+			bn: kb,
+			aX: newFacts,
+			a_: A2($elm$core$List$map, $elm$core$Tuple$first, shooted),
+			as: step
 		};
 		if ($elm$core$Set$isEmpty(newFacts)) {
 			return _Utils_Tuple2(
@@ -19974,7 +19974,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChaining2 = F3(
 	function (rules, facts, goal) {
 		var avRules = A2($logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$uniqueConcatList, _List_Nil, rules);
 		if (A2($elm$core$Set$member, goal, facts)) {
-			return {J: goal, ae: facts, k: true, ai: avRules, aj: _List_Nil};
+			return {K: goal, ag: facts, k: true, ak: avRules, al: _List_Nil};
 		} else {
 			var _v0 = A4(
 				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingAux2,
@@ -20002,7 +20002,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChaining2 = F3(
 				1);
 			var res = _v0.a;
 			var table = _v0.b;
-			return {J: goal, ae: facts, k: res, ai: avRules, aj: table};
+			return {K: goal, ag: facts, k: res, ak: avRules, al: table};
 		}
 	});
 var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = function (res) {
@@ -20012,9 +20012,9 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = fun
 			';',
 			_List_fromArray(
 				[
-					$elm$core$String$fromInt(row.aq),
-					$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringComma(row.bb),
-					$elm$core$List$isEmpty(row.aP) ? '-' : A2(
+					$elm$core$String$fromInt(row.as),
+					$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringComma(row.bn),
+					$elm$core$List$isEmpty(row.aV) ? '-' : A2(
 					$elm$core$String$join,
 					', ',
 					A2(
@@ -20023,8 +20023,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = fun
 							return 'R' + $logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$replaceBySubscript(
 								$elm$core$String$fromInt(i + 1));
 						},
-						row.aP)),
-					$elm$core$List$isEmpty(row.aU) ? '-' : A2(
+						row.aV)),
+					$elm$core$List$isEmpty(row.a_) ? '-' : A2(
 					$elm$core$String$join,
 					', ',
 					A2(
@@ -20033,8 +20033,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = fun
 							return 'R' + $logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$replaceBySubscript(
 								$elm$core$String$fromInt(i + 1));
 						},
-						row.aU)),
-					$elm$core$Set$isEmpty(row.aR) ? '-' : $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringComma(row.aR)
+						row.a_)),
+					$elm$core$Set$isEmpty(row.aX) ? '-' : $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringComma(row.aX)
 				]));
 	};
 	var rules = A2(
@@ -20043,7 +20043,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = fun
 		_List_fromArray(
 			[
 				'Rules',
-				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornRulesToString(res.ai)
+				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornRulesToString(res.ak)
 			]));
 	var result = A2(
 		$elm$core$String$join,
@@ -20059,7 +20059,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = fun
 		_List_fromArray(
 			[
 				'Initial facts',
-				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringWedge(res.ae)
+				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornKBToStringWedge(res.ag)
 			]));
 	var goal = A2(
 		$elm$core$String$join,
@@ -20067,7 +20067,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = fun
 		_List_fromArray(
 			[
 				'Goal',
-				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactToString(res.J)
+				$logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactToString(res.K)
 			]));
 	return _List_fromArray(
 		[
@@ -20078,7 +20078,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChainingResultToString = fun
 			A2(
 				$elm$core$List$cons,
 				'Step;Knowledge Base;Available Rules;Shooted Rules;Deductions',
-				A2($elm$core$List$map, fchrowToTableString, res.aj)))
+				A2($elm$core$List$map, fchrowToTableString, res.al)))
 		]);
 };
 var $author$project$PLAlgProcessors$processHornFwChPL = F4(
@@ -20087,7 +20087,7 @@ var $author$project$PLAlgProcessors$processHornFwChPL = F4(
 			$elm$json$Json$Decode$map6,
 			F6(
 				function (rid, rsl, kbid, kbsl, gid, gsl) {
-					return {a$: gid, a0: gsl, a1: kbid, a2: kbsl, a3: rid, a4: rsl};
+					return {a7: gid, a8: gsl, a9: kbid, ba: kbsl, bb: rid, bc: rsl};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -20123,7 +20123,7 @@ var $author$project$PLAlgProcessors$processHornFwChPL = F4(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -20138,28 +20138,28 @@ var $author$project$PLAlgProcessors$processHornFwChPL = F4(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = _Utils_Tuple3(
 					A2(
 						$elm$core$Dict$get,
-						_Utils_Tuple2(source.a3, source.a4),
+						_Utils_Tuple2(source.bb, source.bc),
 						outputsRSHRS),
 					A2(
 						$elm$core$Dict$get,
-						_Utils_Tuple2(source.a1, source.a2),
+						_Utils_Tuple2(source.a9, source.ba),
 						outputsKBHRS),
 					A2(
 						$elm$core$Dict$get,
-						_Utils_Tuple2(source.a$, source.a0),
+						_Utils_Tuple2(source.a7, source.a8),
 						outputsFHRS));
 				if (_v2.a.$ === 1) {
 					var _v3 = _v2.a;
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source rule set: (' + ($elm$core$String$fromInt(source.a3) + (', ' + ($elm$core$String$fromInt(source.a4) + ')'))))
+							'Unknown source rule set: (' + ($elm$core$String$fromInt(source.bb) + (', ' + ($elm$core$String$fromInt(source.bc) + ')'))))
 					};
 				} else {
 					if (_v2.b.$ === 1) {
@@ -20167,7 +20167,7 @@ var $author$project$PLAlgProcessors$processHornFwChPL = F4(
 						return {
 							c: 2,
 							d: $elm$json$Json$Encode$string(
-								'Unknown source KB (fact set): (' + ($elm$core$String$fromInt(source.a1) + (', ' + ($elm$core$String$fromInt(source.a2) + ')'))))
+								'Unknown source KB (fact set): (' + ($elm$core$String$fromInt(source.a9) + (', ' + ($elm$core$String$fromInt(source.ba) + ')'))))
 						};
 					} else {
 						if (_v2.c.$ === 1) {
@@ -20175,13 +20175,13 @@ var $author$project$PLAlgProcessors$processHornFwChPL = F4(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source goal (fact): (' + ($elm$core$String$fromInt(source.a$) + (', ' + ($elm$core$String$fromInt(source.a0) + ')'))))
+									'Unknown source goal (fact): (' + ($elm$core$String$fromInt(source.a7) + (', ' + ($elm$core$String$fromInt(source.a8) + ')'))))
 							};
 						} else {
 							var rs = _v2.a.a;
 							var kb = _v2.b.a;
 							var g = _v2.c.a;
-							var _v6 = c.af;
+							var _v6 = c.ah;
 							switch (_v6) {
 								case 'remIrrel':
 									var resCh = A3($logicUSLIB$logicus_pl$LogicUS$PL$HornRS$forwardChaining2, rs, kb, g);
@@ -20216,7 +20216,7 @@ var $author$project$PLAlgProcessors$processHornFwChPL = F4(
 								default:
 									return {
 										c: 4,
-										d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for HornFwChPL'))
+										d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for HornFwChPL'))
 									};
 							}
 						}
@@ -20243,7 +20243,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornLHSParser = A2(
 	$elm$parser$Parser$map,
 	$elm$core$Set$fromList,
 	$elm$parser$Parser$sequence(
-		{bQ: '', b0: $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactParser, ci: '&', cj: $elm$parser$Parser$spaces, ck: '', co: 0}));
+		{b$: '', cb: $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornFactParser, cu: '&', cv: $elm$parser$Parser$spaces, cw: '', cA: 0}));
 var $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornRuleParser = A2(
 	$elm$parser$Parser$keeper,
 	A2(
@@ -20288,7 +20288,7 @@ var $author$project$PLBasicProcessors$processHornRulePLNode = F3(
 			$elm$json$Json$Decode$map4,
 			F4(
 				function (x, y, u, v) {
-					return {K: x, L: y, M: u, N: v};
+					return {L: x, M: y, N: u, O: v};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -20314,7 +20314,7 @@ var $author$project$PLBasicProcessors$processHornRulePLNode = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -20329,10 +20329,10 @@ var $author$project$PLBasicProcessors$processHornRulePLNode = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = c.af;
+			var _v1 = c.ah;
 			switch (_v1) {
 				case 'spec':
-					var _v2 = $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornRuleReadFromString(c.aH);
+					var _v2 = $logicUSLIB$logicus_pl$LogicUS$PL$HornRS$hornRuleReadFromString(c.aL);
 					if (_v2.a.$ === 1) {
 						var _v3 = _v2.a;
 						var errDetails = _v2.c;
@@ -20353,24 +20353,24 @@ var $author$project$PLBasicProcessors$processHornRulePLNode = F3(
 						};
 					}
 				case 'inputs':
-					var _v4 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v4 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v4.$) {
 						var sources = _v4.a;
 						var _v5 = _Utils_Tuple2(
 							A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.K, sources.L),
+								_Utils_Tuple2(sources.L, sources.M),
 								outputsKBHRS),
 							A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(sources.M, sources.N),
+								_Utils_Tuple2(sources.N, sources.O),
 								outputsFHRS));
 						if (_v5.a.$ === 1) {
 							var _v6 = _v5.a;
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (',' + ($elm$core$String$fromInt(sources.L) + ')')))),
+									'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (',' + ($elm$core$String$fromInt(sources.M) + ')')))),
 								i: _Utils_Tuple2(
 									$elm$core$Set$empty,
 									_Utils_Tuple2('⟂', _List_Nil))
@@ -20381,7 +20381,7 @@ var $author$project$PLBasicProcessors$processHornRulePLNode = F3(
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source: (' + ($elm$core$String$fromInt(sources.M) + (',' + ($elm$core$String$fromInt(sources.N) + ')')))),
+										'Unknown source: (' + ($elm$core$String$fromInt(sources.N) + (',' + ($elm$core$String$fromInt(sources.O) + ')')))),
 									i: _Utils_Tuple2(
 										$elm$core$Set$empty,
 										_Utils_Tuple2('⟂', _List_Nil))
@@ -20450,7 +20450,7 @@ var $author$project$PLBasicProcessors$processHornRuleSetPLNode = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -20465,12 +20465,12 @@ var $author$project$PLBasicProcessors$processHornRuleSetPLNode = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = c.af;
+			var _v1 = c.ah;
 			switch (_v1) {
 				case 'fromFile':
 					var parsedSet = function () {
 						var _v5 = $elm_community$list_extra$List$Extra$unconsLast(
-							A2($elm$core$String$split, '.', c.aH));
+							A2($elm$core$String$split, '.', c.aL));
 						if (!_v5.$) {
 							if (_v5.a.a === '') {
 								if (!_v5.a.b.b) {
@@ -20550,7 +20550,7 @@ var $author$project$PLBasicProcessors$processHornRuleSetPLNode = F3(
 						};
 					}
 				case 'collect':
-					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v9.$) {
 						var sources = _v9.a;
 						var rs = A2(
@@ -20613,7 +20613,7 @@ var $author$project$PLBasicProcessors$processHornRuleSetPLNode = F3(
 						};
 					}
 				case 'union':
-					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v13.$) {
 						var sources = _v13.a;
 						var rss = A2(
@@ -20693,578 +20693,1998 @@ var $author$project$PLBasicProcessors$processHornRuleSetPLNode = F3(
 			};
 		}
 	});
-var $elm$json$Json$Decode$bool = _Json_decodeBool;
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str = function (i) {
-	switch (i) {
-		case 0:
-			return 'A';
-		case 1:
-			return 'B';
-		case 2:
-			return 'C';
-		case 3:
-			return 'D';
-		case 4:
-			return 'E';
-		default:
-			return 'V' + $elm$core$String$fromInt(i + 1);
+var $elm$core$String$concat = function (strings) {
+	return A2($elm$core$String$join, '', strings);
+};
+var $elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
+var $elm$parser$Parser$Advanced$findSubString = _Parser_findSubString;
+var $elm$parser$Parser$Advanced$chompUntil = function (_v0) {
+	var str = _v0.a;
+	var expecting = _v0.b;
+	return function (s) {
+		var _v1 = A5($elm$parser$Parser$Advanced$findSubString, str, s.h, s.cs, s.bW, s.e);
+		var newOffset = _v1.a;
+		var newRow = _v1.b;
+		var newCol = _v1.c;
+		return _Utils_eq(newOffset, -1) ? A2(
+			$elm$parser$Parser$Advanced$Bad,
+			false,
+			A4($elm$parser$Parser$Advanced$fromInfo, newRow, newCol, expecting, s.o)) : A3(
+			$elm$parser$Parser$Advanced$Good,
+			_Utils_cmp(s.h, newOffset) < 0,
+			0,
+			{bW: newCol, o: s.o, w: s.w, h: newOffset, cs: newRow, e: s.e});
+	};
+};
+var $elm$parser$Parser$chompUntil = function (str) {
+	return $elm$parser$Parser$Advanced$chompUntil(
+		$elm$parser$Parser$toToken(str));
+};
+var $elm$parser$Parser$ExpectingKeyword = function (a) {
+	return {$: 9, a: a};
+};
+var $elm$parser$Parser$Advanced$keyword = function (_v0) {
+	var kwd = _v0.a;
+	var expecting = _v0.b;
+	var progress = !$elm$core$String$isEmpty(kwd);
+	return function (s) {
+		var _v1 = A5($elm$parser$Parser$Advanced$isSubString, kwd, s.h, s.cs, s.bW, s.e);
+		var newOffset = _v1.a;
+		var newRow = _v1.b;
+		var newCol = _v1.c;
+		return (_Utils_eq(newOffset, -1) || (0 <= A3(
+			$elm$parser$Parser$Advanced$isSubChar,
+			function (c) {
+				return $elm$core$Char$isAlphaNum(c) || (c === '_');
+			},
+			newOffset,
+			s.e))) ? A2(
+			$elm$parser$Parser$Advanced$Bad,
+			false,
+			A2($elm$parser$Parser$Advanced$fromState, s, expecting)) : A3(
+			$elm$parser$Parser$Advanced$Good,
+			progress,
+			0,
+			{bW: newCol, o: s.o, w: s.w, h: newOffset, cs: newRow, e: s.e});
+	};
+};
+var $elm$parser$Parser$keyword = function (kwd) {
+	return $elm$parser$Parser$Advanced$keyword(
+		A2(
+			$elm$parser$Parser$Advanced$Token,
+			kwd,
+			$elm$parser$Parser$ExpectingKeyword(kwd)));
+};
+var $elm$core$String$filter = _String_filter;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$symbolParser = A2(
+	$elm$parser$Parser$keeper,
+	A2(
+		$elm$parser$Parser$keeper,
+		$elm$parser$Parser$succeed(
+			F2(
+				function (name, args) {
+					return _Utils_Tuple2(
+						name,
+						$elm$core$String$length(
+							A2(
+								$elm$core$String$filter,
+								$elm$core$Basics$eq('_'),
+								args)));
+				})),
+		$elm$parser$Parser$getChompedString(
+			$elm$parser$Parser$chompWhile(
+				function (c) {
+					return (c !== '(') && ((c !== ',') && (c !== ' '));
+				}))),
+	$elm$parser$Parser$oneOf(
+		_List_fromArray(
+			[
+				$elm$parser$Parser$getChompedString(
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						$elm$parser$Parser$symbol('('),
+						$elm$parser$Parser$chompUntil(')')),
+					$elm$parser$Parser$symbol(')'))),
+				$elm$parser$Parser$succeed('')
+			])));
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws = $elm$parser$Parser$chompWhile(
+	function (c) {
+		return (c === ' ') || ((c === '\n') || ((c === '\r') || (c === '\t')));
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$entryParser = A2(
+	$elm$parser$Parser$keeper,
+	A2(
+		$elm$parser$Parser$keeper,
+		A2(
+			$elm$parser$Parser$keeper,
+			$elm$parser$Parser$succeed(
+				F3(
+					function (kind, _v0, values) {
+						var name = _v0.a;
+						var arity = _v0.b;
+						return {bx: arity, bz: kind, cY: name, bf: values};
+					})),
+			A2(
+				$elm$parser$Parser$ignorer,
+				$elm$parser$Parser$oneOf(
+					_List_fromArray(
+						[
+							A2(
+							$elm$parser$Parser$map,
+							function (_v1) {
+								return 'function';
+							},
+							$elm$parser$Parser$keyword('function')),
+							A2(
+							$elm$parser$Parser$map,
+							function (_v2) {
+								return 'relation';
+							},
+							$elm$parser$Parser$keyword('relation'))
+						])),
+				$elm$parser$Parser$symbol('('))),
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2($elm$parser$Parser$ignorer, $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$symbolParser, $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws),
+				$elm$parser$Parser$symbol(',')),
+			$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws)),
+	A2(
+		$elm$parser$Parser$ignorer,
+		A2(
+			$elm$parser$Parser$ignorer,
+			$elm$parser$Parser$sequence(
+				{b$: ']', cb: $elm$parser$Parser$int, cu: ',', cv: $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws, cw: '[', cA: 0}),
+			$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws),
+		$elm$parser$Parser$symbol(')')));
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$interpretationParser = A2(
+	$elm$parser$Parser$keeper,
+	A2(
+		$elm$parser$Parser$keeper,
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				$elm$parser$Parser$succeed($elm$core$Tuple$pair),
+				$elm$parser$Parser$symbol('interpretation(')),
+			$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws),
+		A2(
+			$elm$parser$Parser$ignorer,
+			A2(
+				$elm$parser$Parser$ignorer,
+				A2(
+					$elm$parser$Parser$ignorer,
+					A2(
+						$elm$parser$Parser$ignorer,
+						A2($elm$parser$Parser$ignorer, $elm$parser$Parser$int, $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws),
+						$elm$parser$Parser$symbol(',')),
+					$elm$parser$Parser$chompUntil('],')),
+				$elm$parser$Parser$symbol('],')),
+			$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws)),
+	$elm$parser$Parser$sequence(
+		{b$: ']', cb: $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$entryParser, cu: ',', cv: $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$ws, cw: '[', cA: 0}));
+var $elm$core$Basics$pow = _Basics_pow;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$missingEntries = F3(
+	function (arities, n, entries) {
+		var printed = A2(
+			$elm$core$List$map,
+			function ($) {
+				return $.cY;
+			},
+			entries);
+		return A2(
+			$elm$core$List$map,
+			function (_v1) {
+				var name = _v1.a;
+				var _v2 = _v1.b;
+				var isPred = _v2.a;
+				var k = _v2.b;
+				return {
+					bx: k,
+					bz: isPred ? 'relation' : 'function',
+					cY: name,
+					bf: A2(
+						$elm$core$List$repeat,
+						A2($elm$core$Basics$pow, n, k),
+						0)
+				};
+			},
+			A2(
+				$elm$core$List$filter,
+				function (_v0) {
+					var name = _v0.a;
+					return !A2($elm$core$List$member, name, printed);
+				},
+				$elm$core$Dict$toList(arities)));
+	});
+var $elm$core$Result$toMaybe = function (result) {
+	if (!result.$) {
+		var v = result.a;
+		return $elm$core$Maybe$Just(v);
+	} else {
+		return $elm$core$Maybe$Nothing;
 	}
 };
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4Str = F2(
-	function (t, info) {
-		if (!t.$) {
-			var v = t.a;
-			var _v4 = A2($elm$core$Dict$get, v, info.c4);
-			if (!_v4.$) {
-				var i = _v4.a;
-				return _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(i),
-					info);
-			} else {
-				return _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(info.c5),
-					_Utils_update(
-						info,
-						{
-							c4: A3($elm$core$Dict$insert, v, info.c5, info.c4),
-							c5: info.c5 + 1
-						}));
-			}
-		} else {
-			if (!t.b.b) {
-				var c = t.a;
-				var _v5 = A2($elm$core$Dict$get, c, info.cA);
-				if (!_v5.$) {
-					var i = _v5.a;
-					return _Utils_Tuple2(
-						'c' + $elm$core$String$fromInt(i),
-						info);
-				} else {
-					return _Utils_Tuple2(
-						'c' + $elm$core$String$fromInt(info.cC),
-						_Utils_update(
-							info,
-							{
-								cA: A3($elm$core$Dict$insert, c, info.cC, info.cA),
-								cC: info.cC + 1
-							}));
-				}
-			} else {
-				var f = t.a;
-				var ts = t.b;
-				var _v6 = A2($elm$core$Dict$get, f, info.cI);
-				if (!_v6.$) {
-					var i = _v6.a;
-					var _v7 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4Str, ts, info);
-					var tstr = _v7.a;
-					var ninfo = _v7.b;
-					return _Utils_Tuple2(
-						'f' + ($elm$core$String$fromInt(i) + ('(' + (tstr + ')'))),
-						ninfo);
-				} else {
-					var info_ = _Utils_update(
-						info,
-						{
-							cI: A3($elm$core$Dict$insert, f, info.cJ, info.cI),
-							cJ: info.cJ + 1
-						});
-					var _v8 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4Str, ts, info_);
-					var tstr = _v8.a;
-					var ninfo = _v8.b;
-					return _Utils_Tuple2(
-						'f' + ($elm$core$String$fromInt(info.cJ) + ('(' + (tstr + ')'))),
-						ninfo);
-				}
-			}
-		}
-	});
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4Str = F2(
-	function (ts, info) {
-		if (!ts.b) {
-			return _Utils_Tuple2('', info);
-		} else {
-			var x = ts.a;
-			var xs = ts.b;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$toStructure = F2(
+	function (symbols, _v0) {
+		var n = _v0.a;
+		var entries = _v0.b;
+		var tuples = function (k) {
 			return A3(
-				$elm$core$List$foldl,
+				$elm$core$List$foldr,
 				F2(
-					function (xi, _v1) {
-						var s_ = _v1.a;
-						var info_ = _v1.b;
-						return function (_v2) {
-							var si = _v2.a;
-							var infoi = _v2.b;
-							return _Utils_Tuple2(s_ + (',' + si), infoi);
-						}(
-							A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4Str, xi, info_));
+					function (_v3, acc) {
+						return A3(
+							$elm_community$list_extra$List$Extra$lift2,
+							$elm$core$List$cons,
+							A2($elm$core$List$range, 0, n - 1),
+							acc);
 					}),
-				A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4Str, x, info),
-				xs);
-		}
+				_List_fromArray(
+					[_List_Nil]),
+				A2($elm$core$List$range, 1, k));
+		};
+		var ident = function (name) {
+			return A2(
+				$elm$core$Maybe$withDefault,
+				_Utils_Tuple2(name, _List_Nil),
+				A2($elm$core$Dict$get, name, symbols));
+		};
+		var add = F2(
+			function (e, acc) {
+				var _v1 = _Utils_Tuple2(e.bz, e.bx);
+				if (_v1.a === 'function') {
+					if (!_v1.b) {
+						return _Utils_update(
+							acc,
+							{
+								bX: A3(
+									$elm$core$Dict$insert,
+									ident(e.cY),
+									A2(
+										$elm$core$Maybe$withDefault,
+										0,
+										$elm$core$List$head(e.bf)),
+									acc.bX)
+							});
+					} else {
+						var k = _v1.b;
+						return _Utils_update(
+							acc,
+							{
+								cR: A3(
+									$elm$core$Dict$insert,
+									ident(e.cY),
+									_Utils_Tuple2(
+										k,
+										$elm$core$Dict$fromList(
+											A3(
+												$elm$core$List$map2,
+												$elm$core$Tuple$pair,
+												tuples(k),
+												e.bf))),
+									acc.cR)
+							});
+					}
+				} else {
+					var k = _v1.b;
+					return _Utils_update(
+						acc,
+						{
+							c1: A3(
+								$elm$core$Dict$insert,
+								ident(e.cY),
+								_Utils_Tuple2(
+									k,
+									$elm$core$Set$fromList(
+										A2(
+											$elm$core$List$map,
+											$elm$core$Tuple$first,
+											A2(
+												$elm$core$List$filter,
+												function (_v2) {
+													var v = _v2.b;
+													return v === 1;
+												},
+												A3(
+													$elm$core$List$map2,
+													$elm$core$Tuple$pair,
+													tuples(k),
+													e.bf))))),
+								acc.c1)
+						});
+				}
+			});
+		return _Utils_Tuple2(
+			$elm$core$Set$fromList(
+				A2($elm$core$List$range, 0, n - 1)),
+			A3(
+				$elm$core$List$foldl,
+				add,
+				{bX: $elm$core$Dict$empty, cR: $elm$core$Dict$empty, c1: $elm$core$Dict$empty},
+				entries));
 	});
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2 = F2(
-	function (f, info) {
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$mace4Models = F2(
+	function (problem, output) {
+		return A2(
+			$elm$core$List$map,
+			function (_v0) {
+				var n = _v0.a;
+				var entries = _v0.b;
+				return A2(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$toStructure,
+					problem.bM,
+					_Utils_Tuple2(
+						n,
+						_Utils_ap(
+							entries,
+							A3($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$missingEntries, problem.bB, n, entries))));
+			},
+			A2(
+				$elm$core$List$filterMap,
+				function (block) {
+					return $elm$core$Result$toMaybe(
+						A2($elm$parser$Parser$run, $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$interpretationParser, 'interpretation(' + block));
+				},
+				A2(
+					$elm$core$List$drop,
+					1,
+					A2($elm$core$String$split, 'interpretation(', output))));
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termConstSymbols = function (t) {
+	if (!t.$) {
+		return _List_Nil;
+	} else {
+		if (!t.b.b) {
+			var c = t.a;
+			return _List_fromArray(
+				[c]);
+		} else {
+			var ts = t.b;
+			return $elm$core$List$sort(
+				$elm_community$list_extra$List$Extra$unique(
+					$elm$core$List$concat(
+						A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termConstSymbols, ts))));
+		}
+	}
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termsConstSymbols = function (ts) {
+	return $elm$core$List$sort(
+		$elm_community$list_extra$List$Extra$unique(
+			$elm$core$List$concat(
+				A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termConstSymbols, ts))));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols = function (f) {
+	ffolConstSymbols:
+	while (true) {
 		switch (f.$) {
 			case 0:
-				if (!f.b.b) {
-					var p = f.a;
-					var _v1 = A2($elm$core$Dict$get, p, info.cX);
-					if (!_v1.$) {
-						var i = _v1.a;
-						return _Utils_Tuple2(
-							'P' + $elm$core$String$fromInt(i),
-							info);
-					} else {
-						return _Utils_Tuple2(
-							'P' + $elm$core$String$fromInt(info.cY),
-							_Utils_update(
-								info,
-								{
-									cX: A3($elm$core$Dict$insert, p, info.cY, info.cX),
-									cY: info.cY + 1
-								}));
-					}
-				} else {
-					var p = f.a;
-					var ts = f.b;
-					var _v2 = A2($elm$core$Dict$get, p, info.cX);
-					if (!_v2.$) {
-						var i = _v2.a;
-						var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4Str, ts, info);
-						var tstr = _v3.a;
-						var ninfo = _v3.b;
-						return _Utils_Tuple2(
-							'P' + ($elm$core$String$fromInt(i) + ('(' + (tstr + ')'))),
-							ninfo);
-					} else {
-						var info_ = _Utils_update(
-							info,
-							{
-								cX: A3($elm$core$Dict$insert, p, info.cY, info.cX),
-								cY: info.cY + 1
-							});
-						var _v4 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4Str, ts, info_);
-						var tstr = _v4.a;
-						var ninfo = _v4.b;
-						return _Utils_Tuple2(
-							'P' + ($elm$core$String$fromInt(info.cY) + ('(' + (tstr + ')'))),
-							ninfo);
-					}
-				}
+				var ts = f.b;
+				return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termsConstSymbols(ts);
 			case 1:
 				var t1 = f.a;
 				var t2 = f.b;
-				var _v5 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4Str, t1, info);
-				var t1str = _v5.a;
-				var info1 = _v5.b;
-				var _v6 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4Str, t2, info1);
-				var t2str = _v6.a;
-				var info2 = _v6.b;
-				return _Utils_Tuple2('(' + (t1str + (' = ' + (t2str + ')'))), info2);
+				return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termsConstSymbols(
+					_List_fromArray(
+						[t1, t2]));
 			case 2:
-				if (f.a.$ === 1) {
-					var _v7 = f.a;
-					var t1 = _v7.a;
-					var t2 = _v7.b;
-					var _v8 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4Str, t1, info);
-					var t1str = _v8.a;
-					var info1 = _v8.b;
-					var _v9 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4Str, t2, info1);
-					var t2str = _v9.a;
-					var info2 = _v9.b;
-					return _Utils_Tuple2('(' + (t1str + (' != ' + (t2str + ')'))), info2);
-				} else {
-					var f1 = f.a;
-					var _v10 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f1, info);
-					var f1str = _v10.a;
-					var info1 = _v10.b;
-					return _Utils_Tuple2('-' + f1str, info1);
-				}
+				var p = f.a;
+				var $temp$f = p;
+				f = $temp$f;
+				continue ffolConstSymbols;
 			case 3:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v11 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f1, info);
-				var f1str = _v11.a;
-				var info1 = _v11.b;
-				var _v12 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f2, info1);
-				var f2str = _v12.a;
-				var info2 = _v12.b;
-				return _Utils_Tuple2('(' + (f1str + (' & ' + (f2str + ')'))), info2);
+				var p = f.a;
+				var q = f.b;
+				return $elm$core$List$sort(
+					$elm_community$list_extra$List$Extra$unique(
+						_Utils_ap(
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(p),
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(q))));
 			case 4:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v13 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f1, info);
-				var f1str = _v13.a;
-				var info1 = _v13.b;
-				var _v14 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f2, info1);
-				var f2str = _v14.a;
-				var info2 = _v14.b;
-				return _Utils_Tuple2('(' + (f1str + (' | ' + (f2str + ')'))), info2);
+				var p = f.a;
+				var q = f.b;
+				return $elm$core$List$sort(
+					$elm_community$list_extra$List$Extra$unique(
+						_Utils_ap(
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(p),
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(q))));
 			case 5:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v15 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f1, info);
-				var f1str = _v15.a;
-				var info1 = _v15.b;
-				var _v16 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f2, info1);
-				var f2str = _v16.a;
-				var info2 = _v16.b;
-				return _Utils_Tuple2('(' + (f1str + (' -> ' + (f2str + ')'))), info2);
+				var p = f.a;
+				var q = f.b;
+				return $elm$core$List$sort(
+					$elm_community$list_extra$List$Extra$unique(
+						_Utils_ap(
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(p),
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(q))));
 			case 6:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v17 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f1, info);
-				var f1str = _v17.a;
-				var info1 = _v17.b;
-				var _v18 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f2, info1);
-				var f2str = _v18.a;
-				var info2 = _v18.b;
-				return _Utils_Tuple2('(' + (f1str + (' <-> ' + (f2str + ')'))), info2);
+				var p = f.a;
+				var q = f.b;
+				return $elm$core$List$sort(
+					$elm_community$list_extra$List$Extra$unique(
+						_Utils_ap(
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(p),
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(q))));
 			case 7:
-				var v = f.a;
-				var f1 = f.b;
-				var _v19 = _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(info.c5),
-					_Utils_update(
-						info,
-						{
-							c4: A3($elm$core$Dict$insert, v, info.c5, info.c4),
-							c5: info.c5 + 1
-						}));
-				var vstr = _v19.a;
-				var info1 = _v19.b;
-				var _v20 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f1, info1);
-				var f1str = _v20.a;
-				var info2 = _v20.b;
-				return _Utils_Tuple2('exists ' + (vstr + (' ' + f1str)), info2);
+				var p = f.b;
+				return $elm$core$List$sort(
+					$elm_community$list_extra$List$Extra$unique(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(p)));
 			case 8:
-				var v = f.a;
-				var f1 = f.b;
-				var _v21 = _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(info.c5),
-					_Utils_update(
-						info,
-						{
-							c4: A3($elm$core$Dict$insert, v, info.c5, info.c4),
-							c5: info.c5 + 1
-						}));
-				var vstr = _v21.a;
-				var info1 = _v21.b;
-				var _v22 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2, f1, info1);
-				var f1str = _v22.a;
-				var info2 = _v22.b;
-				return _Utils_Tuple2('all ' + (vstr + (' ' + f1str)), info2);
-			case 10:
-				return _Utils_Tuple2('$T', info);
+				var p = f.b;
+				return $elm$core$List$sort(
+					$elm_community$list_extra$List$Extra$unique(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols(p)));
 			default:
-				return _Utils_Tuple2('$F', info);
+				return _List_Nil;
+		}
+	}
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolIsClosed = function (f) {
+	return !A2(
+		$elm$core$List$any,
+		function (x) {
+			return A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolHasFreeInstanceOfVar, f, x);
+		},
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolVarSymbols(f));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termInterpretationAux = F3(
+	function (t, vars_val, _v0) {
+		var u = _v0.a;
+		var i = _v0.b;
+		if (!t.$) {
+			var x = t.a;
+			return A2(
+				$elm$core$Maybe$andThen,
+				function (v) {
+					return A2($elm$core$Set$member, v, u) ? $elm$core$Maybe$Just(v) : $elm$core$Maybe$Nothing;
+				},
+				A2($elm$core$Dict$get, x, vars_val));
+		} else {
+			if (!t.b.b) {
+				var f_ = t.a;
+				return A2($elm$core$Dict$get, f_, i.bX);
+			} else {
+				var f_ = t.a;
+				var ts = t.b;
+				return A2(
+					$elm$core$Maybe$andThen,
+					function (_v2) {
+						var ar = _v2.a;
+						var f_M = _v2.b;
+						return _Utils_eq(
+							$elm$core$List$length(ts),
+							ar) ? A2(
+							$elm$core$Maybe$andThen,
+							function (args) {
+								return A2($elm$core$Dict$get, args, f_M);
+							},
+							A3(
+								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termsInterpretationAux,
+								ts,
+								vars_val,
+								_Utils_Tuple2(u, i))) : $elm$core$Maybe$Nothing;
+					},
+					A2($elm$core$Dict$get, f_, i.cR));
+			}
 		}
 	});
-var $elm$core$Tuple$mapFirst = F2(
-	function (func, _v0) {
-		var x = _v0.a;
-		var y = _v0.b;
-		return _Utils_Tuple2(
-			func(x),
-			y);
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termsInterpretationAux = F3(
+	function (ts, vars_val, ls) {
+		return $elm_community$maybe_extra$Maybe$Extra$combine(
+			A2(
+				$elm$core$List$map,
+				function (t) {
+					return A3($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termInterpretationAux, t, vars_val, ls);
+				},
+				ts));
 	});
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$sfol2P9M4Str2 = F2(
-	function (fs, ini) {
-		return A3(
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux = F3(
+	function (f, vars_val, _v0) {
+		var u = _v0.a;
+		var i = _v0.b;
+		switch (f.$) {
+			case 0:
+				var p_ = f.a;
+				var ts = f.b;
+				return A2(
+					$elm$core$Maybe$andThen,
+					function (_v2) {
+						var ar = _v2.a;
+						var p_M = _v2.b;
+						return _Utils_eq(
+							$elm$core$List$length(ts),
+							ar) ? A2(
+							$elm$core$Maybe$map,
+							function (args) {
+								return A2($elm$core$Set$member, args, p_M);
+							},
+							A3(
+								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termsInterpretationAux,
+								ts,
+								vars_val,
+								_Utils_Tuple2(u, i))) : $elm$core$Maybe$Nothing;
+					},
+					A2($elm$core$Dict$get, p_, i.c1));
+			case 1:
+				var t1 = f.a;
+				var t2 = f.b;
+				return A3(
+					$elm$core$Maybe$map2,
+					$elm$core$Basics$eq,
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termInterpretationAux,
+						t1,
+						vars_val,
+						_Utils_Tuple2(u, i)),
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$termInterpretationAux,
+						t2,
+						vars_val,
+						_Utils_Tuple2(u, i)));
+			case 2:
+				var g = f.a;
+				return A2(
+					$elm$core$Maybe$map,
+					$elm$core$Basics$not,
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						g,
+						vars_val,
+						_Utils_Tuple2(u, i)));
+			case 3:
+				var g = f.a;
+				var h = f.b;
+				return A3(
+					$elm$core$Maybe$map2,
+					$elm$core$Basics$and,
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						g,
+						vars_val,
+						_Utils_Tuple2(u, i)),
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						h,
+						vars_val,
+						_Utils_Tuple2(u, i)));
+			case 4:
+				var g = f.a;
+				var h = f.b;
+				return A3(
+					$elm$core$Maybe$map2,
+					$elm$core$Basics$or,
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						g,
+						vars_val,
+						_Utils_Tuple2(u, i)),
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						h,
+						vars_val,
+						_Utils_Tuple2(u, i)));
+			case 5:
+				var g = f.a;
+				var h = f.b;
+				return A3(
+					$elm$core$Maybe$map2,
+					F2(
+						function (x, y) {
+							return (!x) || y;
+						}),
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						g,
+						vars_val,
+						_Utils_Tuple2(u, i)),
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						h,
+						vars_val,
+						_Utils_Tuple2(u, i)));
+			case 6:
+				var g = f.a;
+				var h = f.b;
+				return A3(
+					$elm$core$Maybe$map2,
+					$elm$core$Basics$eq,
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						g,
+						vars_val,
+						_Utils_Tuple2(u, i)),
+					A3(
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+						h,
+						vars_val,
+						_Utils_Tuple2(u, i)));
+			case 7:
+				var x = f.a;
+				var g = f.b;
+				return A2(
+					$elm$core$Maybe$map,
+					$elm$core$List$any($elm$core$Basics$identity),
+					$elm_community$maybe_extra$Maybe$Extra$combine(
+						A2(
+							$elm$core$List$map,
+							function (o) {
+								return A3(
+									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+									g,
+									A3($elm$core$Dict$insert, x, o, vars_val),
+									_Utils_Tuple2(u, i));
+							},
+							$elm$core$Set$toList(u))));
+			case 8:
+				var x = f.a;
+				var g = f.b;
+				return A2(
+					$elm$core$Maybe$map,
+					$elm$core$List$all($elm$core$Basics$identity),
+					$elm_community$maybe_extra$Maybe$Extra$combine(
+						A2(
+							$elm$core$List$map,
+							function (o) {
+								return A3(
+									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux,
+									g,
+									A3($elm$core$Dict$insert, x, o, vars_val),
+									_Utils_Tuple2(u, i));
+							},
+							$elm$core$Set$toList(u))));
+			case 9:
+				return $elm$core$Maybe$Just(false);
+			default:
+				return $elm$core$Maybe$Just(true);
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$lStructureIsValid = function (_v0) {
+	var u = _v0.a;
+	var i = _v0.b;
+	return A2(
+		$elm$core$List$all,
+		function (v) {
+			return A2($elm$core$Set$member, v, u);
+		},
+		$elm$core$Dict$values(i.bX)) && (A2(
+		$elm$core$List$all,
+		function (_v1) {
+			var ar = _v1.a;
+			var f_M = _v1.b;
+			return A2(
+				$elm$core$List$all,
+				function (v) {
+					return A2($elm$core$Set$member, v, u);
+				},
+				$elm$core$Dict$values(f_M)) && (_Utils_eq(
+				$elm$core$List$length(
+					$elm$core$Dict$keys(f_M)),
+				A2(
+					$elm$core$Basics$pow,
+					$elm$core$Set$size(u),
+					ar)) && A2(
+				$elm$core$List$all,
+				function (t) {
+					return A2(
+						$elm$core$List$member,
+						t,
+						$elm$core$Dict$keys(f_M));
+				},
+				$elm_community$list_extra$List$Extra$cartesianProduct(
+					A2(
+						$elm$core$List$repeat,
+						ar,
+						$elm$core$Set$toList(u)))));
+		},
+		$elm$core$Dict$values(i.cR)) && A2(
+		$elm$core$List$all,
+		function (_v2) {
+			var ar = _v2.a;
+			var p_M = _v2.b;
+			return A2(
+				$elm$core$List$all,
+				function (e) {
+					return _Utils_eq(
+						$elm$core$List$length(e),
+						ar) && A2(
+						$elm$core$List$all,
+						function (v) {
+							return A2($elm$core$Set$member, v, u);
+						},
+						e);
+				},
+				$elm$core$Set$toList(p_M));
+		},
+		$elm$core$Dict$values(i.c1)));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuation = F2(
+	function (f, ls) {
+		return A2($elm$core$Basics$composeL, $elm$core$Basics$not, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolIsClosed)(f) ? $elm$core$Maybe$Nothing : ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$lStructureIsValid(ls) ? A3($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuationAux, f, $elm$core$Dict$empty, ls) : $elm$core$Maybe$Nothing);
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$identToString = function (i) {
+	if (!i.b.b) {
+		var iname = i.a;
+		return iname;
+	} else {
+		var iname = i.a;
+		var iindices = i.b;
+		return _Utils_ap(
+			iname,
+			$logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
+				A2(
+					$elm$core$String$join,
+					',',
+					A2($elm$core$List$map, $elm$core$String$fromInt, iindices))));
+	}
+};
+var $author$project$ProverProcessors$escape = A2(
+	$elm$core$Basics$composeR,
+	A2($elm$core$String$replace, '&', '&amp;'),
+	A2(
+		$elm$core$Basics$composeR,
+		A2($elm$core$String$replace, '<', '&lt;'),
+		A2($elm$core$String$replace, '>', '&gt;')));
+var $author$project$ProverProcessors$cell = F2(
+	function (tag, content) {
+		return '<' + (tag + ('>' + ($author$project$ProverProcessors$escape(content) + ('</' + (tag + '>')))));
+	});
+var $author$project$ProverProcessors$row = F2(
+	function (tag, cells) {
+		return '<tr>' + ($elm$core$String$concat(
+			A2(
+				$elm$core$List$map,
+				$author$project$ProverProcessors$cell(tag),
+				cells)) + '</tr>');
+	});
+var $author$project$ProverProcessors$table = F2(
+	function (header, rows) {
+		return '<table class=\"lus-model-table\"><thead>' + (A2($author$project$ProverProcessors$row, 'th', header) + ('</thead><tbody>' + ($elm$core$String$concat(
+			A2(
+				$elm$core$List$map,
+				$author$project$ProverProcessors$row('td'),
+				rows)) + '</tbody></table>')));
+	});
+var $author$project$ProverProcessors$modelToHtml = F3(
+	function (problem, index, m) {
+		var universe = m.a;
+		var i = m.b;
+		var truth = function (f) {
+			var _v8 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolValuation, f, m);
+			if (!_v8.$) {
+				if (_v8.a) {
+					return 'true';
+				} else {
+					return 'false';
+				}
+			} else {
+				return 'not defined';
+			}
+		};
+		var problemConstants = A2(
+			$elm$core$List$concatMap,
+			$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolConstSymbols,
+			_Utils_ap(problem.bi, problem.bm));
+		var name = function (id) {
+			return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$identToString(id);
+		};
+		var elements = $elm$core$Set$toList(universe);
+		var el = $elm$core$String$fromInt;
+		var _function = function (_v6) {
+			var f = _v6.a;
+			var _v7 = _v6.b;
+			var arity = _v7.a;
+			var values = _v7.b;
+			var value = function (args) {
+				return A2(
+					$elm$core$Maybe$withDefault,
+					'?',
+					A2(
+						$elm$core$Maybe$map,
+						el,
+						A2($elm$core$Dict$get, args, values)));
+			};
+			switch (arity) {
+				case 1:
+					return A2(
+						$author$project$ProverProcessors$table,
+						A2(
+							$elm$core$List$cons,
+							'x',
+							A2($elm$core$List$map, el, elements)),
+						_List_fromArray(
+							[
+								A2(
+								$elm$core$List$cons,
+								name(f) + '(x)',
+								A2(
+									$elm$core$List$map,
+									function (x) {
+										return value(
+											_List_fromArray(
+												[x]));
+									},
+									elements))
+							]));
+				case 2:
+					return A2(
+						$author$project$ProverProcessors$table,
+						A2(
+							$elm$core$List$cons,
+							name(f) + '(x,y)',
+							A2(
+								$elm$core$List$map,
+								function (y) {
+									return 'y=' + el(y);
+								},
+								elements)),
+						A2(
+							$elm$core$List$map,
+							function (x) {
+								return A2(
+									$elm$core$List$cons,
+									'x=' + el(x),
+									A2(
+										$elm$core$List$map,
+										function (y) {
+											return value(
+												_List_fromArray(
+													[x, y]));
+										},
+										elements));
+							},
+							elements));
+				default:
+					return A2(
+						$author$project$ProverProcessors$table,
+						_List_fromArray(
+							[
+								name(f) + '(…)',
+								'value'
+							]),
+						A2(
+							$elm$core$List$map,
+							function (_v5) {
+								var args = _v5.a;
+								var v = _v5.b;
+								return _List_fromArray(
+									[
+										name(f) + ('(' + (A2(
+										$elm$core$String$join,
+										',',
+										A2($elm$core$List$map, el, args)) + ')')),
+										el(v)
+									]);
+							},
+							$elm$core$Dict$toList(values)));
+			}
+		};
+		var predicate = function (_v2) {
+			var p = _v2.a;
+			var _v3 = _v2.b;
+			var arity = _v3.a;
+			var extension = _v3.b;
+			var holds = function (args) {
+				return A2($elm$core$Set$member, args, extension) ? 'T' : 'F';
+			};
+			switch (arity) {
+				case 0:
+					return A2(
+						$author$project$ProverProcessors$table,
+						_List_fromArray(
+							[
+								name(p)
+							]),
+						_List_fromArray(
+							[
+								_List_fromArray(
+								[
+									holds(_List_Nil)
+								])
+							]));
+				case 1:
+					return A2(
+						$author$project$ProverProcessors$table,
+						A2(
+							$elm$core$List$cons,
+							'x',
+							A2($elm$core$List$map, el, elements)),
+						_List_fromArray(
+							[
+								A2(
+								$elm$core$List$cons,
+								name(p) + '(x)',
+								A2(
+									$elm$core$List$map,
+									function (x) {
+										return holds(
+											_List_fromArray(
+												[x]));
+									},
+									elements))
+							]));
+				case 2:
+					return A2(
+						$author$project$ProverProcessors$table,
+						A2(
+							$elm$core$List$cons,
+							name(p) + '(x,y)',
+							A2(
+								$elm$core$List$map,
+								function (y) {
+									return 'y=' + el(y);
+								},
+								elements)),
+						A2(
+							$elm$core$List$map,
+							function (x) {
+								return A2(
+									$elm$core$List$cons,
+									'x=' + el(x),
+									A2(
+										$elm$core$List$map,
+										function (y) {
+											return holds(
+												_List_fromArray(
+													[x, y]));
+										},
+										elements));
+							},
+							elements));
+				default:
+					return A2(
+						$author$project$ProverProcessors$table,
+						_List_fromArray(
+							[
+								name(p) + ' holds for'
+							]),
+						A2(
+							$elm$core$List$map,
+							function (args) {
+								return _List_fromArray(
+									[
+										'(' + (A2(
+										$elm$core$String$join,
+										',',
+										A2($elm$core$List$map, el, args)) + ')')
+									]);
+							},
+							$elm$core$Set$toList(extension)));
+			}
+		};
+		var constantName = function (c) {
+			return A2($elm$core$List$member, c, problemConstants) ? name(c) : (name(c) + ' (introduced by Mace4)');
+		};
+		var constants = $elm$core$Dict$isEmpty(i.bX) ? '' : A2(
+			$author$project$ProverProcessors$table,
+			_List_fromArray(
+				['constant', 'value']),
+			A2(
+				$elm$core$List$map,
+				function (_v0) {
+					var c = _v0.a;
+					var v = _v0.b;
+					return _List_fromArray(
+						[
+							constantName(c),
+							el(v)
+						]);
+				},
+				$elm$core$Dict$toList(i.bX)));
+		var checks = A2(
+			$author$project$ProverProcessors$table,
+			_List_fromArray(
+				['formula', 'value in the model']),
+			_Utils_ap(
+				A2(
+					$elm$core$List$map,
+					function (f) {
+						return _List_fromArray(
+							[
+								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f),
+								truth(f)
+							]);
+					},
+					problem.bi),
+				A2(
+					$elm$core$List$map,
+					function (f) {
+						return _List_fromArray(
+							[
+								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f) + '   (goal)',
+								truth(f)
+							]);
+					},
+					problem.bm)));
+		return '<div class=\"lus-model\"><h3>' + ('Model ' + ($elm$core$String$fromInt(index + 1) + (': universe {' + (A2(
+			$elm$core$String$join,
+			', ',
+			A2($elm$core$List$map, el, elements)) + ('}</h3>' + (constants + ($elm$core$String$concat(
+			A2(
+				$elm$core$List$map,
+				_function,
+				$elm$core$Dict$toList(i.cR))) + ($elm$core$String$concat(
+			A2(
+				$elm$core$List$map,
+				predicate,
+				$elm$core$Dict$toList(i.c1))) + (checks + '</div>')))))))));
+	});
+var $author$project$ProverProcessors$processMace4Models = F2(
+	function (content, problem) {
+		var _v0 = _Utils_Tuple2(
+			A2(
+				$elm$json$Json$Decode$decodeString,
+				A2($elm$json$Json$Decode$field, 'output', $elm$json$Json$Decode$string),
+				content),
+			problem);
+		if (_v0.a.$ === 1) {
+			var e = _v0.a.a;
+			return {
+				c: 3,
+				d: $elm$json$Json$Encode$string(
+					$elm$json$Json$Decode$errorToString(e))
+			};
+		} else {
+			if (_v0.b.$ === 1) {
+				var _v1 = _v0.b;
+				return {
+					c: 2,
+					d: $elm$json$Json$Encode$string('The problem of this node is not available: run the node again.')
+				};
+			} else {
+				var output = _v0.a.a;
+				var p = _v0.b.a;
+				var models = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$mace4Models, p.bA, output);
+				return {
+					c: 0,
+					d: $elm$json$Json$Encode$object(
+						_List_fromArray(
+							[
+								_Utils_Tuple2(
+								'kind',
+								$elm$json$Json$Encode$string('models')),
+								_Utils_Tuple2(
+								'sizes',
+								A2(
+									$elm$json$Json$Encode$list,
+									function (_v2) {
+										var u = _v2.a;
+										return $elm$json$Json$Encode$int(
+											$elm$core$Set$size(u));
+									},
+									models)),
+								_Utils_Tuple2(
+								'html',
+								$elm$json$Json$Encode$string(
+									$elm$core$String$concat(
+										A2(
+											$elm$core$List$indexedMap,
+											$author$project$ProverProcessors$modelToHtml(p),
+											models))))
+							]))
+				};
+			}
+		}
+	});
+var $author$project$ProverProcessors$conjunction = function (fs) {
+	if (!fs.b) {
+		return $elm$core$Maybe$Nothing;
+	} else {
+		var f = fs.a;
+		var rest = fs.b;
+		return $elm$core$Maybe$Just(
+			A3(
+				$elm$core$List$foldl,
+				F2(
+					function (g, acc) {
+						return A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Conj, acc, g);
+					}),
+				f,
+				rest));
+	}
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolUniversalClosure = function (f) {
+	var openVars = A2(
+		$elm$core$List$filter,
+		function (v) {
+			return A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolHasFreeInstanceOfVar, f, v);
+		},
+		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolVarSymbols(f));
+	return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolRenameVars(
+		A3(
 			$elm$core$List$foldl,
 			F2(
-				function (f, _v0) {
-					var res = _v0.a;
-					var info = _v0.b;
-					return A2(
-						$elm$core$Tuple$mapFirst,
-						function (s) {
-							return res + (s + '.\n');
-						},
-						A2(
-							$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4Str2,
-							f,
-							_Utils_update(
-								info,
-								{c4: $elm$core$Dict$empty, c5: 0})));
+				function (x, ac) {
+					return A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Forall, x, ac);
 				}),
-			_Utils_Tuple2('', ini),
-			fs);
-	});
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4StrUnsafe = F2(
-	function (t, _v3) {
-		var i = _v3.a;
-		var vdic = _v3.b;
-		var indices2Str = function (xs) {
-			if (!xs.b) {
-				return '';
+			f,
+			openVars));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$Predicate = 0;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$Function = 1;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities = function (f) {
+	formulaArities:
+	while (true) {
+		var termAr = function (t) {
+			if (!t.$) {
+				return _List_Nil;
 			} else {
-				return '_' + A2(
-					$elm$core$String$join,
-					'.',
-					A2($elm$core$List$map, $elm$core$String$fromInt, xs));
-			}
-		};
-		if (!t.$) {
-			var v = t.a;
-			var _v5 = A2($elm$core$Dict$get, v, vdic);
-			if (!_v5.$) {
-				var x = _v5.a;
-				return _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(x),
-					_Utils_Tuple2(i, vdic));
-			} else {
-				return _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(i),
-					_Utils_Tuple2(
-						i + 1,
-						A3($elm$core$Dict$insert, v, i, vdic)));
-			}
-		} else {
-			if (!t.b.b) {
-				var _v6 = t.a;
-				var c = _v6.a;
-				var sub = _v6.b;
-				return _Utils_Tuple2(
-					'\"' + (c + (indices2Str(sub) + '\"')),
-					_Utils_Tuple2(i, vdic));
-			} else {
-				var _v7 = t.a;
-				var f = _v7.a;
-				var sub = _v7.b;
+				var id = t.a;
 				var ts = t.b;
-				var _v8 = A2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4StrUnsafe,
-					ts,
-					_Utils_Tuple2(i, vdic));
-				var tstr = _v8.a;
-				var vinfo = _v8.b;
-				return _Utils_Tuple2(
-					'\"' + (f + (indices2Str(sub) + ('\"(' + (tstr + ')')))),
-					vinfo);
-			}
-		}
-	});
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4StrUnsafe = F2(
-	function (ts, vinfo) {
-		if (!ts.b) {
-			return _Utils_Tuple2('', vinfo);
-		} else {
-			var x = ts.a;
-			var xs = ts.b;
-			return A3(
-				$elm$core$List$foldl,
-				F2(
-					function (xi, _v1) {
-						var s_ = _v1.a;
-						var info_ = _v1.b;
-						return function (_v2) {
-							var si = _v2.a;
-							var infoi = _v2.b;
-							return _Utils_Tuple2(s_ + (',' + si), infoi);
-						}(
-							A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4StrUnsafe, xi, info_));
-					}),
-				A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4StrUnsafe, x, vinfo),
-				xs);
-		}
-	});
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2 = F2(
-	function (f, vinfo) {
-		var indices2Str = function (xs) {
-			if (!xs.b) {
-				return '';
-			} else {
-				return '_' + A2(
-					$elm$core$String$join,
-					'.',
-					A2($elm$core$List$map, $elm$core$String$fromInt, xs));
+				return A2(
+					$elm$core$List$cons,
+					_Utils_Tuple3(
+						1,
+						id,
+						$elm$core$List$length(ts)),
+					A2($elm$core$List$concatMap, termAr, ts));
 			}
 		};
 		switch (f.$) {
 			case 0:
+				var id = f.a;
+				var ts = f.b;
+				return A2(
+					$elm$core$List$cons,
+					_Utils_Tuple3(
+						0,
+						id,
+						$elm$core$List$length(ts)),
+					A2($elm$core$List$concatMap, termAr, ts));
+			case 1:
+				var t1 = f.a;
+				var t2 = f.b;
+				return _Utils_ap(
+					termAr(t1),
+					termAr(t2));
+			case 2:
+				var g = f.a;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaArities;
+			case 3:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(h));
+			case 4:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(h));
+			case 5:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(h));
+			case 6:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities(h));
+			case 7:
+				var g = f.b;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaArities;
+			case 8:
+				var g = f.b;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaArities;
+			default:
+				return _List_Nil;
+		}
+	}
+};
+var $elm$core$String$cons = _String_cons;
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Char$toLower = _Char_toLower;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$baseName = F2(
+	function (kind, _v0) {
+		var s = _v0.a;
+		var is = _v0.b;
+		var clean = $elm$core$String$concat(
+			A2(
+				$elm$core$List$map,
+				function (c) {
+					return (($elm$core$Char$isAlphaNum(c) && ($elm$core$Char$toCode(c) < 128)) || (c === '_')) ? $elm$core$String$fromChar(c) : ('u' + $elm$core$String$fromInt(
+						$elm$core$Char$toCode(c)));
+				},
+				$elm$core$String$toList(s)));
+		var withIndices = _Utils_ap(
+			clean,
+			$elm$core$String$concat(
+				A2(
+					$elm$core$List$map,
+					function (i) {
+						return '_' + $elm$core$String$fromInt(i);
+					},
+					is)));
+		if (!kind) {
+			return (A2(
+				$elm$core$String$all,
+				$elm$core$Char$isAlpha,
+				A2($elm$core$String$left, 1, withIndices)) && (withIndices !== '')) ? withIndices : ('P' + withIndices);
+		} else {
+			var _v2 = $elm$core$String$uncons(withIndices);
+			if (!_v2.$) {
+				var _v3 = _v2.a;
+				var c = _v3.a;
+				return ($elm$core$Char$isAlpha(c) && (!A2(
+					$elm$core$List$member,
+					$elm$core$Char$toLower(c),
+					_List_fromArray(
+						['u', 'v', 'w', 'x', 'y', 'z'])))) ? withIndices : ('c_' + withIndices);
+			} else {
+				return 'c_';
+			}
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$keyOf = F2(
+	function (kind, _v0) {
+		var s = _v0.a;
+		var is = _v0.b;
+		if (!kind) {
+			return _Utils_Tuple2('p\u0000' + s, is);
+		} else {
+			return _Utils_Tuple2('f\u0000' + s, is);
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$lookupName = F3(
+	function (names, kind, id) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$baseName, kind, id),
+			A2(
+				$elm$core$Dict$get,
+				A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$keyOf, kind, id),
+				names));
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$varName = function (_v0) {
+	var s = _v0.a;
+	var is = _v0.b;
+	var prime = _v0.c;
+	var clean = A2(
+		$elm$core$String$filter,
+		function (c) {
+			return $elm$core$Char$isAlphaNum(c) && ($elm$core$Char$toCode(c) < 128);
+		},
+		s);
+	return _Utils_ap(
+		(clean === '') ? 'V' : clean,
+		_Utils_ap(
+			$elm$core$String$concat(
+				A2(
+					$elm$core$List$map,
+					function (i) {
+						return '_' + $elm$core$String$fromInt(i);
+					},
+					is)),
+			(prime > 0) ? ('_p' + $elm$core$String$fromInt(prime)) : ''));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termToP9 = F2(
+	function (names, t) {
+		if (!t.$) {
+			var v = t.a;
+			return $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$varName(v);
+		} else {
+			if (!t.b.b) {
+				var id = t.a;
+				return A3($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$lookupName, names, 1, id);
+			} else {
+				var id = t.a;
+				var ts = t.b;
+				return A3($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$lookupName, names, 1, id) + ('(' + (A2(
+					$elm$core$String$join,
+					',',
+					A2(
+						$elm$core$List$map,
+						$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termToP9(names),
+						ts)) + ')'));
+			}
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9 = F2(
+	function (names, f) {
+		switch (f.$) {
+			case 0:
 				if (!f.b.b) {
-					var _v1 = f.a;
-					var p = _v1.a;
-					var sub = _v1.b;
-					return _Utils_Tuple2(
-						'\"' + (p + (indices2Str(sub) + '\"')),
-						vinfo);
+					var id = f.a;
+					return A3($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$lookupName, names, 0, id);
 				} else {
-					var _v2 = f.a;
-					var p = _v2.a;
-					var sub = _v2.b;
+					var id = f.a;
 					var ts = f.b;
-					var _v3 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$terms2P9M4StrUnsafe, ts, vinfo);
-					var tstr = _v3.a;
-					var nvinfo = _v3.b;
-					return _Utils_Tuple2(
-						'\"' + (p + (indices2Str(sub) + ('\"(' + (tstr + ')')))),
-						nvinfo);
+					return A3($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$lookupName, names, 0, id) + ('(' + (A2(
+						$elm$core$String$join,
+						',',
+						A2(
+							$elm$core$List$map,
+							$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termToP9(names),
+							ts)) + ')'));
 				}
 			case 1:
 				var t1 = f.a;
 				var t2 = f.b;
-				var _v4 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4StrUnsafe, t1, vinfo);
-				var tstr1 = _v4.a;
-				var nvinfo = _v4.b;
-				var _v5 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4StrUnsafe, t2, nvinfo);
-				var tstr2 = _v5.a;
-				var nvinfo2 = _v5.b;
-				return _Utils_Tuple2('(' + (tstr1 + (' = ' + (tstr2 + ')'))), nvinfo2);
+				return '(' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termToP9, names, t1) + (' = ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termToP9, names, t2) + ')')));
 			case 2:
 				if (f.a.$ === 1) {
-					var _v6 = f.a;
-					var t1 = _v6.a;
-					var t2 = _v6.b;
-					var _v7 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4StrUnsafe, t1, vinfo);
-					var tstr1 = _v7.a;
-					var nvinfo = _v7.b;
-					var _v8 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$term2P9M4StrUnsafe, t2, nvinfo);
-					var tstr2 = _v8.a;
-					var nvinfo2 = _v8.b;
-					return _Utils_Tuple2('(' + (tstr1 + (' != ' + (tstr2 + ')'))), nvinfo2);
+					var _v1 = f.a;
+					var t1 = _v1.a;
+					var t2 = _v1.b;
+					return '(' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termToP9, names, t1) + (' != ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termToP9, names, t2) + ')')));
 				} else {
-					var f1 = f.a;
-					var _v9 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f1, vinfo);
-					var f1str = _v9.a;
-					var info1 = _v9.b;
-					return _Utils_Tuple2('-' + f1str, info1);
+					var g = f.a;
+					return '-' + A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, g);
 				}
 			case 3:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v10 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f1, vinfo);
-				var f1str = _v10.a;
-				var info1 = _v10.b;
-				var _v11 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f2, info1);
-				var f2str = _v11.a;
-				var info2 = _v11.b;
-				return _Utils_Tuple2('(' + (f1str + (' & ' + (f2str + ')'))), info2);
+				var g = f.a;
+				var h = f.b;
+				return '(' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, g) + (' & ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, h) + ')')));
 			case 4:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v12 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f1, vinfo);
-				var f1str = _v12.a;
-				var info1 = _v12.b;
-				var _v13 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f2, info1);
-				var f2str = _v13.a;
-				var info2 = _v13.b;
-				return _Utils_Tuple2('(' + (f1str + (' | ' + (f2str + ')'))), info2);
+				var g = f.a;
+				var h = f.b;
+				return '(' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, g) + (' | ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, h) + ')')));
 			case 5:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v14 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f1, vinfo);
-				var f1str = _v14.a;
-				var info1 = _v14.b;
-				var _v15 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f2, info1);
-				var f2str = _v15.a;
-				var info2 = _v15.b;
-				return _Utils_Tuple2('(' + (f1str + (' -> ' + (f2str + ')'))), info2);
+				var g = f.a;
+				var h = f.b;
+				return '(' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, g) + (' -> ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, h) + ')')));
 			case 6:
-				var f1 = f.a;
-				var f2 = f.b;
-				var _v16 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f1, vinfo);
-				var f1str = _v16.a;
-				var info1 = _v16.b;
-				var _v17 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f2, info1);
-				var f2str = _v17.a;
-				var info2 = _v17.b;
-				return _Utils_Tuple2('(' + (f1str + (' <-> ' + (f2str + ')'))), info2);
-			case 7:
-				var v = f.a;
-				var f1 = f.b;
-				var _v18 = vinfo;
-				var i = _v18.a;
-				var vdic = _v18.b;
-				var _v19 = _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(i),
-					_Utils_Tuple2(
-						i + 1,
-						A3($elm$core$Dict$insert, v, i, vdic)));
-				var vstr = _v19.a;
-				var info1 = _v19.b;
-				var _v20 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f1, info1);
-				var f1str = _v20.a;
-				var info2 = _v20.b;
-				return _Utils_Tuple2('exists ' + (vstr + (' ' + f1str)), info2);
+				var g = f.a;
+				var h = f.b;
+				return '(' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, g) + (' <-> ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, h) + ')')));
 			case 8:
 				var v = f.a;
-				var f1 = f.b;
-				var _v21 = vinfo;
-				var i = _v21.a;
-				var vdic = _v21.b;
-				var _v22 = _Utils_Tuple2(
-					$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$varIdxP9M4Str(i),
-					_Utils_Tuple2(
-						i + 1,
-						A3($elm$core$Dict$insert, v, i, vdic)));
-				var vstr = _v22.a;
-				var info1 = _v22.b;
-				var _v23 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2, f1, info1);
-				var f1str = _v23.a;
-				var info2 = _v23.b;
-				return _Utils_Tuple2('all ' + (vstr + (' ' + f1str)), info2);
+				var g = f.b;
+				return '(all ' + ($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$varName(v) + (' ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, g) + ')')));
+			case 7:
+				var v = f.a;
+				var g = f.b;
+				return '(exists ' + ($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$varName(v) + (' ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, g) + ')')));
 			case 10:
-				return _Utils_Tuple2('$T', vinfo);
+				return '$T';
 			default:
-				return _Utils_Tuple2('$F', vinfo);
+				return '$F';
 		}
 	});
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe = function (f) {
-	return A2(
-		$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe2,
-		f,
-		_Utils_Tuple2(0, $elm$core$Dict$empty)).a + '.';
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$originalIdent = function (_v0) {
+	var k = _v0.a;
+	var is = _v0.b;
+	return _Utils_Tuple2(
+		A2($elm$core$String$dropLeft, 2, k),
+		is);
 };
-var $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$sfol2P9M4StrUnsafe = function (fs) {
-	return A2(
-		$elm$core$String$join,
-		'\n',
-		A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$ffol2P9M4StrUnsafe, fs));
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termSymbols = function (t) {
+	if (!t.$) {
+		return _List_Nil;
+	} else {
+		var id = t.a;
+		var ts = t.b;
+		return A2(
+			$elm$core$List$cons,
+			_Utils_Tuple2(1, id),
+			A2($elm$core$List$concatMap, $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termSymbols, ts));
+	}
 };
-var $author$project$ExtProcessors$processP9M4Solver = F2(
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols = function (f) {
+	formulaSymbols:
+	while (true) {
+		switch (f.$) {
+			case 0:
+				var id = f.a;
+				var ts = f.b;
+				return A2(
+					$elm$core$List$cons,
+					_Utils_Tuple2(0, id),
+					A2($elm$core$List$concatMap, $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termSymbols, ts));
+			case 1:
+				var t1 = f.a;
+				var t2 = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termSymbols(t1),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$termSymbols(t2));
+			case 2:
+				var g = f.a;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaSymbols;
+			case 3:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(h));
+			case 4:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(h));
+			case 5:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(h));
+			case 6:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols(h));
+			case 7:
+				var g = f.b;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaSymbols;
+			case 8:
+				var g = f.b;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaSymbols;
+			default:
+				return _List_Nil;
+		}
+	}
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$freshName = F3(
+	function (base, used, i) {
+		freshName:
+		while (true) {
+			var candidate = (i === 1) ? base : (base + ('_' + $elm$core$String$fromInt(i)));
+			if (A2($elm$core$Set$member, candidate, used)) {
+				var $temp$base = base,
+					$temp$used = used,
+					$temp$i = i + 1;
+				base = $temp$base;
+				used = $temp$used;
+				i = $temp$i;
+				continue freshName;
+			} else {
+				return candidate;
+			}
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$symbolNames = function (fs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, _v1) {
+				var kind = _v0.a;
+				var id = _v0.b;
+				var acc = _v1.a;
+				var used = _v1.b;
+				var name = A3(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$freshName,
+					A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$baseName, kind, id),
+					used,
+					1);
+				return _Utils_Tuple2(
+					A3(
+						$elm$core$Dict$insert,
+						A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$keyOf, kind, id),
+						name,
+						acc),
+					A2($elm$core$Set$insert, name, used));
+			}),
+		_Utils_Tuple2($elm$core$Dict$empty, $elm$core$Set$empty),
+		$elm_community$list_extra$List$Extra$unique(
+			A2($elm$core$List$concatMap, $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaSymbols, fs))).a;
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$p9m4Problem = function (_v0) {
+	var assumptions = _v0.bi;
+	var goals = _v0.bm;
+	var names = $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$symbolNames(
+		_Utils_ap(assumptions, goals));
+	var section = F2(
+		function (title, fs) {
+			return 'formulas(' + (title + (').\n' + ($elm$core$String$concat(
+				A2(
+					$elm$core$List$map,
+					function (f) {
+						return A2($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaToP9, names, f) + '.\n';
+					},
+					fs)) + 'end_of_list.\n')));
+		});
+	return {
+		bB: $elm$core$Dict$fromList(
+			A2(
+				$elm$core$List$map,
+				function (_v1) {
+					var kind = _v1.a;
+					var id = _v1.b;
+					var k = _v1.c;
+					return _Utils_Tuple2(
+						A3($logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$lookupName, names, kind, id),
+						_Utils_Tuple2(!kind, k));
+				},
+				A2(
+					$elm$core$List$concatMap,
+					$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$formulaArities,
+					_Utils_ap(assumptions, goals)))),
+		aL: _Utils_ap(
+			A2(section, 'assumptions', assumptions),
+			$elm$core$List$isEmpty(goals) ? '' : ('\n' + A2(section, 'goals', goals))),
+		bM: $elm$core$Dict$fromList(
+			A2(
+				$elm$core$List$map,
+				function (_v2) {
+					var key = _v2.a;
+					var n = _v2.b;
+					return _Utils_Tuple2(
+						n,
+						$logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$originalIdent(key));
+				},
+				$elm$core$Dict$toList(names)))
+	};
+};
+var $elm$core$List$singleton = function (value) {
+	return _List_fromArray(
+		[value]);
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$Predicate = 0;
+var $elm$core$String$foldl = _String_foldl;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$balancedInside = function (s) {
+	return function (_v1) {
+		var d = _v1.a;
+		var ok = _v1.b;
+		return ok && (!d);
+	}(
+		A3(
+			$elm$core$String$foldl,
+			F2(
+				function (c, _v0) {
+					var depth = _v0.a;
+					var ok = _v0.b;
+					return (!ok) ? _Utils_Tuple2(depth, ok) : ((c === '(') ? _Utils_Tuple2(depth + 1, ok) : ((c === ')') ? _Utils_Tuple2(depth - 1, (depth - 1) >= 0) : _Utils_Tuple2(depth, ok)));
+				}),
+			_Utils_Tuple2(0, true),
+			s));
+};
+var $elm$core$String$endsWith = _String_endsWith;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$keyOf = F2(
+	function (kind, _v0) {
+		var s = _v0.a;
+		var is = _v0.b;
+		if (!kind) {
+			return _Utils_Tuple2('p\u0000' + s, is);
+		} else {
+			return _Utils_Tuple2('f\u0000' + s, is);
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$indicesSuffix = function (is) {
+	return $elm$core$String$concat(
+		A2(
+			$elm$core$List$map,
+			function (i) {
+				return '_' + $elm$core$String$fromInt(i);
+			},
+			is));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lowerWord = function (_v0) {
+	var s = _v0.a;
+	var is = _v0.b;
+	var clean = $elm$core$String$concat(
+		A2(
+			$elm$core$List$map,
+			function (c) {
+				return ($elm$core$Char$isAlphaNum(c) && ($elm$core$Char$toCode(c) < 128)) ? $elm$core$String$fromChar(c) : ((c === '_') ? '_' : ('u' + $elm$core$String$fromInt(
+					$elm$core$Char$toCode(c))));
+			},
+			$elm$core$String$toList(s)));
+	var first = A2($elm$core$String$left, 1, clean);
+	var start = (A2($elm$core$String$all, $elm$core$Char$isAlpha, first) && (first !== '')) ? _Utils_ap(
+		$elm$core$String$toLower(first),
+		A2($elm$core$String$dropLeft, 1, clean)) : ('s' + clean);
+	return _Utils_ap(
+		start,
+		$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$indicesSuffix(is));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lookupName = F3(
+	function (names, kind, id) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lowerWord(id),
+			A2(
+				$elm$core$Dict$get,
+				A2($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$keyOf, kind, id),
+				names));
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$Function = 1;
+var $elm$core$Char$toUpper = _Char_toUpper;
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$varName = function (_v0) {
+	var s = _v0.a;
+	var is = _v0.b;
+	var prime = _v0.c;
+	var clean = A2(
+		$elm$core$String$filter,
+		function (c) {
+			return $elm$core$Char$isAlphaNum(c) && ($elm$core$Char$toCode(c) < 128);
+		},
+		s);
+	var start = function () {
+		var _v1 = $elm$core$String$uncons(clean);
+		if (!_v1.$) {
+			var _v2 = _v1.a;
+			var c = _v2.a;
+			var rest = _v2.b;
+			return _Utils_ap(
+				$elm$core$String$fromChar(
+					$elm$core$Char$toUpper(c)),
+				rest);
+		} else {
+			return 'V';
+		}
+	}();
+	return _Utils_ap(
+		start,
+		_Utils_ap(
+			$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$indicesSuffix(is),
+			(prime > 0) ? ('_p' + $elm$core$String$fromInt(prime)) : ''));
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termToTPTP = F2(
+	function (names, t) {
+		if (!t.$) {
+			var v = t.a;
+			return $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$varName(v);
+		} else {
+			if (!t.b.b) {
+				var id = t.a;
+				return A3($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lookupName, names, 1, id);
+			} else {
+				var id = t.a;
+				var ts = t.b;
+				return A3($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lookupName, names, 1, id) + ('(' + (A2(
+					$elm$core$String$join,
+					', ',
+					A2(
+						$elm$core$List$map,
+						$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termToTPTP(names),
+						ts)) + ')'));
+			}
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaToTPTP = F2(
+	function (names, f) {
+		var go = function (g) {
+			switch (g.$) {
+				case 0:
+					if (!g.b.b) {
+						var id = g.a;
+						return A3($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lookupName, names, 0, id);
+					} else {
+						var id = g.a;
+						var ts = g.b;
+						return A3($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lookupName, names, 0, id) + ('(' + (A2(
+							$elm$core$String$join,
+							', ',
+							A2(
+								$elm$core$List$map,
+								$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termToTPTP(names),
+								ts)) + ')'));
+					}
+				case 1:
+					var t1 = g.a;
+					var t2 = g.b;
+					return A2($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termToTPTP, names, t1) + (' = ' + A2($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termToTPTP, names, t2));
+				case 2:
+					if (g.a.$ === 1) {
+						var _v3 = g.a;
+						var t1 = _v3.a;
+						var t2 = _v3.b;
+						return A2($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termToTPTP, names, t1) + (' != ' + A2($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termToTPTP, names, t2));
+					} else {
+						var h = g.a;
+						return '~ ' + unary(h);
+					}
+				case 3:
+					var a = g.a;
+					var b = g.b;
+					return '(' + (go(a) + (' & ' + (go(b) + ')')));
+				case 4:
+					var a = g.a;
+					var b = g.b;
+					return '(' + (go(a) + (' | ' + (go(b) + ')')));
+				case 5:
+					var a = g.a;
+					var b = g.b;
+					return '(' + (go(a) + (' => ' + (go(b) + ')')));
+				case 6:
+					var a = g.a;
+					var b = g.b;
+					return '(' + (go(a) + (' <=> ' + (go(b) + ')')));
+				case 8:
+					var v = g.a;
+					var h = g.b;
+					return '![' + ($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$varName(v) + (']: ' + unary(h)));
+				case 7:
+					var v = g.a;
+					var h = g.b;
+					return '?[' + ($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$varName(v) + (']: ' + unary(h)));
+				case 10:
+					return '$true';
+				default:
+					return '$false';
+			}
+		};
+		var unary = function (h) {
+			_v0$2:
+			while (true) {
+				switch (h.$) {
+					case 1:
+						return '(' + (go(h) + ')');
+					case 2:
+						if (h.a.$ === 1) {
+							var _v1 = h.a;
+							return '(' + (go(h) + ')');
+						} else {
+							break _v0$2;
+						}
+					default:
+						break _v0$2;
+				}
+			}
+			return go(h);
+		};
+		var out = go(f);
+		return (A2($elm$core$String$startsWith, '(', out) && (A2($elm$core$String$endsWith, ')', out) && $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$balancedInside(
+			A3($elm$core$String$slice, 1, -1, out)))) ? A3($elm$core$String$slice, 1, -1, out) : out;
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$originalIdent = function (_v0) {
+	var k = _v0.a;
+	var is = _v0.b;
+	return _Utils_Tuple2(
+		A2($elm$core$String$dropLeft, 2, k),
+		is);
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termSymbols = function (t) {
+	if (!t.$) {
+		return _List_Nil;
+	} else {
+		var id = t.a;
+		var ts = t.b;
+		return A2(
+			$elm$core$List$cons,
+			_Utils_Tuple2(1, id),
+			A2($elm$core$List$concatMap, $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termSymbols, ts));
+	}
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols = function (f) {
+	formulaSymbols:
+	while (true) {
+		switch (f.$) {
+			case 0:
+				var id = f.a;
+				var ts = f.b;
+				return A2(
+					$elm$core$List$cons,
+					_Utils_Tuple2(0, id),
+					A2($elm$core$List$concatMap, $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termSymbols, ts));
+			case 1:
+				var t1 = f.a;
+				var t2 = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termSymbols(t1),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$termSymbols(t2));
+			case 2:
+				var g = f.a;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaSymbols;
+			case 3:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(h));
+			case 4:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(h));
+			case 5:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(h));
+			case 6:
+				var g = f.a;
+				var h = f.b;
+				return _Utils_ap(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(g),
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols(h));
+			case 7:
+				var g = f.b;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaSymbols;
+			case 8:
+				var g = f.b;
+				var $temp$f = g;
+				f = $temp$f;
+				continue formulaSymbols;
+			default:
+				return _List_Nil;
+		}
+	}
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$freshName = F3(
+	function (base, used, i) {
+		freshName:
+		while (true) {
+			var candidate = (i === 1) ? base : (base + ('_' + $elm$core$String$fromInt(i)));
+			if (A2($elm$core$Set$member, candidate, used)) {
+				var $temp$base = base,
+					$temp$used = used,
+					$temp$i = i + 1;
+				base = $temp$base;
+				used = $temp$used;
+				i = $temp$i;
+				continue freshName;
+			} else {
+				return candidate;
+			}
+		}
+	});
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$uniqueKeep = function (xs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (x, acc) {
+				return A2($elm$core$List$member, x, acc) ? acc : _Utils_ap(
+					acc,
+					_List_fromArray(
+						[x]));
+			}),
+		_List_Nil,
+		xs);
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$symbolNames = function (fs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, _v1) {
+				var kind = _v0.a;
+				var id = _v0.b;
+				var acc = _v1.a;
+				var used = _v1.b;
+				var name = A3(
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$freshName,
+					$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$lowerWord(id),
+					used,
+					1);
+				return _Utils_Tuple2(
+					A3(
+						$elm$core$Dict$insert,
+						A2($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$keyOf, kind, id),
+						name,
+						acc),
+					A2($elm$core$Set$insert, name, used));
+			}),
+		_Utils_Tuple2($elm$core$Dict$empty, $elm$core$Set$empty),
+		$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$uniqueKeep(
+			A2($elm$core$List$concatMap, $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaSymbols, fs))).a;
+};
+var $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$tptpProblem = function (_v0) {
+	var axioms = _v0.cH;
+	var conjecture = _v0.cL;
+	var all = _Utils_ap(
+		axioms,
+		A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2($elm$core$Maybe$map, $elm$core$List$singleton, conjecture)));
+	var names = $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$symbolNames(all);
+	var line = F3(
+		function (role, name, f) {
+			return 'fof(' + (name + (', ' + (role + (', ' + (A2($logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$formulaToTPTP, names, f) + ').\n')))));
+		});
+	return {
+		aL: _Utils_ap(
+			$elm$core$String$concat(
+				A2(
+					$elm$core$List$indexedMap,
+					F2(
+						function (i, f) {
+							return A3(
+								line,
+								'axiom',
+								'ax' + $elm$core$String$fromInt(i + 1),
+								f);
+						}),
+					axioms)),
+			function () {
+				if (!conjecture.$) {
+					var g = conjecture.a;
+					return A3(line, 'conjecture', 'goal', g);
+				} else {
+					return '';
+				}
+			}()),
+		bM: $elm$core$Dict$fromList(
+			A2(
+				$elm$core$List$map,
+				function (_v2) {
+					var key = _v2.a;
+					var n = _v2.b;
+					return _Utils_Tuple2(
+						n,
+						$logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$originalIdent(key));
+				},
+				$elm$core$Dict$toList(names)))
+	};
+};
+var $author$project$ProverProcessors$processProverProblem = F2(
 	function (content, outputsSFOL) {
-		var slotDecoder = A3(
+		var sourceToString = function (_v5) {
+			var i = _v5.a;
+			var s = _v5.b;
+			return '(' + ($elm$core$String$fromInt(i) + (', ' + ($elm$core$String$fromInt(s) + ')')));
+		};
+		var sourceDecoder = A3(
 			$elm$json$Json$Decode$map2,
 			$elm$core$Tuple$pair,
-			A2(
-				$elm$json$Json$Decode$at,
-				_List_fromArray(
-					['origin_id']),
-				$elm$json$Json$Decode$int),
-			A2(
-				$elm$json$Json$Decode$at,
-				_List_fromArray(
-					['origin_slot']),
-				$elm$json$Json$Decode$int));
+			A2($elm$json$Json$Decode$field, 'origin_id', $elm$json$Json$Decode$int),
+			A2($elm$json$Json$Decode$field, 'origin_slot', $elm$json$Json$Decode$int));
+		var error = F2(
+			function (code, msg) {
+				return {
+					c: code,
+					d: $elm$json$Json$Encode$string(msg),
+					i: $elm$core$Maybe$Nothing
+				};
+			});
 		var contentDecoder = A4(
 			$elm$json$Json$Decode$map3,
 			F3(
-				function (x, y, z) {
-					return {bF: x, bV: y, cp: z};
+				function (a, g, l) {
+					return {bP: a, b4: g, cd: l};
 				}),
-			A2(
-				$elm$json$Json$Decode$at,
-				_List_fromArray(
-					['a']),
-				$elm$json$Json$Decode$string),
-			A2(
-				$elm$json$Json$Decode$at,
-				_List_fromArray(
-					['g']),
-				$elm$json$Json$Decode$string),
-			A2(
-				$elm$json$Json$Decode$at,
-				_List_fromArray(
-					['u']),
-				$elm$json$Json$Decode$bool));
+			A2($elm$json$Json$Decode$field, 'a', $elm$json$Json$Decode$string),
+			A2($elm$json$Json$Decode$field, 'g', $elm$json$Json$Decode$string),
+			A2($elm$json$Json$Decode$field, 'language', $elm$json$Json$Decode$string));
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
-		if (!_v0.$) {
+		if (_v0.$ === 1) {
+			var e = _v0.a;
+			return A2(
+				error,
+				3,
+				$elm$json$Json$Decode$errorToString(e));
+		} else {
 			var c = _v0.a;
 			var _v1 = _Utils_Tuple2(
-				A2($elm$json$Json$Decode$decodeString, slotDecoder, c.bF),
-				A2($elm$json$Json$Decode$decodeString, slotDecoder, c.bV));
+				A2($elm$json$Json$Decode$decodeString, sourceDecoder, c.bP),
+				A2($elm$json$Json$Decode$decodeString, sourceDecoder, c.b4));
 			if (!_v1.a.$) {
 				if (!_v1.b.$) {
 					var a = _v1.a.a;
@@ -21274,84 +22694,67 @@ var $author$project$ExtProcessors$processP9M4Solver = F2(
 						A2($elm$core$Dict$get, g, outputsSFOL));
 					if (!_v2.a.$) {
 						if (!_v2.b.$) {
-							var ass = _v2.a.a;
-							var gs = _v2.b.a;
-							if (!c.cp) {
-								var goals_str = $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$sfol2P9M4StrUnsafe(gs);
-								var ass_str = $logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$sfol2P9M4StrUnsafe(ass);
-								return {
-									c: 0,
-									d: $elm$json$Json$Encode$string('set(prolog_style_variables).\n' + ('formulas(assumptions). \n' + (ass_str + ('\nend_of_list.\n\nformulas(goals). \n' + (goals_str + '\nend_of_list.')))))
-								};
-							} else {
-								var _v3 = A2(
-									$logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$sfol2P9M4Str2,
-									ass,
-									{cA: $elm$core$Dict$empty, cC: 0, cI: $elm$core$Dict$empty, cJ: 0, cX: $elm$core$Dict$empty, cY: 0, c4: $elm$core$Dict$empty, c5: 0});
-								var ass_str = _v3.a;
-								var info = _v3.b;
-								var _v4 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$ToStringP9M4$sfol2P9M4Str2, gs, info);
-								var goals_str = _v4.a;
-								return {
-									c: 0,
-									d: $elm$json$Json$Encode$string('set(prolog_style_variables).\n' + ('formulas(assumptions). \n' + (ass_str + ('\nend_of_list.\n\nformulas(goals). \n' + (goals_str + '\nend_of_list.')))))
-								};
-							}
-						} else {
-							return {
-								c: 2,
-								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(g.a) + (', ' + ($elm$core$String$fromInt(g.b) + ')'))))
+							var sourceAssumptions = _v2.a.a;
+							var sourceGoals = _v2.b.a;
+							var goals = A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolUniversalClosure, sourceGoals);
+							var goal = $author$project$ProverProcessors$conjunction(goals);
+							var assumptions = A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolUniversalClosure, sourceAssumptions);
+							var problem = {
+								bi: assumptions,
+								bm: goals,
+								bA: $logicUSLIB$logicus_fol$LogicUS$FOL$Prover9Mace4$p9m4Problem(
+									{
+										bi: assumptions,
+										bm: A2(
+											$elm$core$Maybe$withDefault,
+											_List_Nil,
+											A2($elm$core$Maybe$map, $elm$core$List$singleton, goal))
+									})
 							};
+							var input = (c.cd === 'tptp') ? $logicUSLIB$logicus_fol$LogicUS$FOL$TPTP$tptpProblem(
+								{cH: assumptions, cL: goal}).aL : problem.bA.aL;
+							return {
+								c: 0,
+								d: $elm$json$Json$Encode$object(
+									_List_fromArray(
+										[
+											_Utils_Tuple2(
+											'kind',
+											$elm$json$Json$Encode$string('problem')),
+											_Utils_Tuple2(
+											'input',
+											$elm$json$Json$Encode$string(input))
+										])),
+								i: $elm$core$Maybe$Just(problem)
+							};
+						} else {
+							var _v4 = _v2.b;
+							return A2(
+								error,
+								2,
+								'Unknown source: ' + sourceToString(g));
 						}
 					} else {
-						if (!_v2.b.$) {
-							return {
-								c: 2,
-								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(a.a) + (', ' + ($elm$core$String$fromInt(a.b) + ')'))))
-							};
-						} else {
-							return {
-								c: 2,
-								d: $elm$json$Json$Encode$string(
-									'Unknown sources: a=(' + ($elm$core$String$fromInt(a.a) + (', ' + ($elm$core$String$fromInt(a.b) + ('), g=(' + ($elm$core$String$fromInt(g.a) + (', ' + ($elm$core$String$fromInt(g.b) + ')'))))))))
-							};
-						}
+						var _v3 = _v2.a;
+						return A2(
+							error,
+							2,
+							'Unknown source: ' + sourceToString(a));
 					}
 				} else {
-					var eg = _v1.b.a;
-					return {
-						c: 3,
-						d: $elm$json$Json$Encode$string(
-							$elm$json$Json$Decode$errorToString(eg))
-					};
+					var e = _v1.b.a;
+					return A2(
+						error,
+						3,
+						$elm$json$Json$Decode$errorToString(e));
 				}
 			} else {
-				if (_v1.b.$ === 1) {
-					var ea = _v1.a.a;
-					var eg = _v1.b.a;
-					return {
-						c: 3,
-						d: $elm$json$Json$Encode$string(
-							$elm$json$Json$Decode$errorToString(ea) + ('. ' + $elm$json$Json$Decode$errorToString(eg)))
-					};
-				} else {
-					var ea = _v1.a.a;
-					return {
-						c: 3,
-						d: $elm$json$Json$Encode$string(
-							$elm$json$Json$Decode$errorToString(ea))
-					};
-				}
+				var e = _v1.a.a;
+				return A2(
+					error,
+					3,
+					$elm$json$Json$Decode$errorToString(e));
 			}
-		} else {
-			var e = _v0.a;
-			return {
-				c: 3,
-				d: $elm$json$Json$Encode$string(
-					$elm$json$Json$Decode$errorToString(e))
-			};
 		}
 	});
 var $author$project$Auxiliar$folVarNameParser = $elm$parser$Parser$getChompedString(
@@ -21377,7 +22780,7 @@ var $author$project$Auxiliar$folVarSubSuperIndexedParser = A2(
 		A2(
 			$elm$parser$Parser$ignorer,
 			$elm$parser$Parser$sequence(
-				{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}),
+				{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}),
 			$elm$parser$Parser$symbol('^{'))),
 	A2(
 		$elm$parser$Parser$ignorer,
@@ -21394,7 +22797,7 @@ var $author$project$Auxiliar$folVarSubindexedParser = A2(
 				})),
 		$author$project$Auxiliar$folVarNameParser),
 	$elm$parser$Parser$sequence(
-		{bQ: '}', b0: $elm$parser$Parser$int, ci: ',', cj: $elm$parser$Parser$spaces, ck: '_{', co: 0}));
+		{b$: '}', cb: $elm$parser$Parser$int, cu: ',', cv: $elm$parser$Parser$spaces, cw: '_{', cA: 0}));
 var $author$project$Auxiliar$folVarSupindexedParser = A2(
 	$elm$parser$Parser$keeper,
 	A2(
@@ -21441,7 +22844,7 @@ var $author$project$FOLBasicProcessors$processQuantifierFOLNode = F2(
 			$elm$json$Json$Decode$map4,
 			F4(
 				function (x, y, z, u) {
-					return {K: x, L: y, M: z, N: u};
+					return {L: x, M: y, N: z, O: u};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -21467,7 +22870,7 @@ var $author$project$FOLBasicProcessors$processQuantifierFOLNode = F2(
 			$elm$json$Json$Decode$map3,
 			F3(
 				function (x, y, z) {
-					return {aH: y, af: x, bD: z};
+					return {aL: y, ah: x, bN: z};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -21487,23 +22890,23 @@ var $author$project$FOLBasicProcessors$processQuantifierFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var sources = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(sources.K, sources.L),
+					_Utils_Tuple2(sources.L, sources.M),
 					outputsffol);
 				if (!_v2.$) {
 					var f = _v2.a;
-					var _v3 = A2($elm$parser$Parser$run, $author$project$Auxiliar$folVariableParser, c.bD);
+					var _v3 = A2($elm$parser$Parser$run, $author$project$Auxiliar$folVariableParser, c.bN);
 					if (!_v3.$) {
 						var v = _v3.a;
 						if (A2(
 							$elm$core$List$member,
 							v,
 							$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolFreeVars(f))) {
-							var _v4 = c.af;
+							var _v4 = c.ah;
 							switch (_v4) {
 								case 'exists':
 									var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolRenameVars(
@@ -21542,7 +22945,7 @@ var $author$project$FOLBasicProcessors$processQuantifierFOLNode = F2(
 						var e = _v3.a;
 						return {
 							c: 3,
-							d: $elm$json$Json$Encode$string('\"' + (c.bD + '\" is not a variable (variables are written like X, Ys or X_{1,2})')),
+							d: $elm$json$Json$Encode$string('\"' + (c.bN + '\" is not a variable (variables are written like X, Ys or X_{1,2})')),
 							i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 						};
 					}
@@ -21550,7 +22953,7 @@ var $author$project$FOLBasicProcessors$processQuantifierFOLNode = F2(
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(sources.K) + (', ' + ($elm$core$String$fromInt(sources.L) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(sources.L) + (', ' + ($elm$core$String$fromInt(sources.M) + ')')))),
 						i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 					};
 				}
@@ -21883,30 +23286,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$factorItems = F2(
 			function (_v0) {
 				var sub = _v0.a;
 				var f = _v0.b;
-				return {b: f, z: sub, S: id, T: id, A: $elm$core$Dict$empty};
+				return {b: f, A: sub, T: id, U: id, B: $elm$core$Dict$empty};
 			},
 			$logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$cfolFactors(c));
-	});
-var $elm$core$List$drop = F2(
-	function (n, list) {
-		drop:
-		while (true) {
-			if (n <= 0) {
-				return list;
-			} else {
-				if (!list.b) {
-					return list;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs;
-					n = $temp$n;
-					list = $temp$list;
-					continue drop;
-				}
-			}
-		}
 	});
 var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$openedUpdationSCFResolutionAux = F2(
 	function (xs, new_opens) {
@@ -21985,10 +23367,10 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath = F2(
 		var _v0 = A2($elm$core$Dict$get, i, refDict);
 		if (!_v0.$) {
 			var ri = _v0.a;
-			var _v1 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath, ri.T, refDict);
+			var _v1 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath, ri.U, refDict);
 			var nodes2 = _v1.a;
 			var edges2 = _v1.b;
-			var _v2 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath, ri.S, refDict);
+			var _v2 = A2($logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath, ri.T, refDict);
 			var nodes1 = _v2.a;
 			var edges1 = _v2.b;
 			return _Utils_Tuple2(
@@ -22004,7 +23386,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath = F2(
 						$elm$core$List$cons,
 						A3(
 							$elm_community$graph$Graph$Edge,
-							ri.S,
+							ri.T,
 							i,
 							_Utils_Tuple2(
 								$elm$core$Dict$empty,
@@ -22024,17 +23406,17 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath = F2(
 															function ($) {
 																return $.b;
 															},
-															A2($elm$core$Dict$get, ri.S, refDict)))));
+															A2($elm$core$Dict$get, ri.T, refDict)))));
 										}),
-									ri.z))),
-						_Utils_eq(ri.S, ri.T) ? _List_Nil : _List_fromArray(
+									ri.A))),
+						_Utils_eq(ri.T, ri.U) ? _List_Nil : _List_fromArray(
 							[
 								A3(
 								$elm_community$graph$Graph$Edge,
-								ri.T,
+								ri.U,
 								i,
 								_Utils_Tuple2(
-									ri.A,
+									ri.B,
 									A2(
 										$elm$core$Dict$filter,
 										F2(
@@ -22051,9 +23433,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$recoverResolutionPath = F2(
 																function ($) {
 																	return $.b;
 																},
-																A2($elm$core$Dict$get, ri.T, refDict)))));
+																A2($elm$core$Dict$get, ri.U, refDict)))));
 											}),
-										ri.z)))
+										ri.A)))
 							]))));
 		} else {
 			return _Utils_Tuple2(_List_Nil, _List_Nil);
@@ -22214,13 +23596,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$cfol2AllResolvents = F2(
 										},
 										A2($logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$cfolApplySubstitution, mgu, f1));
 									return {
-										bI: c1,
-										bJ: c2,
-										z: A2(
+										bS: c1,
+										bT: c2,
+										A: A2(
 											$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionComposition,
 											mgu,
 											A2($elm$core$Dict$union, f1s, f2s)),
-										A: r,
+										B: r,
 										k: A2($logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$cfolUnion, c1__, c2__)
 									};
 								},
@@ -22274,7 +23656,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$resolventsWithClosedSCFResolu
 									},
 									closed)))) ? A2(
 									$elm$core$List$cons,
-									{b: r.k, z: r.z, S: id, T: i, A: r.A},
+									{b: r.k, A: r.A, T: id, U: i, B: r.B},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -22382,7 +23764,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$csfolSCFResolution = function
 			function (x) {
 				return _Utils_Tuple2(
 					$elm$core$List$length(x),
-					{b: x, z: $elm$core$Dict$empty, S: 0, T: 0, A: $elm$core$Dict$empty});
+					{b: x, A: $elm$core$Dict$empty, T: 0, U: 0, B: $elm$core$Dict$empty});
 			},
 			$logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$csfolRemoveSubsumedClauses(
 				$logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$csfolRemoveTautClauses(cs))));
@@ -22392,7 +23774,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$csfolSCFResolution = function
 	var nodes_clauses = A2(
 		$elm$core$List$map,
 		function (x) {
-			return x.ay;
+			return x.aC;
 		},
 		nodes);
 	var nid_max = A2(
@@ -22413,8 +23795,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$csfolSCFResolution = function
 					$elm_community$graph$Graph$Node,
 					x.s,
 					_Utils_Tuple2(
-						A2($elm$core$List$member, x.ay, cs),
-						x.ay));
+						A2($elm$core$List$member, x.aC, cs),
+						x.aC));
 			},
 			nodes),
 		A2(
@@ -22436,7 +23818,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$csfolSCFResolution = function
 		(!_Utils_eq(edges, _List_Nil)) || A2(
 			$elm$core$List$any,
 			function (n) {
-				return $elm$core$List$isEmpty(n.ay);
+				return $elm$core$List$isEmpty(n.aC);
 			},
 			nodes),
 		A2($elm_community$graph$Graph$fromNodesAndEdges, final_nodes, edges));
@@ -22488,7 +23870,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$Resolution$resolutionTableauToDOT = func
 				$elm$core$List$foldl,
 				F2(
 					function (x, ac) {
-						return x.ay.a ? _Utils_ap(
+						return x.aC.a ? _Utils_ap(
 							ac,
 							_List_fromArray(
 								[x.s])) : ac;
@@ -22511,7 +23893,7 @@ var $author$project$FOLAlgProcessors$processResolutionGraphFOL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -22527,7 +23909,7 @@ var $author$project$FOLAlgProcessors$processResolutionGraphFOL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -22542,16 +23924,16 @@ var $author$project$FOLAlgProcessors$processResolutionGraphFOL = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsCSFOL);
 				if (!_v2.$) {
 					var cs = _v2.a;
-					var _v3 = c.af;
+					var _v3 = c.ah;
 					switch (_v3) {
 						case 'standard':
 							return {
@@ -22584,14 +23966,14 @@ var $author$project$FOLAlgProcessors$processResolutionGraphFOL = F2(
 						default:
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for ResolutionGraphFOL'))
+								d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for ResolutionGraphFOL'))
 							};
 					}
 				} else {
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 					};
 				}
 			} else {
@@ -22693,10 +24075,10 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$recoverResolutionPath = F2(
 		var _v0 = A2($elm$core$Dict$get, i, refDict);
 		if (!_v0.$) {
 			var ri = _v0.a;
-			var _v1 = A2($logicUSLIB$logicus_pl$LogicUS$PL$Resolution$recoverResolutionPath, ri.T, refDict);
+			var _v1 = A2($logicUSLIB$logicus_pl$LogicUS$PL$Resolution$recoverResolutionPath, ri.U, refDict);
 			var nodes2 = _v1.a;
 			var edges2 = _v1.b;
-			var _v2 = A2($logicUSLIB$logicus_pl$LogicUS$PL$Resolution$recoverResolutionPath, ri.S, refDict);
+			var _v2 = A2($logicUSLIB$logicus_pl$LogicUS$PL$Resolution$recoverResolutionPath, ri.T, refDict);
 			var nodes1 = _v2.a;
 			var edges1 = _v2.b;
 			return _Utils_Tuple2(
@@ -22710,8 +24092,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$recoverResolutionPath = F2(
 					A2($logicUSLIB$logicus_pl$LogicUS$PL$AuxiliarFunctions$uniqueConcatList, edges1, edges2),
 					_List_fromArray(
 						[
-							A3($elm_community$graph$Graph$Edge, ri.S, i, ri.F),
-							A3($elm_community$graph$Graph$Edge, ri.T, i, ri.G)
+							A3($elm_community$graph$Graph$Edge, ri.T, i, ri.G),
+							A3($elm_community$graph$Graph$Edge, ri.U, i, ri.H)
 						])));
 		} else {
 			return _Utils_Tuple2(_List_Nil, _List_Nil);
@@ -22863,7 +24245,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithClosedSCFByEntrie
 									},
 									closed)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -22880,7 +24262,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithClosedSCFByEntrie
 				function (_v3) {
 					var i = _v3.a;
 					var ri = _v3.b;
-					return ((!rid.S) || (!ri.S)) && (!A2(
+					return ((!rid.T) || (!ri.T)) && (!A2(
 						$elm$core$List$member,
 						id,
 						A2(
@@ -22918,7 +24300,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithOpenedSCFByEntrie
 									},
 									opened)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -22934,7 +24316,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithOpenedSCFByEntrie
 				$elm$core$List$filter,
 				function (_v3) {
 					var ri = _v3.b;
-					return (!rid.S) || (!ri.S);
+					return (!rid.T) || (!ri.T);
 				},
 				opened));
 	});
@@ -23027,14 +24409,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFByEntriesResolution = fu
 					i + 1,
 					{
 						b: x,
-						F: _Utils_Tuple2(
-							_Utils_Tuple2('', _List_Nil),
-							true),
 						G: _Utils_Tuple2(
 							_Utils_Tuple2('', _List_Nil),
+							true),
+						H: _Utils_Tuple2(
+							_Utils_Tuple2('', _List_Nil),
 							false),
-						S: 0,
-						T: 0
+						T: 0,
+						U: 0
 					});
 			}),
 		A2(
@@ -23055,7 +24437,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFByEntriesResolution = fu
 	var nodes_clauses = A2(
 		$elm$core$List$map,
 		function (x) {
-			return x.ay;
+			return x.aC;
 		},
 		nodes);
 	var nid_max = A2(
@@ -23076,8 +24458,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFByEntriesResolution = fu
 					$elm_community$graph$Graph$Node,
 					x.s,
 					_Utils_Tuple2(
-						A2($elm$core$List$member, x.ay, cs),
-						x.ay));
+						A2($elm$core$List$member, x.aC, cs),
+						x.aC));
 			},
 			nodes),
 		A2(
@@ -23099,7 +24481,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFByEntriesResolution = fu
 		(!_Utils_eq(edges, _List_Nil)) || A2(
 			$elm$core$List$any,
 			function (n) {
-				return $elm$core$List$isEmpty(n.ay);
+				return $elm$core$List$isEmpty(n.aC);
 			},
 			nodes),
 		A2($elm_community$graph$Graph$fromNodesAndEdges, final_nodes, edges));
@@ -23155,7 +24537,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithClosedSCFLinearRe
 									},
 									closed)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -23209,7 +24591,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithOpenedSCFLinearRe
 									},
 									opened)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -23437,14 +24819,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFLinearResolution = funct
 					i + 1,
 					{
 						b: x,
-						F: _Utils_Tuple2(
-							_Utils_Tuple2('', _List_Nil),
-							true),
 						G: _Utils_Tuple2(
 							_Utils_Tuple2('', _List_Nil),
+							true),
+						H: _Utils_Tuple2(
+							_Utils_Tuple2('', _List_Nil),
 							false),
-						S: 0,
-						T: 0
+						T: 0,
+						U: 0
 					});
 			}),
 		A2(
@@ -23480,7 +24862,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFLinearResolution = funct
 	var nodes_clauses = A2(
 		$elm$core$List$map,
 		function (x) {
-			return x.ay;
+			return x.aC;
 		},
 		nodes);
 	var nid_max = A2(
@@ -23501,8 +24883,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFLinearResolution = funct
 					$elm_community$graph$Graph$Node,
 					x.s,
 					_Utils_Tuple2(
-						A2($elm$core$List$member, x.ay, cs),
-						x.ay));
+						A2($elm$core$List$member, x.aC, cs),
+						x.aC));
 			},
 			nodes),
 		A2(
@@ -23524,7 +24906,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFLinearResolution = funct
 		(!_Utils_eq(edges, _List_Nil)) || A2(
 			$elm$core$List$any,
 			function (n) {
-				return $elm$core$List$isEmpty(n.ay);
+				return $elm$core$List$isEmpty(n.aC);
 			},
 			nodes),
 		A2($elm_community$graph$Graph$fromNodesAndEdges, final_nodes, edges));
@@ -23611,7 +24993,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithClosedSCFNegative
 									},
 									closed)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -23666,7 +25048,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithOpenedSCFNegative
 									},
 									opened)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -23775,14 +25157,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFNegativeResolution = fun
 					i + 1,
 					{
 						b: x,
-						F: _Utils_Tuple2(
-							_Utils_Tuple2('', _List_Nil),
-							true),
 						G: _Utils_Tuple2(
 							_Utils_Tuple2('', _List_Nil),
+							true),
+						H: _Utils_Tuple2(
+							_Utils_Tuple2('', _List_Nil),
 							false),
-						S: 0,
-						T: 0
+						T: 0,
+						U: 0
 					});
 			}),
 		A2(
@@ -23803,7 +25185,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFNegativeResolution = fun
 	var nodes_clauses = A2(
 		$elm$core$List$map,
 		function (x) {
-			return x.ay;
+			return x.aC;
 		},
 		nodes);
 	var nid_max = A2(
@@ -23824,8 +25206,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFNegativeResolution = fun
 					$elm_community$graph$Graph$Node,
 					x.s,
 					_Utils_Tuple2(
-						A2($elm$core$List$member, x.ay, cs),
-						x.ay));
+						A2($elm$core$List$member, x.aC, cs),
+						x.aC));
 			},
 			nodes),
 		A2(
@@ -23847,7 +25229,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFNegativeResolution = fun
 		(!_Utils_eq(edges, _List_Nil)) || A2(
 			$elm$core$List$any,
 			function (n) {
-				return $elm$core$List$isEmpty(n.ay);
+				return $elm$core$List$isEmpty(n.aC);
 			},
 			nodes),
 		A2($elm_community$graph$Graph$fromNodesAndEdges, final_nodes, edges));
@@ -23931,7 +25313,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithClosedSCFPositive
 									},
 									closed)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -23986,7 +25368,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithOpenedSCFPositive
 									},
 									opened)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -24095,14 +25477,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFPositiveResolution = fun
 					i + 1,
 					{
 						b: x,
-						F: _Utils_Tuple2(
-							_Utils_Tuple2('', _List_Nil),
-							true),
 						G: _Utils_Tuple2(
 							_Utils_Tuple2('', _List_Nil),
+							true),
+						H: _Utils_Tuple2(
+							_Utils_Tuple2('', _List_Nil),
 							false),
-						S: 0,
-						T: 0
+						T: 0,
+						U: 0
 					});
 			}),
 		A2(
@@ -24123,7 +25505,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFPositiveResolution = fun
 	var nodes_clauses = A2(
 		$elm$core$List$map,
 		function (x) {
-			return x.ay;
+			return x.aC;
 		},
 		nodes);
 	var nid_max = A2(
@@ -24144,8 +25526,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFPositiveResolution = fun
 					$elm_community$graph$Graph$Node,
 					x.s,
 					_Utils_Tuple2(
-						A2($elm$core$List$member, x.ay, cs),
-						x.ay));
+						A2($elm$core$List$member, x.aC, cs),
+						x.aC));
 			},
 			nodes),
 		A2(
@@ -24167,7 +25549,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFPositiveResolution = fun
 		(!_Utils_eq(edges, _List_Nil)) || A2(
 			$elm$core$List$any,
 			function (n) {
-				return $elm$core$List$isEmpty(n.ay);
+				return $elm$core$List$isEmpty(n.aC);
 			},
 			nodes),
 		A2($elm_community$graph$Graph$fromNodesAndEdges, final_nodes, edges));
@@ -24252,7 +25634,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithClosedSCFResoluti
 									},
 									closed)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -24334,14 +25716,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFResolution = function (c
 					$elm$core$List$length(x),
 					{
 						b: x,
-						F: _Utils_Tuple2(
-							_Utils_Tuple2('', _List_Nil),
-							true),
 						G: _Utils_Tuple2(
 							_Utils_Tuple2('', _List_Nil),
+							true),
+						H: _Utils_Tuple2(
+							_Utils_Tuple2('', _List_Nil),
 							false),
-						S: 0,
-						T: 0
+						T: 0,
+						U: 0
 					});
 			},
 			$logicUSLIB$logicus_pl$LogicUS$PL$Clauses$csplRemoveSubsumedClauses(
@@ -24352,7 +25734,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFResolution = function (c
 	var nodes_clauses = A2(
 		$elm$core$List$map,
 		function (x) {
-			return x.ay;
+			return x.aC;
 		},
 		nodes);
 	var nid_max = A2(
@@ -24373,8 +25755,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFResolution = function (c
 					$elm_community$graph$Graph$Node,
 					x.s,
 					_Utils_Tuple2(
-						A2($elm$core$List$member, x.ay, cs),
-						x.ay));
+						A2($elm$core$List$member, x.aC, cs),
+						x.aC));
 			},
 			nodes),
 		A2(
@@ -24396,7 +25778,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFResolution = function (c
 		(!_Utils_eq(edges, _List_Nil)) || A2(
 			$elm$core$List$any,
 			function (n) {
-				return $elm$core$List$isEmpty(n.ay);
+				return $elm$core$List$isEmpty(n.aC);
 			},
 			nodes),
 		A2($elm_community$graph$Graph$fromNodesAndEdges, final_nodes, edges));
@@ -24477,7 +25859,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithClosedSCFUnitaryR
 									},
 									closed)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -24532,7 +25914,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolventsWithOpenedSCFUnitaryR
 									},
 									opened)))) ? A2(
 									$elm$core$List$cons,
-									{b: cj, F: l1, G: l2, S: id, T: i},
+									{b: cj, G: l1, H: l2, T: id, U: i},
 									A2(
 										$elm$core$List$filter,
 										function (x) {
@@ -24641,14 +26023,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFUnitaryResolution = func
 					i + 1,
 					{
 						b: x,
-						F: _Utils_Tuple2(
-							_Utils_Tuple2('', _List_Nil),
-							true),
 						G: _Utils_Tuple2(
 							_Utils_Tuple2('', _List_Nil),
 							true),
-						S: 0,
-						T: 0
+						H: _Utils_Tuple2(
+							_Utils_Tuple2('', _List_Nil),
+							true),
+						T: 0,
+						U: 0
 					});
 			}),
 		A2(
@@ -24669,7 +26051,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFUnitaryResolution = func
 	var nodes_clauses = A2(
 		$elm$core$List$map,
 		function (x) {
-			return x.ay;
+			return x.aC;
 		},
 		nodes);
 	var nid_max = A2(
@@ -24690,8 +26072,8 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFUnitaryResolution = func
 					$elm_community$graph$Graph$Node,
 					x.s,
 					_Utils_Tuple2(
-						A2($elm$core$List$member, x.ay, cs),
-						x.ay));
+						A2($elm$core$List$member, x.aC, cs),
+						x.aC));
 			},
 			nodes),
 		A2(
@@ -24713,7 +26095,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplSCFUnitaryResolution = func
 		(!_Utils_eq(edges, _List_Nil)) || A2(
 			$elm$core$List$any,
 			function (n) {
-				return $elm$core$List$isEmpty(n.ay);
+				return $elm$core$List$isEmpty(n.aC);
 			},
 			nodes),
 		A2($elm_community$graph$Graph$fromNodesAndEdges, final_nodes, edges));
@@ -24738,7 +26120,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$Resolution$resolutionTableauToDOT = functi
 				$elm$core$List$foldl,
 				F2(
 					function (x, ac) {
-						return x.ay.a ? _Utils_ap(
+						return x.aC.a ? _Utils_ap(
 							ac,
 							_List_fromArray(
 								[x.s])) : ac;
@@ -24761,7 +26143,7 @@ var $author$project$PLAlgProcessors$processResolutionGraphPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -24777,7 +26159,7 @@ var $author$project$PLAlgProcessors$processResolutionGraphPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -24792,16 +26174,16 @@ var $author$project$PLAlgProcessors$processResolutionGraphPL = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsCSPL);
 				if (!_v2.$) {
 					var cs = _v2.a;
-					var _v3 = c.af;
+					var _v3 = c.ah;
 					switch (_v3) {
 						case 'standard':
 							return {
@@ -24848,14 +26230,14 @@ var $author$project$PLAlgProcessors$processResolutionGraphPL = F2(
 						default:
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for ResolutionGraphPL'))
+								d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for ResolutionGraphPL'))
 							};
 					}
 				} else {
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 					};
 				}
 			} else {
@@ -25071,7 +26453,7 @@ var $author$project$PLAlgProcessors$processResolutionPL = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -25087,7 +26469,7 @@ var $author$project$PLAlgProcessors$processResolutionPL = F2(
 			$elm$json$Json$Decode$map3,
 			F3(
 				function (x, y, z) {
-					return {bL: z, aH: y, af: x};
+					return {bV: z, aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -25107,16 +26489,16 @@ var $author$project$PLAlgProcessors$processResolutionPL = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(source.ag, source.ah),
+					_Utils_Tuple2(source.ai, source.aj),
 					outputsCSPL);
 				if (!_v2.$) {
 					var cs = _v2.a;
-					var _v3 = c.af;
+					var _v3 = c.ah;
 					switch (_v3) {
 						case 'saturation':
 							return {
@@ -25132,7 +26514,7 @@ var $author$project$PLAlgProcessors$processResolutionPL = F2(
 									$elm$core$List$map,
 									A2($elm$core$Basics$composeL, $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplSymbols, $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplRead),
 									$elm_community$list_extra$List$Extra$unique(
-										A2($elm$core$String$split, ',', c.bL))));
+										A2($elm$core$String$split, ',', c.bV))));
 							return _Utils_eq(
 								$elm$core$List$sort(choiceOrder),
 								symbols) ? {
@@ -25142,19 +26524,19 @@ var $author$project$PLAlgProcessors$processResolutionPL = F2(
 										A2($logicUSLIB$logicus_pl$LogicUS$PL$Resolution$csplRegularResolution, choiceOrder, cs).b))
 							} : {
 								c: 6,
-								d: $elm$json$Json$Encode$string('Invalid value for choice order (' + (c.af + ') for SPLTruthTable'))
+								d: $elm$json$Json$Encode$string('Invalid value for choice order (' + (c.ah + ') for SPLTruthTable'))
 							};
 						default:
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for ResolutionPL'))
+								d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for ResolutionPL'))
 							};
 					}
 				} else {
 					return {
 						c: 2,
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+							'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 					};
 				}
 			} else {
@@ -25528,13 +26910,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$searchContradiction = f
 			var _v2 = _v1.b;
 			var ti = _v2.b;
 			var xs = nodes.b;
-			if (ti.E === 7) {
+			if (ti.F === 7) {
 				return $elm$core$Maybe$Just(
 					_Utils_Tuple2(
 						_List_fromArray(
 							[i]),
 						_List_fromArray(
-							[ti.y])));
+							[ti.z])));
 			} else {
 				var _v3 = $elm$core$List$head(
 					A2(
@@ -25543,8 +26925,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$searchContradiction = f
 							var _v5 = _v4.b;
 							var ti2 = _v5.b;
 							return _Utils_eq(
-								ti.bm,
-								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ti2.bm));
+								ti.by,
+								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ti2.by));
 						},
 						xs));
 				if (_v3.$ === 1) {
@@ -25561,7 +26943,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$searchContradiction = f
 							_List_fromArray(
 								[i, i2]),
 							_List_fromArray(
-								[ti.y, ti2.y])));
+								[ti.z, ti2.z])));
 				}
 			}
 		}
@@ -25590,13 +26972,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 													nid,
 													_Utils_Tuple2(
 														-1,
-														{V: nidp, bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat, y: nid2, Z: xig, E: 7, cp: uMax, U: _List_Nil}),
+														{W: nidp, by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat, z: nid2, aa: xig, F: 7, y: uMax, V: _List_Nil}),
 													nodes);
 												var dictEdges = A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(nidp, nid),
 													$elm$core$Maybe$Just(
-														{W: 1, u: xif, A: 7, aB: $elm$core$Dict$empty}),
+														{X: 1, u: xif, B: 7, aF: $elm$core$Dict$empty}),
 													edges);
 												return _Utils_Tuple2(dictNodes, dictEdges);
 											} else {
@@ -25607,7 +26989,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 														A2(
 															$elm$core$Maybe$map,
 															function (x) {
-																return x.b.bm;
+																return x.b.by;
 															},
 															A2($elm$core$Dict$get, nidp, nodes)));
 													return _Utils_Tuple2(
@@ -25616,7 +26998,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 															nid,
 															_Utils_Tuple2(
 																2,
-																{V: nidp, bm: g, y: nid2, Z: _List_Nil, E: 7, cp: uMax, U: _List_Nil}),
+																{W: nidp, by: g, z: nid2, aa: _List_Nil, F: 7, y: uMax, V: _List_Nil}),
 															nodes),
 														A3(
 															$elm$core$Dict$insert,
@@ -25630,7 +27012,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 															function (_v3) {
 																var _v4 = _v3.b;
 																var ti = _v4.b;
-																return (ti.E === 2) && (!(!ti.cp));
+																return (ti.F === 2) && (!(!ti.y));
 															},
 															$elm$core$Dict$toList(nodes)));
 													if (!_v2.$) {
@@ -25642,21 +27024,21 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 															$elm$core$Maybe$withDefault,
 															$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat,
 															$elm$core$List$head(
-																$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolUnquantifiedComponents(ti.bm)));
+																$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolUnquantifiedComponents(ti.by)));
 														var new_nodes = A3(
 															$elm$core$Dict$insert,
 															nid,
 															_Utils_Tuple2(
 																0,
 																{
-																	V: nidp,
-																	bm: g,
-																	y: nid2,
-																	Z: _List_fromArray(
+																	W: nidp,
+																	by: g,
+																	z: nid2,
+																	aa: _List_fromArray(
 																		[i]),
-																	E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
-																	cp: uMax,
-																	U: _List_Nil
+																	F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
+																	y: uMax,
+																	V: _List_Nil
 																}),
 															A3(
 																$elm$core$Dict$insert,
@@ -25665,18 +27047,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																	0,
 																	_Utils_update(
 																		ti,
-																		{cp: 0})),
+																		{y: 0})),
 																nodes));
 														var new_edges = A3(
 															$elm$core$Dict$insert,
 															_Utils_Tuple2(nidp, nid),
 															$elm$core$Maybe$Just(
 																{
-																	W: 1,
+																	X: 1,
 																	u: _List_fromArray(
-																		[ti.y]),
-																	A: 2,
-																	aB: $elm$core$Dict$empty
+																		[ti.z]),
+																	B: 2,
+																	aF: $elm$core$Dict$empty
 																}),
 															edges);
 														var $temp$m = m,
@@ -25707,7 +27089,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																function (_v8) {
 																	var _v9 = _v8.b;
 																	var ti = _v9.b;
-																	return (ti.E === 3) && (!(!ti.cp));
+																	return (ti.F === 3) && (!(!ti.y));
 																},
 																$elm$core$Dict$toList(nodes)));
 														if (!_v7.$) {
@@ -25716,7 +27098,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 															var _v11 = _v10.b;
 															var ti = _v11.b;
 															var _v12 = function () {
-																var _v13 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolUnquantifiedComponents(ti.bm);
+																var _v13 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolUnquantifiedComponents(ti.by);
 																if ((_v13.b && _v13.b.b) && (!_v13.b.b.b)) {
 																	var g1 = _v13.a;
 																	var _v14 = _v13.b;
@@ -25734,14 +27116,14 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																_Utils_Tuple2(
 																	0,
 																	{
-																		V: nid,
-																		bm: h,
-																		y: nid2 + 1,
-																		Z: _List_fromArray(
+																		W: nid,
+																		by: h,
+																		z: nid2 + 1,
+																		aa: _List_fromArray(
 																			[i]),
-																		E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(h),
-																		cp: uMax,
-																		U: _List_Nil
+																		F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(h),
+																		y: uMax,
+																		V: _List_Nil
 																	}),
 																A3(
 																	$elm$core$Dict$insert,
@@ -25749,14 +27131,14 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																	_Utils_Tuple2(
 																		0,
 																		{
-																			V: nidp,
-																			bm: g,
-																			y: nid2,
-																			Z: _List_fromArray(
+																			W: nidp,
+																			by: g,
+																			z: nid2,
+																			aa: _List_fromArray(
 																				[i]),
-																			E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
-																			cp: uMax,
-																			U: _List_Nil
+																			F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
+																			y: uMax,
+																			V: _List_Nil
 																		}),
 																	A3(
 																		$elm$core$Dict$insert,
@@ -25765,29 +27147,29 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			0,
 																			_Utils_update(
 																				ti,
-																				{cp: 0})),
+																				{y: 0})),
 																		nodes)));
 															var new_edges = A3(
 																$elm$core$Dict$insert,
 																_Utils_Tuple2(nid, nid + 1),
 																$elm$core$Maybe$Just(
 																	{
-																		W: 2,
+																		X: 2,
 																		u: _List_fromArray(
-																			[ti.y]),
-																		A: 3,
-																		aB: $elm$core$Dict$empty
+																			[ti.z]),
+																		B: 3,
+																		aF: $elm$core$Dict$empty
 																	}),
 																A3(
 																	$elm$core$Dict$insert,
 																	_Utils_Tuple2(nidp, nid),
 																	$elm$core$Maybe$Just(
 																		{
-																			W: 1,
+																			X: 1,
 																			u: _List_fromArray(
-																				[ti.y]),
-																			A: 3,
-																			aB: $elm$core$Dict$empty
+																				[ti.z]),
+																			B: 3,
+																			aF: $elm$core$Dict$empty
 																		}),
 																	edges));
 															var $temp$m = m,
@@ -25818,7 +27200,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																	function (_v16) {
 																		var _v17 = _v16.b;
 																		var ti = _v17.b;
-																		return (ti.E === 4) && (!(!ti.cp));
+																		return (ti.F === 4) && (!(!ti.y));
 																	},
 																	$elm$core$Dict$toList(nodes)));
 															if (!_v15.$) {
@@ -25827,7 +27209,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																var _v19 = _v18.b;
 																var ti = _v19.b;
 																var _v20 = function () {
-																	var _v21 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolUnquantifiedComponents(ti.bm);
+																	var _v21 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolUnquantifiedComponents(ti.by);
 																	if ((_v21.b && _v21.b.b) && (!_v21.b.b.b)) {
 																		var g1 = _v21.a;
 																		var _v22 = _v21.b;
@@ -25845,14 +27227,14 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																	_Utils_Tuple2(
 																		0,
 																		{
-																			V: nidp,
-																			bm: g,
-																			y: nid2,
-																			Z: _List_fromArray(
+																			W: nidp,
+																			by: g,
+																			z: nid2,
+																			aa: _List_fromArray(
 																				[i]),
-																			E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
-																			cp: uMax,
-																			U: _List_Nil
+																			F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
+																			y: uMax,
+																			V: _List_Nil
 																		}),
 																	A3(
 																		$elm$core$Dict$insert,
@@ -25861,18 +27243,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			0,
 																			_Utils_update(
 																				ti,
-																				{cp: 0})),
+																				{y: 0})),
 																		nodes));
 																var new_edges1 = A3(
 																	$elm$core$Dict$insert,
 																	_Utils_Tuple2(nidp, nid),
 																	$elm$core$Maybe$Just(
 																		{
-																			W: 1,
+																			X: 1,
 																			u: _List_fromArray(
-																				[ti.y]),
-																			A: 4,
-																			aB: $elm$core$Dict$empty
+																				[ti.z]),
+																			B: 4,
+																			aF: $elm$core$Dict$empty
 																		}),
 																	edges);
 																var _v23 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux(m)(dMax)(uMax)(nid + 1)(nid2 + 1)(nid)(dcur + 1)(new_nodes1)(new_edges1)(undec);
@@ -25889,14 +27271,14 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																	_Utils_Tuple2(
 																		0,
 																		{
-																			V: nidp,
-																			bm: h,
-																			y: nid2,
-																			Z: _List_fromArray(
+																			W: nidp,
+																			by: h,
+																			z: nid2,
+																			aa: _List_fromArray(
 																				[i]),
-																			E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(h),
-																			cp: uMax,
-																			U: _List_Nil
+																			F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(h),
+																			y: uMax,
+																			V: _List_Nil
 																		}),
 																	A3(
 																		$elm$core$Dict$insert,
@@ -25905,18 +27287,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			0,
 																			_Utils_update(
 																				ti,
-																				{cp: 0})),
+																				{y: 0})),
 																		nodes));
 																var new_edges2 = A3(
 																	$elm$core$Dict$insert,
 																	_Utils_Tuple2(nidp, new_nid),
 																	$elm$core$Maybe$Just(
 																		{
-																			W: 2,
+																			X: 2,
 																			u: _List_fromArray(
-																				[ti.y]),
-																			A: 4,
-																			aB: $elm$core$Dict$empty
+																				[ti.z]),
+																			B: 4,
+																			aF: $elm$core$Dict$empty
 																		}),
 																	edges);
 																var _v24 = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux(m)(dMax)(uMax)(new_nid + 1)(nid2 + 1)(new_nid)(dcur + 1)(new_nodes2)(new_edges2)(undec);
@@ -25932,7 +27314,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																		function (_v26) {
 																			var _v27 = _v26.b;
 																			var ti = _v27.b;
-																			return (ti.E === 6) && (!(!ti.cp));
+																			return (ti.F === 6) && (!(!ti.y));
 																		},
 																		$elm$core$Dict$toList(nodes)));
 																if (!_v25.$) {
@@ -25946,7 +27328,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																		_Utils_Tuple2(
 																			_Utils_Tuple3('', _List_Nil, 0),
 																			$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat),
-																		$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolQuantifiedComponents(ti.bm));
+																		$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolQuantifiedComponents(ti.by));
 																	var v = _v30.a;
 																	var g = _v30.b;
 																	var new_nodes = A3(
@@ -25955,17 +27337,17 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																		_Utils_Tuple2(
 																			0,
 																			{
-																				V: nidp,
-																				bm: A2(
+																				W: nidp,
+																				by: A2(
 																					$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolApplySubstitution,
 																					A2($elm$core$Dict$singleton, v, c),
 																					g),
-																				y: nid2,
-																				Z: _List_fromArray(
+																				z: nid2,
+																				aa: _List_fromArray(
 																					[i]),
-																				E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
-																				cp: uMax,
-																				U: _List_Nil
+																				F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
+																				y: uMax,
+																				V: _List_Nil
 																			}),
 																		A3(
 																			$elm$core$Dict$insert,
@@ -25974,18 +27356,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																				0,
 																				_Utils_update(
 																					ti,
-																					{cp: 0})),
+																					{y: 0})),
 																			nodes));
 																	var new_edges = A3(
 																		$elm$core$Dict$insert,
 																		_Utils_Tuple2(nidp, nid),
 																		$elm$core$Maybe$Just(
 																			{
-																				W: 1,
+																				X: 1,
 																				u: _List_fromArray(
 																					[i]),
-																				A: 6,
-																				aB: A2($elm$core$Dict$singleton, v, c)
+																				B: 6,
+																				aF: A2($elm$core$Dict$singleton, v, c)
 																			}),
 																		edges);
 																	var $temp$m = _Utils_ap(
@@ -26019,14 +27401,14 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			function (_v32) {
 																				var _v33 = _v32.b;
 																				var ti = _v33.b;
-																				return uMax - ti.cp;
+																				return uMax - ti.y;
 																			},
 																			A2(
 																				$elm$core$List$filter,
 																				function (_v34) {
 																					var _v35 = _v34.b;
 																					var ti = _v35.b;
-																					return (ti.E === 5) && (!(!ti.cp));
+																					return (ti.F === 5) && (!(!ti.y));
 																				},
 																				$elm$core$Dict$toList(nodes))));
 																	if (!_v31.$) {
@@ -26049,13 +27431,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																						$elm$core$List$map,
 																						function (_v41) {
 																							var ti2 = _v41.b;
-																							return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolAllClosedTerms(ti2.bm);
+																							return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolAllClosedTerms(ti2.by);
 																						},
 																						A2(
 																							$elm$core$List$filter,
 																							function (_v42) {
 																								var ti2 = _v42.b;
-																								return (!ti2.E) || (ti2.E === 1);
+																								return (!ti2.F) || (ti2.F === 1);
 																							},
 																							$elm$core$Dict$values(nodes))))));
 																		var tsus = A2(
@@ -26082,7 +27464,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																				A2(
 																					$elm$core$List$filter,
 																					function (x) {
-																						return !A2($elm$core$List$member, x, ti.U);
+																						return !A2($elm$core$List$member, x, ti.V);
 																					},
 																					m)));
 																		var _v38 = A2(
@@ -26090,7 +27472,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			_Utils_Tuple2(
 																				_Utils_Tuple3('', _List_Nil, 0),
 																				$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat),
-																			$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolQuantifiedComponents(ti.bm));
+																			$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolQuantifiedComponents(ti.by));
 																		var v = _v38.a;
 																		var g = _v38.b;
 																		var new_nodes = A3(
@@ -26099,17 +27481,17 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			_Utils_Tuple2(
 																				0,
 																				{
-																					V: nidp,
-																					bm: A2(
+																					W: nidp,
+																					by: A2(
 																						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolApplySubstitution,
 																						A2($elm$core$Dict$singleton, v, tsus),
 																						g),
-																					y: nid2,
-																					Z: _List_fromArray(
+																					z: nid2,
+																					aa: _List_fromArray(
 																						[i]),
-																					E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
-																					cp: uMax,
-																					U: _List_Nil
+																					F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(g),
+																					y: uMax,
+																					V: _List_Nil
 																				}),
 																			A3(
 																				$elm$core$Dict$insert,
@@ -26119,8 +27501,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																					_Utils_update(
 																						ti,
 																						{
-																							cp: ti.cp - 1,
-																							U: A2($elm$core$List$cons, tsus, ti.U)
+																							y: ti.y - 1,
+																							V: A2($elm$core$List$cons, tsus, ti.V)
 																						})),
 																				nodes));
 																		var new_m = A2(
@@ -26133,11 +27515,11 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			_Utils_Tuple2(nidp, nid),
 																			$elm$core$Maybe$Just(
 																				{
-																					W: 1,
+																					X: 1,
 																					u: _List_fromArray(
-																						[ti.y]),
-																					A: 5,
-																					aB: A2($elm$core$Dict$singleton, v, tsus)
+																						[ti.z]),
+																					B: 5,
+																					aF: A2($elm$core$Dict$singleton, v, tsus)
 																				}),
 																			edges);
 																		var $temp$m = new_m,
@@ -26168,7 +27550,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																			A2(
 																				$elm$core$Maybe$map,
 																				function (x) {
-																					return x.b.bm;
+																					return x.b.by;
 																				},
 																				A2($elm$core$Dict$get, nidp, nodes)));
 																		return undec ? _Utils_Tuple2(
@@ -26177,7 +27559,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																				nid,
 																				_Utils_Tuple2(
 																					2,
-																					{V: nidp, bm: g, y: nid2, Z: _List_Nil, E: 7, cp: uMax, U: _List_Nil}),
+																					{W: nidp, by: g, z: nid2, aa: _List_Nil, F: 7, y: uMax, V: _List_Nil}),
 																				nodes),
 																			A3(
 																				$elm$core$Dict$insert,
@@ -26189,7 +27571,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauAux = fu
 																				nid,
 																				_Utils_Tuple2(
 																					1,
-																					{V: nidp, bm: g, y: nid2, Z: _List_Nil, E: 7, cp: uMax, U: _List_Nil}),
+																					{W: nidp, by: g, z: nid2, aa: _List_Nil, F: 7, y: uMax, V: _List_Nil}),
 																				nodes),
 																			A3(
 																				$elm$core$Dict$insert,
@@ -26226,13 +27608,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableau = F3(
 							_Utils_Tuple2(
 								0,
 								{
-									V: i - 1,
-									bm: f,
-									y: i,
-									Z: _List_Nil,
-									E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(f),
-									cp: uMax,
-									U: _List_Nil
+									W: i - 1,
+									by: f,
+									z: i,
+									aa: _List_Nil,
+									F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$ffolType(f),
+									y: uMax,
+									V: _List_Nil
 								}));
 					}),
 				fs));
@@ -26356,23 +27738,6 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType = function (
 			}
 	}
 };
-var $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolUniversalClosure = function (f) {
-	var openVars = A2(
-		$elm$core$List$filter,
-		function (v) {
-			return A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolHasFreeInstanceOfVar, f, v);
-		},
-		$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolVarSymbols(f));
-	return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolRenameVars(
-		A3(
-			$elm$core$List$foldl,
-			F2(
-				function (x, ac) {
-					return A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Forall, x, ac);
-				}),
-			f,
-			openVars));
-};
 var $elm_community$graph$Graph$Tree$isEmpty = function (tree) {
 	return _Utils_eq(tree, $elm_community$graph$Graph$Tree$empty);
 };
@@ -26424,19 +27789,19 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$postProcessingSTEQ = 
 			var _v1 = _v0.a;
 			var l = _v1.a;
 			var ch = _v1.b;
-			if (A2($elm$core$Dict$member, l.y, corresp)) {
+			if (A2($elm$core$Dict$member, l.z, corresp)) {
 				return $elm$core$List$concat(
 					A2(
 						$elm$core$List$map,
 						A2($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$postProcessingSTEQ, deep, corresp),
 						ch));
 			} else {
-				var newCorresp = A3($elm$core$Dict$insert, l.y, deep, corresp);
+				var newCorresp = A3($elm$core$Dict$insert, l.z, deep, corresp);
 				var lsimp = A2($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$translateList, corresp, l.f);
 				var newl = {
-					bm: l.bm,
-					y: deep,
-					S: A2(
+					by: l.by,
+					z: deep,
+					T: A2(
 						$elm$core$Maybe$map,
 						function (_v2) {
 							var x = _v2.a;
@@ -26445,8 +27810,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$postProcessingSTEQ = 
 								A2($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$translateID, corresp, x),
 								A2($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$translateList, corresp, y));
 						},
-						l.S),
-					T: A2(
+						l.T),
+					U: A2(
 						$elm$core$Maybe$map,
 						function (_v3) {
 							var x = _v3.a;
@@ -26455,10 +27820,10 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$postProcessingSTEQ = 
 								A2($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$translateID, corresp, x),
 								A2($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$translateList, corresp, y));
 						},
-						l.T),
-					A: l.A,
+						l.U),
+					B: l.B,
 					f: lsimp,
-					cl: l.cl
+					cx: l.cx
 				};
 				return _List_fromArray(
 					[
@@ -26499,16 +27864,16 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$checkGoals = function
 	var _v0 = A2(
 		$elm$core$List$filter,
 		function (e) {
-			return $elm$core$List$isEmpty(e.b.ar);
+			return $elm$core$List$isEmpty(e.b.at);
 		},
 		$elm$core$Dict$toList(goals));
 	if (_v0.b) {
 		var x = _v0.a;
 		return $elm$core$Maybe$Just(
 			{
-				aF: A2($elm$core$Basics$composeL, $elm$core$Tuple$first, $elm$core$Tuple$first)(x),
-				aG: A2($elm$core$Basics$composeL, $elm$core$Tuple$second, $elm$core$Tuple$first)(x),
-				P: x.b.P
+				aJ: A2($elm$core$Basics$composeL, $elm$core$Tuple$first, $elm$core$Tuple$first)(x),
+				aK: A2($elm$core$Basics$composeL, $elm$core$Tuple$second, $elm$core$Tuple$first)(x),
+				Q: x.b.Q
 			});
 	} else {
 		return $elm$core$Maybe$Nothing;
@@ -26520,7 +27885,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseAlpha = functio
 			$elm$core$List$filter,
 			function (_v0) {
 				var x = _v0.b;
-				return (x.E === 4) && (!x.cp);
+				return (x.F === 4) && (!x.y);
 			},
 			$elm$core$Dict$toList(nodes)));
 };
@@ -26530,7 +27895,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseBeta = function
 			$elm$core$List$filter,
 			function (_v0) {
 				var x = _v0.b;
-				return (x.E === 5) && (!x.cp);
+				return (x.F === 5) && (!x.y);
 			},
 			$elm$core$Dict$toList(nodes)));
 };
@@ -26540,7 +27905,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseDelta = functio
 			$elm$core$List$filter,
 			function (_v0) {
 				var x = _v0.b;
-				return (x.E === 7) && (!x.cp);
+				return (x.F === 7) && (!x.y);
 			},
 			$elm$core$Dict$toList(nodes)));
 };
@@ -26655,7 +28020,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseEquality = func
 									_Utils_Tuple3('Err', _List_Nil, -1)),
 								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Var(
 									_Utils_Tuple3('Err', _List_Nil, -1))),
-							$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(x1.bm)),
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(x1.by)),
 						A2(
 							$elm$core$Maybe$withDefault,
 							_Utils_Tuple2(
@@ -26663,13 +28028,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseEquality = func
 									_Utils_Tuple3('Err', _List_Nil, -1)),
 								$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Var(
 									_Utils_Tuple3('Err', _List_Nil, -1))),
-							$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(x2.bm)));
+							$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(x2.by)));
 				}),
 			A2(
 				$elm$core$List$filter,
 				function (_v2) {
 					var x = _v2.b;
-					return (x.E === 1) && (!x.cp);
+					return (x.F === 1) && (!x.y);
 				},
 				$elm$core$Dict$toList(nodes))));
 };
@@ -26705,13 +28070,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseGamma = F2(
 							return _Utils_Tuple3(
 								i,
 								ni,
-								A2($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$listRemoveAll, universe, ni.U));
+								A2($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$listRemoveAll, universe, ni.V));
 						},
 						A2(
 							$elm$core$List$filter,
 							function (_v3) {
 								var ni = _v3.b;
-								return ni.E === 6;
+								return ni.F === 6;
 							},
 							$elm$core$Dict$toList(nodes))))));
 	});
@@ -26721,7 +28086,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseInequality = fu
 			$elm$core$List$filter,
 			function (_v0) {
 				var x = _v0.b;
-				return (x.E === 2) && (!x.cp);
+				return (x.F === 2) && (!x.y);
 			},
 			$elm$core$Dict$toList(nodes)));
 };
@@ -26731,7 +28096,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$chooseLiteral = funct
 			$elm$core$List$filter,
 			function (_v0) {
 				var x = _v0.b;
-				return (!x.E) && (!x.cp);
+				return (!x.F) && (!x.y);
 			},
 			$elm$core$Dict$toList(nodes)));
 };
@@ -26768,7 +28133,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$recoverPathFromNode =
 										$elm$core$Tuple$first,
 										$elm_community$maybe_extra$Maybe$Extra$values(
 											_List_fromArray(
-												[v.S, v.T])))))))),
+												[v.T, v.U])))))))),
 				_List_fromArray(
 					[_final]));
 		} else {
@@ -26780,18 +28145,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$closeBranch = F3(
 		return _Utils_Tuple2(
 			$elm_community$graph$Graph$Tree$leaf(
 				{
-					bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat,
-					y: deep,
-					S: $elm$core$Maybe$Just(
-						_Utils_Tuple2(inconsistence.aF, inconsistence.P.a)),
-					T: _Utils_eq(inconsistence.aF, inconsistence.aG) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
-						_Utils_Tuple2(inconsistence.aG, inconsistence.P.b)),
-					A: 4,
+					by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat,
+					z: deep,
+					T: $elm$core$Maybe$Just(
+						_Utils_Tuple2(inconsistence.aJ, inconsistence.Q.a)),
+					U: _Utils_eq(inconsistence.aJ, inconsistence.aK) ? $elm$core$Maybe$Nothing : $elm$core$Maybe$Just(
+						_Utils_Tuple2(inconsistence.aK, inconsistence.Q.b)),
+					B: 4,
 					f: _List_Nil,
-					cl: $elm$core$Maybe$Nothing,
-					E: 8,
-					cp: 0,
-					U: _List_Nil
+					cx: $elm$core$Maybe$Nothing,
+					F: 8,
+					y: 0,
+					V: _List_Nil
 				}),
 			$elm_community$list_extra$List$Extra$unique(
 				$elm$core$List$concat(
@@ -26801,8 +28166,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$closeBranch = F3(
 						$elm_community$list_extra$List$Extra$unique(
 							_Utils_ap(
 								_List_fromArray(
-									[inconsistence.aF, inconsistence.aG]),
-								_Utils_ap(inconsistence.P.a, inconsistence.P.b)))))));
+									[inconsistence.aJ, inconsistence.aK]),
+								_Utils_ap(inconsistence.Q.a, inconsistence.Q.b)))))));
 	});
 var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractElemsLiteral = function (f) {
 	_v0$2:
@@ -27010,7 +28375,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$removeSubsumedGoals =
 	var goalList = A2(
 		$elm$core$List$sortBy,
 		function (e) {
-			return $elm$core$List$length(e.b.ar);
+			return $elm$core$List$length(e.b.at);
 		},
 		$elm$core$Dict$toList(goals));
 	return $elm$core$Dict$fromList(
@@ -27020,7 +28385,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$removeSubsumedGoals =
 				function (e, _v0) {
 					var ac1 = _v0.a;
 					var ac2 = _v0.b;
-					var xs = e.b.ar;
+					var xs = e.b.at;
 					return A2(
 						$elm$core$List$any,
 						function (ys) {
@@ -27205,8 +28570,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$updateGoalWithEqs = F
 							return _List_fromArray(
 								[t1, t2]);
 						},
-						$elm$core$List$head(g.ar))),
-				g.P.a);
+						$elm$core$List$head(g.at))),
+				g.Q.a);
 			var subgoals = function () {
 				if ((terms_.a.b && terms_.a.b.b) && (!terms_.a.b.b.b)) {
 					var _v2 = terms_.a;
@@ -27223,26 +28588,26 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$updateGoalWithEqs = F
 			}();
 			var lhs_rhs_subs = terms_.b;
 			return {
-				ar: subgoals,
-				P: _Utils_Tuple2(lhs_rhs_subs, lhs_rhs_subs)
+				at: subgoals,
+				Q: _Utils_Tuple2(lhs_rhs_subs, lhs_rhs_subs)
 			};
 		} else {
 			var _v5 = A3(
 				$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$simplifyTermsWithEqs,
 				equalities,
-				A2($elm$core$List$map, $elm$core$Tuple$second, g.ar),
-				g.P.b);
+				A2($elm$core$List$map, $elm$core$Tuple$second, g.at),
+				g.Q.b);
 			var rhs_subgoals = _v5.a;
 			var rhs_subs = _v5.b;
 			var _v6 = A3(
 				$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$simplifyTermsWithEqs,
 				equalities,
-				A2($elm$core$List$map, $elm$core$Tuple$first, g.ar),
-				g.P.a);
+				A2($elm$core$List$map, $elm$core$Tuple$first, g.at),
+				g.Q.a);
 			var lhs_subgoals = _v6.a;
 			var lhs_subs = _v6.b;
 			return {
-				ar: A2(
+				at: A2(
 					$elm$core$List$filter,
 					function (_v7) {
 						var x = _v7.a;
@@ -27250,7 +28615,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$updateGoalWithEqs = F
 						return !_Utils_eq(x, y);
 					},
 					A3($elm$core$List$map2, $elm$core$Tuple$pair, lhs_subgoals, rhs_subgoals)),
-				P: _Utils_Tuple2(lhs_subs, rhs_subs)
+				Q: _Utils_Tuple2(lhs_subs, rhs_subs)
 			};
 		}
 	});
@@ -27319,9 +28684,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processAlpha = functi
 												$elm$core$List$filter,
 												function (_v68) {
 													var n = _v68.b;
-													return (n.cp === 1) && _Utils_eq(
-														n.bm,
-														$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.bm));
+													return (n.y === 1) && _Utils_eq(
+														n.by,
+														$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.by));
 												},
 												$elm$core$Dict$toList(nodes)));
 										if (!_v67.$) {
@@ -27330,20 +28695,20 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processAlpha = functi
 											return A3(
 												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$closeBranch,
 												{
-													aF: j,
-													aG: i,
-													P: _Utils_Tuple2(_List_Nil, _List_Nil)
+													aJ: j,
+													aK: i,
+													Q: _Utils_Tuple2(_List_Nil, _List_Nil)
 												},
 												deep,
 												nodes);
 										} else {
 											var relabelNi = _Utils_update(
 												ni,
-												{cp: 1});
+												{y: 1});
 											var _v70 = A2(
 												$elm$core$Maybe$withDefault,
 												_Utils_Tuple2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat),
-												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getAComponents(ni.bm));
+												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getAComponents(ni.by));
 											var f1 = _v70.a;
 											var f2 = _v70.b;
 											var newNodes = A2(
@@ -27355,32 +28720,32 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processAlpha = functi
 															_Utils_Tuple2(
 															deep,
 															{
-																bm: f1,
-																y: deep,
-																S: $elm$core$Maybe$Just(
+																by: f1,
+																z: deep,
+																T: $elm$core$Maybe$Just(
 																	_Utils_Tuple2(i, _List_Nil)),
-																T: $elm$core$Maybe$Nothing,
-																A: 0,
+																U: $elm$core$Maybe$Nothing,
+																B: 0,
 																f: _List_Nil,
-																cl: $elm$core$Maybe$Nothing,
-																E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f1),
-																cp: 0,
-																U: _List_Nil
+																cx: $elm$core$Maybe$Nothing,
+																F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f1),
+																y: 0,
+																V: _List_Nil
 															}),
 															_Utils_Tuple2(
 															deep + 1,
 															{
-																bm: f2,
-																y: deep + 1,
-																S: $elm$core$Maybe$Just(
+																by: f2,
+																z: deep + 1,
+																T: $elm$core$Maybe$Just(
 																	_Utils_Tuple2(i, _List_Nil)),
-																T: $elm$core$Maybe$Nothing,
-																A: 0,
+																U: $elm$core$Maybe$Nothing,
+																B: 0,
 																f: _List_Nil,
-																cl: $elm$core$Maybe$Nothing,
-																E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f2),
-																cp: 0,
-																U: _List_Nil
+																cx: $elm$core$Maybe$Nothing,
+																F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f2),
+																y: 0,
+																V: _List_Nil
 															})
 														])));
 											var _v71 = A9($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux, deep + 2, generatedConstants, maxConstants, maxSize, universe, newNodes, equalities, goals, undec);
@@ -27421,9 +28786,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processBeta = functio
 												$elm$core$List$filter,
 												function (_v61) {
 													var n = _v61.b;
-													return (n.cp === 1) && _Utils_eq(
-														n.bm,
-														$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.bm));
+													return (n.y === 1) && _Utils_eq(
+														n.by,
+														$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.by));
 												},
 												$elm$core$Dict$toList(nodes)));
 										if (!_v60.$) {
@@ -27432,9 +28797,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processBeta = functio
 											return A3(
 												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$closeBranch,
 												{
-													aF: j,
-													aG: i,
-													P: _Utils_Tuple2(_List_Nil, _List_Nil)
+													aJ: j,
+													aK: i,
+													Q: _Utils_Tuple2(_List_Nil, _List_Nil)
 												},
 												deep,
 												nodes);
@@ -27442,12 +28807,12 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processBeta = functio
 											var _v63 = A2(
 												$elm$core$Maybe$withDefault,
 												_Utils_Tuple2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat),
-												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getBComponents(ni.bm));
+												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getBComponents(ni.by));
 											var f1 = _v63.a;
 											var f2 = _v63.b;
 											var relabelNi = _Utils_update(
 												ni,
-												{cp: 1});
+												{y: 1});
 											var newNodes1 = A3(
 												$elm$core$Dict$insert,
 												i,
@@ -27456,17 +28821,17 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processBeta = functio
 													$elm$core$Dict$insert,
 													deep,
 													{
-														bm: f1,
-														y: deep,
-														S: $elm$core$Maybe$Just(
+														by: f1,
+														z: deep,
+														T: $elm$core$Maybe$Just(
 															_Utils_Tuple2(i, _List_Nil)),
-														T: $elm$core$Maybe$Nothing,
-														A: 1,
+														U: $elm$core$Maybe$Nothing,
+														B: 1,
 														f: _List_Nil,
-														cl: $elm$core$Maybe$Nothing,
-														E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f1),
-														cp: 0,
-														U: _List_Nil
+														cx: $elm$core$Maybe$Nothing,
+														F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f1),
+														y: 0,
+														V: _List_Nil
 													},
 													nodes));
 											var _v64 = A9($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux, deep + 1, generatedConstants, maxConstants, maxSize, universe, newNodes1, equalities, goals, undec);
@@ -27474,7 +28839,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processBeta = functio
 											var inconsPath = _v64.b;
 											if (_Utils_eq(inconsPath, _List_Nil)) {
 												var subtree2 = $elm_community$graph$Graph$Tree$leaf(
-													{bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Taut, y: deep, S: $elm$core$Maybe$Nothing, T: $elm$core$Maybe$Nothing, A: 9, f: _List_Nil, cl: $elm$core$Maybe$Nothing, E: 9, cp: 0, U: _List_Nil});
+													{by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Taut, z: deep, T: $elm$core$Maybe$Nothing, U: $elm$core$Maybe$Nothing, B: 9, f: _List_Nil, cx: $elm$core$Maybe$Nothing, F: 9, y: 0, V: _List_Nil});
 												return _Utils_Tuple2(
 													A2(
 														$elm_community$graph$Graph$Tree$inner,
@@ -27488,34 +28853,34 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processBeta = functio
 														$elm$core$Dict$insert,
 														deep + 1,
 														{
-															bm: f2,
-															y: deep + 1,
-															S: $elm$core$Maybe$Just(
+															by: f2,
+															z: deep + 1,
+															T: $elm$core$Maybe$Just(
 																_Utils_Tuple2(i, _List_Nil)),
-															T: $elm$core$Maybe$Nothing,
-															A: 1,
+															U: $elm$core$Maybe$Nothing,
+															B: 1,
 															f: _List_Nil,
-															cl: $elm$core$Maybe$Nothing,
-															E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f2),
-															cp: 0,
-															U: _List_Nil
+															cx: $elm$core$Maybe$Nothing,
+															F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f2),
+															y: 0,
+															V: _List_Nil
 														},
 														A3(
 															$elm$core$Dict$insert,
 															deep,
 															{
-																bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(f1),
-																y: deep,
-																S: $elm$core$Maybe$Just(
+																by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(f1),
+																z: deep,
+																T: $elm$core$Maybe$Just(
 																	_Utils_Tuple2(i, _List_Nil)),
-																T: $elm$core$Maybe$Nothing,
-																A: 1,
+																U: $elm$core$Maybe$Nothing,
+																B: 1,
 																f: _List_Nil,
-																cl: $elm$core$Maybe$Nothing,
-																E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(
+																cx: $elm$core$Maybe$Nothing,
+																F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(
 																	$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(f1)),
-																cp: 0,
-																U: _List_Nil
+																y: 0,
+																V: _List_Nil
 															},
 															A3($elm$core$Dict$insert, i, relabelNi, nodes)));
 													var _v65 = A9($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux, deep + 2, generatedConstants, maxConstants, maxSize, universe, newNodes2, equalities, goals, undec);
@@ -27567,9 +28932,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processDelta = functi
 												$elm$core$List$filter,
 												function (_v55) {
 													var n = _v55.b;
-													return (n.cp === 1) && _Utils_eq(
-														n.bm,
-														$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.bm));
+													return (n.y === 1) && _Utils_eq(
+														n.by,
+														$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.by));
 												},
 												$elm$core$Dict$toList(nodes)));
 										if (!_v54.$) {
@@ -27578,9 +28943,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processDelta = functi
 											return A3(
 												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$closeBranch,
 												{
-													aF: j,
-													aG: i,
-													P: _Utils_Tuple2(_List_Nil, _List_Nil)
+													aJ: j,
+													aK: i,
+													Q: _Utils_Tuple2(_List_Nil, _List_Nil)
 												},
 												deep,
 												nodes);
@@ -27597,12 +28962,12 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processDelta = functi
 												_Utils_Tuple2(
 													_Utils_Tuple3('Err', _List_Nil, -1),
 													$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat),
-												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getDGVarComponent(ni.bm));
+												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getDGVarComponent(ni.by));
 											var v = _v57.a;
 											var g = _v57.b;
 											var relabelNi = _Utils_update(
 												ni,
-												{cp: 1});
+												{y: 1});
 											var newF = $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$reduceDN(
 												A2(
 													$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolApplySubstitution,
@@ -27612,18 +28977,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processDelta = functi
 												$elm$core$Dict$insert,
 												deep,
 												{
-													bm: newF,
-													y: deep,
-													S: $elm$core$Maybe$Just(
+													by: newF,
+													z: deep,
+													T: $elm$core$Maybe$Just(
 														_Utils_Tuple2(i, _List_Nil)),
-													T: $elm$core$Maybe$Nothing,
-													A: 3,
+													U: $elm$core$Maybe$Nothing,
+													B: 3,
 													f: _List_Nil,
-													cl: $elm$core$Maybe$Just(
+													cx: $elm$core$Maybe$Just(
 														_Utils_Tuple2(v, newC)),
-													E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(newF),
-													cp: 0,
-													U: _List_Nil
+													F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(newF),
+													y: 0,
+													V: _List_Nil
 												},
 												A3($elm$core$Dict$insert, i, relabelNi, nodes));
 											var _v58 = A9(
@@ -27687,7 +29052,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processEquality = fun
 															$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Func,
 															_Utils_Tuple2('Err', _List_Nil),
 															_List_Nil)),
-													$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(ni.bm))),
+													$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(ni.by))),
 											equalities);
 										var lhs = _v42.a;
 										var rhs = _v42.b;
@@ -27745,17 +29110,17 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processEquality = fun
 														return _Utils_Tuple2(
 															deep + k,
 															{
-																bm: A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Equal, lj, rj),
-																y: deep + k,
-																S: $elm$core$Maybe$Just(
+																by: A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Equal, lj, rj),
+																z: deep + k,
+																T: $elm$core$Maybe$Just(
 																	_Utils_Tuple2(j, _List_Nil)),
-																T: $elm$core$Maybe$Nothing,
-																A: 7,
+																U: $elm$core$Maybe$Nothing,
+																B: 7,
 																f: s,
-																cl: $elm$core$Maybe$Nothing,
-																E: 1,
-																cp: 0,
-																U: _List_Nil
+																cx: $elm$core$Maybe$Nothing,
+																F: 1,
+																y: 0,
+																V: _List_Nil
 															});
 													}),
 												remEqualities);
@@ -27774,20 +29139,20 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processEquality = fun
 											var relabelNi = _Utils_update(
 												ni,
 												{
-													bm: A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Equal, lhs, rhs),
+													by: A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Equal, lhs, rhs),
 													f: subs,
-													cp: 1
+													y: 1
 												});
 											var nodesUpdateGut = A2(
 												$elm$core$Dict$map,
 												F2(
 													function (_v48, nj) {
-														return (nj.E === 6) ? _Utils_update(
+														return (nj.F === 6) ? _Utils_update(
 															nj,
 															{
-																U: A2(
+																V: A2(
 																	$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$updateUniverseWithEqs,
-																	nj.U,
+																	nj.V,
 																	$elm$core$Dict$fromList(newEqualities))
 															}) : nj;
 													}),
@@ -27840,9 +29205,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processGamma = F9(
 				$elm$core$List$filter,
 				function (_v37) {
 					var n = _v37.b;
-					return (n.cp === 1) && _Utils_eq(
-						n.bm,
-						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.bm));
+					return (n.y === 1) && _Utils_eq(
+						n.by,
+						$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation(ni.by));
 				},
 				$elm$core$Dict$toList(nodes)));
 		if (!_v36.$) {
@@ -27851,9 +29216,9 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processGamma = F9(
 			return A3(
 				$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$closeBranch,
 				{
-					aF: j,
-					aG: i,
-					P: _Utils_Tuple2(_List_Nil, _List_Nil)
+					aJ: j,
+					aK: i,
+					Q: _Utils_Tuple2(_List_Nil, _List_Nil)
 				},
 				deep,
 				nodes);
@@ -27863,15 +29228,15 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processGamma = F9(
 				_Utils_Tuple2(
 					_Utils_Tuple3('Err', _List_Nil, -1),
 					$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat),
-				$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getDGVarComponent(ni.bm));
+				$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$getDGVarComponent(ni.by));
 			var v = _v39.a;
 			var g = _v39.b;
 			var relabelNi = _Utils_update(
 				ni,
 				{
-					cp: 1,
-					U: _Utils_ap(
-						ni.U,
+					y: 1,
+					V: _Utils_ap(
+						ni.V,
 						_List_fromArray(
 							[t]))
 				});
@@ -27884,18 +29249,18 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processGamma = F9(
 				$elm$core$Dict$insert,
 				deep,
 				{
-					bm: newF,
-					y: deep,
-					S: $elm$core$Maybe$Just(
+					by: newF,
+					z: deep,
+					T: $elm$core$Maybe$Just(
 						_Utils_Tuple2(i, _List_Nil)),
-					T: $elm$core$Maybe$Nothing,
-					A: 2,
+					U: $elm$core$Maybe$Nothing,
+					B: 2,
 					f: _List_Nil,
-					cl: $elm$core$Maybe$Just(
+					cx: $elm$core$Maybe$Just(
 						_Utils_Tuple2(v, t)),
-					E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(newF),
-					cp: 0,
-					U: _List_Nil
+					F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(newF),
+					y: 0,
+					V: _List_Nil
 				},
 				A3($elm$core$Dict$insert, i, relabelNi, nodes));
 			var _v40 = A9($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux, deep + 1, generatedConstants, maxConstants, maxSize, universe, newNodes, equalities, goals, true);
@@ -27933,7 +29298,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processInequality = f
 													$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Func,
 													_Utils_Tuple2('Err', _List_Nil),
 													_List_Nil)),
-											$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(ni.bm));
+											$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractEQNEQTerms(ni.by));
 										var t1 = _v32.a;
 										var t2 = _v32.b;
 										var _v33 = A2(
@@ -27950,10 +29315,10 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processInequality = f
 										var relabelNi = _Utils_update(
 											ni,
 											{
-												bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Neg(
+												by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Neg(
 													A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Equal, lhs, rhs)),
 												f: subs,
-												cp: 1
+												y: 1
 											});
 										var newUniverse = A2(
 											$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$updateUniverseWithEqs,
@@ -27969,8 +29334,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processInequality = f
 												$elm$core$Dict$insert,
 												_Utils_Tuple2(i, i),
 												{
-													ar: subgoal,
-													P: _Utils_Tuple2(_List_Nil, _List_Nil)
+													at: subgoal,
+													Q: _Utils_Tuple2(_List_Nil, _List_Nil)
 												},
 												goals));
 										var _v34 = A9($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux, deep + 1, generatedConstants, maxConstants, maxSize, newUniverse, newNodes, equalities, newGoals, undec);
@@ -28011,7 +29376,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processLiteral = func
 												false,
 												_Utils_Tuple2('Err', _List_Nil),
 												_List_Nil),
-											$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractElemsLiteral(ni.bm));
+											$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractElemsLiteral(ni.by));
 										var signi = _v21.a;
 										var psymbi = _v21.b;
 										var ts = _v21.c;
@@ -28047,28 +29412,28 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processLiteral = func
 																	false,
 																	_Utils_Tuple2('Err', _List_Nil),
 																	_List_Nil),
-																$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractElemsLiteral(v.bm));
+																$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$extractElemsLiteral(v.by));
 														}),
 													A2(
 														$elm$core$Dict$filter,
 														F2(
 															function (_v30, v) {
-																return !v.E;
+																return !v.F;
 															}),
 														nodes))));
 										var relabelNi = signi ? _Utils_update(
 											ni,
 											{
-												bm: A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Pred, psymbi, ts_),
+												by: A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Pred, psymbi, ts_),
 												f: subs,
-												cp: 1
+												y: 1
 											}) : _Utils_update(
 											ni,
 											{
-												bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Neg(
+												by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Neg(
 													A2($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Pred, psymbi, ts_)),
 												f: subs,
-												cp: 1
+												y: 1
 											});
 										var opposableGoals = A2(
 											$elm$core$Dict$map,
@@ -28085,8 +29450,8 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$processLiteral = func
 														return _Utils_Tuple2(
 															_Utils_Tuple2(idop, i),
 															{
-																ar: A3($elm$core$List$map2, $elm$core$Tuple$pair, tsop, ts),
-																P: _Utils_Tuple2(_List_Nil, _List_Nil)
+																at: A3($elm$core$List$map2, $elm$core$Tuple$pair, tsop, ts),
+																Q: _Utils_Tuple2(_List_Nil, _List_Nil)
 															});
 													},
 													$elm$core$Dict$toList(opposableAtoms))));
@@ -28144,7 +29509,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux 
 							$elm$core$List$any,
 							function (_v19) {
 								var nj = _v19.b;
-								return _Utils_eq(nj.bm, ni.bm);
+								return _Utils_eq(nj.by, ni.by);
 							},
 							ac) ? ac : _Utils_ap(
 							ac,
@@ -28165,7 +29530,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqAux 
 		} else {
 			return (_Utils_cmp(deep, $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$maxBranchLength) > 0) ? _Utils_Tuple2(
 				$elm_community$graph$Graph$Tree$leaf(
-					{bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Taut, y: deep, S: $elm$core$Maybe$Nothing, T: $elm$core$Maybe$Nothing, A: 6, f: _List_Nil, cl: $elm$core$Maybe$Nothing, E: 9, cp: 0, U: _List_Nil}),
+					{by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Taut, z: deep, T: $elm$core$Maybe$Nothing, U: $elm$core$Maybe$Nothing, B: 6, f: _List_Nil, cx: $elm$core$Maybe$Nothing, F: 9, y: 0, V: _List_Nil}),
 				_List_Nil) : A9($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqStep, deep, generatedConstants, maxConstants, maxSize, universe, nodes, equalities, goals, undec);
 		}
 	});
@@ -28262,16 +29627,16 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEqStep
 										return _Utils_Tuple2(
 											$elm_community$graph$Graph$Tree$leaf(
 												{
-													bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Taut,
-													y: deep,
-													S: $elm$core$Maybe$Nothing,
+													by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Taut,
+													z: deep,
 													T: $elm$core$Maybe$Nothing,
-													A: undec ? 6 : 5,
+													U: $elm$core$Maybe$Nothing,
+													B: undec ? 6 : 5,
 													f: _List_Nil,
-													cl: $elm$core$Maybe$Nothing,
-													E: 9,
-													cp: 0,
-													U: _List_Nil
+													cx: $elm$core$Maybe$Nothing,
+													F: 9,
+													y: 0,
+													V: _List_Nil
 												}),
 											_List_Nil);
 									}
@@ -28290,16 +29655,16 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEq = F
 				return _Utils_Tuple2(
 					i,
 					{
-						bm: f,
-						y: i,
-						S: $elm$core$Maybe$Nothing,
+						by: f,
+						z: i,
 						T: $elm$core$Maybe$Nothing,
-						A: 8,
+						U: $elm$core$Maybe$Nothing,
+						B: 8,
 						f: _List_Nil,
-						cl: $elm$core$Maybe$Nothing,
-						E: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f),
-						cp: 0,
-						U: _List_Nil
+						cx: $elm$core$Maybe$Nothing,
+						F: $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$ffolType(f),
+						y: 0,
+						V: _List_Nil
 					});
 			});
 		var universe = _List_Nil;
@@ -28352,10 +29717,10 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauToDOT = 
 		var ti = _v1.b;
 		return $elm$core$Maybe$Just(
 			_Utils_eq(i, -1) ? '🗴' : ((i === 1) ? '⭘' : ((i === 2) ? 'ⓤ' : ('F' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
-				$elm$core$String$fromInt(ti.y + 1)) + ('≡' + $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ti.bm)))))));
+				$elm$core$String$fromInt(ti.z + 1)) + ('≡' + $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ti.by)))))));
 	};
 	var toStringEdge = function (ei) {
-		var _v0 = ei.A;
+		var _v0 = ei.B;
 		switch (_v0) {
 			case 0:
 				return 'L';
@@ -28374,7 +29739,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauToDOT = 
 							ei.u))) + ')');
 			case 3:
 				return 'α' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
-					$elm$core$String$fromInt(ei.W)) + ('(F' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
+					$elm$core$String$fromInt(ei.X)) + ('(F' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
 					A2(
 						$elm$core$String$join,
 						',',
@@ -28386,7 +29751,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauToDOT = 
 							ei.u))) + ')')));
 			case 4:
 				return 'β' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
-					$elm$core$String$fromInt(ei.W)) + ('(F' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
+					$elm$core$String$fromInt(ei.X)) + ('(F' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
 					A2(
 						$elm$core$String$join,
 						',',
@@ -28406,7 +29771,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauToDOT = 
 							function (ind) {
 								return $elm$core$String$fromInt(ind + 1);
 							},
-							ei.u))) + (',' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(ei.aB) + ')')));
+							ei.u))) + (',' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(ei.aF) + ')')));
 			case 6:
 				return 'δ(F' + ($logicUSLIB$logicus_fol$LogicUS$FOL$AuxiliarFuctions$replaceBySubscript(
 					A2(
@@ -28417,7 +29782,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauToDOT = 
 							function (ind) {
 								return $elm$core$String$fromInt(ind + 1);
 							},
-							ei.u))) + (')⇒' + $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(ei.aB)));
+							ei.u))) + (')⇒' + $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(ei.aF)));
 			case 7:
 				return '⟂(' + (A2(
 					$elm$core$String$join,
@@ -28465,11 +29830,11 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 					var _v1 = A3($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeToDOTAux, gid + 1, gid, c);
 					var res = _v1.a;
 					var lgid = _v1.b;
-					var _v2 = ni.A;
+					var _v2 = ni.B;
 					switch (_v2) {
 						case 7:
 							return _Utils_Tuple2(
-								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + ((A2(
+								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + ((A2(
 									$elm$core$String$join,
 									'⚬',
 									A2(
@@ -28483,17 +29848,17 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 									A2(
 										$elm$core$Maybe$map,
 										A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-										ni.S)) + ')'))) + '\"];'))))) + ('\n' + res))))),
+										ni.T)) + ')'))) + '\"];'))))) + ('\n' + res))))),
 								lgid);
 						case 0:
 							return _Utils_Tuple2(
-								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛼(' + (A2(
+								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛼(' + (A2(
 									$elm$core$Maybe$withDefault,
 									'',
 									A2(
 										$elm$core$Maybe$map,
 										A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-										ni.S)) + (').' + A2(
+										ni.T)) + (').' + A2(
 									$elm$core$String$join,
 									'⚬',
 									A2(
@@ -28505,13 +29870,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 								lgid);
 						case 1:
 							return _Utils_Tuple2(
-								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛽(' + (A2(
+								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛽(' + (A2(
 									$elm$core$Maybe$withDefault,
 									'',
 									A2(
 										$elm$core$Maybe$map,
 										A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-										ni.S)) + (').' + A2(
+										ni.T)) + (').' + A2(
 									$elm$core$String$join,
 									'⚬',
 									A2(
@@ -28523,13 +29888,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 								lgid);
 						case 2:
 							return _Utils_Tuple2(
-								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛾(' + (A2(
+								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛾(' + (A2(
 									$elm$core$Maybe$withDefault,
 									'',
 									A2(
 										$elm$core$Maybe$map,
 										A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-										ni.S)) + (')' + (A2(
+										ni.T)) + (')' + (A2(
 									$elm$core$Maybe$withDefault,
 									'',
 									A2(
@@ -28540,7 +29905,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 											return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(
 												A2($elm$core$Dict$singleton, x, y));
 										},
-										ni.cl)) + ('.' + A2(
+										ni.cx)) + ('.' + A2(
 									$elm$core$String$join,
 									'⚬',
 									A2(
@@ -28552,13 +29917,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 								lgid);
 						case 3:
 							return _Utils_Tuple2(
-								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛿(' + (A2(
+								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛿(' + (A2(
 									$elm$core$Maybe$withDefault,
 									'',
 									A2(
 										$elm$core$Maybe$map,
 										A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-										ni.S)) + (')' + (A2(
+										ni.T)) + (')' + (A2(
 									$elm$core$Maybe$withDefault,
 									'',
 									A2(
@@ -28569,7 +29934,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 											return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(
 												A2($elm$core$Dict$singleton, x, y));
 										},
-										ni.cl)) + ('.' + A2(
+										ni.cx)) + ('.' + A2(
 									$elm$core$String$join,
 									'⚬',
 									A2(
@@ -28581,7 +29946,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 								lgid);
 						case 8:
 							return _Utils_Tuple2(
-								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (((p >= 0) ? ($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + '\n'))) : '') + res)))),
+								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (((p >= 0) ? ($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + '\n'))) : '') + res)))),
 								lgid);
 						default:
 							return _Utils_Tuple2('', -2);
@@ -28597,11 +29962,11 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 						var _v7 = A3($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeToDOTAux, lgid1 + 1, gid, c2);
 						var res2 = _v7.a;
 						var lgid2 = _v7.b;
-						var _v8 = ni.A;
+						var _v8 = ni.B;
 						switch (_v8) {
 							case 7:
 								return _Utils_Tuple2(
-									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + ((A2(
+									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + ((A2(
 										$elm$core$String$join,
 										'⚬',
 										A2(
@@ -28615,17 +29980,17 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 										A2(
 											$elm$core$Maybe$map,
 											A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-											ni.S)) + ')'))) + '\"];'))))) + ('\n' + (res1 + ('\n' + res2))))))),
+											ni.T)) + ')'))) + '\"];'))))) + ('\n' + (res1 + ('\n' + res2))))))),
 									lgid2);
 							case 0:
 								return _Utils_Tuple2(
-									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛼(' + (A2(
+									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛼(' + (A2(
 										$elm$core$Maybe$withDefault,
 										'',
 										A2(
 											$elm$core$Maybe$map,
 											A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-											ni.S)) + (').' + A2(
+											ni.T)) + (').' + A2(
 										$elm$core$String$join,
 										'⚬',
 										A2(
@@ -28637,13 +30002,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 									lgid2);
 							case 1:
 								return _Utils_Tuple2(
-									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛽(' + (A2(
+									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛽(' + (A2(
 										$elm$core$Maybe$withDefault,
 										'',
 										A2(
 											$elm$core$Maybe$map,
 											A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-											ni.S)) + (').' + A2(
+											ni.T)) + (').' + A2(
 										$elm$core$String$join,
 										'⚬',
 										A2(
@@ -28655,13 +30020,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 									lgid2);
 							case 2:
 								return _Utils_Tuple2(
-									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛾(' + (A2(
+									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛾(' + (A2(
 										$elm$core$Maybe$withDefault,
 										'',
 										A2(
 											$elm$core$Maybe$map,
 											A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-											ni.S)) + (')' + (A2(
+											ni.T)) + (')' + (A2(
 										$elm$core$Maybe$withDefault,
 										'',
 										A2(
@@ -28672,7 +30037,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 												return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(
 													A2($elm$core$Dict$singleton, x, y));
 											},
-											ni.cl)) + ('.' + A2(
+											ni.cx)) + ('.' + A2(
 										$elm$core$String$join,
 										'⚬',
 										A2(
@@ -28684,13 +30049,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 									lgid2);
 							case 3:
 								return _Utils_Tuple2(
-									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛿(' + (A2(
+									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛿(' + (A2(
 										$elm$core$Maybe$withDefault,
 										'',
 										A2(
 											$elm$core$Maybe$map,
 											A2($elm$core$Basics$composeL, $elm$core$String$fromInt, $elm$core$Tuple$first),
-											ni.S)) + (')' + (A2(
+											ni.T)) + (')' + (A2(
 										$elm$core$Maybe$withDefault,
 										'',
 										A2(
@@ -28701,7 +30066,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 												return $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$substitutionToString(
 													A2($elm$core$Dict$singleton, x, y));
 											},
-											ni.cl)) + ('.' + A2(
+											ni.cx)) + ('.' + A2(
 										$elm$core$String$join,
 										'⚬',
 										A2(
@@ -28713,7 +30078,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 									lgid2);
 							case 8:
 								return _Utils_Tuple2(
-									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + $elm$core$String$fromInt(gid))) + ('\n' + (res1 + ('\n' + res2))))))),
+									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + $elm$core$String$fromInt(gid))) + ('\n' + (res1 + ('\n' + res2))))))),
 									lgid2);
 							default:
 								return _Utils_Tuple2('', -2);
@@ -28726,13 +30091,13 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 				break _v0$2;
 			}
 		}
-		var _v11 = ni.A;
+		var _v11 = ni.B;
 		switch (_v11) {
 			case 4:
 				var elabel = function () {
-					var _v12 = ni.T;
+					var _v12 = ni.U;
 					if (_v12.$ === 1) {
-						var _v13 = ni.S;
+						var _v13 = ni.T;
 						if (!_v13.$) {
 							var _v14 = _v13.a;
 							var id1 = _v14.a;
@@ -28753,7 +30118,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 						var _v15 = _v12.a;
 						var id2 = _v15.a;
 						var simp2 = _v15.b;
-						var _v16 = ni.S;
+						var _v16 = ni.T;
 						if (!_v16.$) {
 							var _v17 = _v16.a;
 							var id1 = _v17.a;
@@ -28781,7 +30146,7 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauNodeTo
 					}
 				}();
 				return _Utils_Tuple2(
-					$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.bm) + ('\"];\n' + ($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (elabel + '\"];')))))))),
+					$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(ni.by) + ('\"];\n' + ($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (elabel + '\"];')))))))),
 					gid);
 			case 5:
 				return _Utils_Tuple2(
@@ -28809,7 +30174,7 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 			$elm$json$Json$Decode$map4,
 			F4(
 				function (x, y, z, u) {
-					return {bt: x, bd: u, be: z, bf: y};
+					return {bE: x, bp: u, bq: z, br: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -28835,7 +30200,7 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -28851,7 +30216,7 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: x, af: y};
+					return {aL: x, ah: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -28866,22 +30231,22 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
-				var _v2 = A2($elm$json$Json$Decode$decodeString, optionDecoder, c.af);
+				var _v2 = A2($elm$json$Json$Decode$decodeString, optionDecoder, c.ah);
 				if (!_v2.$) {
 					var o = _v2.a;
-					var _v3 = o.bt;
+					var _v3 = o.bE;
 					switch (_v3) {
 						case 'sfol':
 							var _v4 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(source.ag, source.ah),
+								_Utils_Tuple2(source.ai, source.aj),
 								outputsSFOL);
 							if (!_v4.$) {
 								var s = _v4.a;
-								var _v5 = o.bf;
+								var _v5 = o.br;
 								switch (_v5) {
 									case 'enhanced':
 										return {
@@ -28889,7 +30254,7 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 											d: $elm$json$Json$Encode$string(
 												A2(
 													$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauToDOTStyled,
-													A3($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEq, s, o.bd, o.be),
+													A3($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEq, s, o.bp, o.bq),
 													''))
 										};
 									case 'basic':
@@ -28897,29 +30262,29 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 											c: 0,
 											d: $elm$json$Json$Encode$string(
 												$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableauToDOT(
-													A3($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableau, s, o.bd, o.be)))
+													A3($logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableau, s, o.bp, o.bq)))
 										};
 									default:
 										return {
 											c: 4,
-											d: $elm$json$Json$Encode$string('Unknown performMode: (' + (o.bf + ') for SemanticTableauFOL'))
+											d: $elm$json$Json$Encode$string('Unknown performMode: (' + (o.br + ') for SemanticTableauFOL'))
 										};
 								}
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source (SetFOL): (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ') for SemanticTableauFOL'))))
+										'Unknown source (SetFOL): (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ') for SemanticTableauFOL'))))
 								};
 							}
 						case 'ffol':
 							var _v6 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(source.ag, source.ah),
+								_Utils_Tuple2(source.ai, source.aj),
 								outputsFFOL);
 							if (!_v6.$) {
 								var f = _v6.a;
-								var _v7 = o.bf;
+								var _v7 = o.br;
 								switch (_v7) {
 									case 'enhanced':
 										return {
@@ -28931,8 +30296,8 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 														$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableauxEQ$semanticTableauEq,
 														_List_fromArray(
 															[f]),
-														o.bd,
-														o.be),
+														o.bp,
+														o.bq),
 													''))
 										};
 									case 'basic':
@@ -28944,26 +30309,26 @@ var $author$project$FOLAlgProcessors$processSemanticTableauFOL = F3(
 														$logicUSLIB$logicus_fol$LogicUS$FOL$SemanticTableaux$semanticTableau,
 														_List_fromArray(
 															[f]),
-														o.bd,
-														o.be)))
+														o.bp,
+														o.bq)))
 										};
 									default:
 										return {
 											c: 4,
-											d: $elm$json$Json$Encode$string('Unknown performMode: (' + (o.bf + ') for SemanticTableauFOL'))
+											d: $elm$json$Json$Encode$string('Unknown performMode: (' + (o.br + ') for SemanticTableauFOL'))
 										};
 								}
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source (FormulaFOL): (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ') for SemanticTableauFOL'))))
+										'Unknown source (FormulaFOL): (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ') for SemanticTableauFOL'))))
 								};
 							}
 						default:
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown inputMode: (' + (o.bt + ') for SemanticTableauFOL'))
+								d: $elm$json$Json$Encode$string('Unknown inputMode: (' + (o.bE + ') for SemanticTableauFOL'))
 							};
 					}
 				} else {
@@ -29309,9 +30674,9 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$splSemanticTableauBuilder
 				{
 					v: xs,
 					s: nid,
-					B: _List_fromArray(
+					C: _List_fromArray(
 						[parent]),
-					ab: rule
+					ad: rule
 				},
 				_List_fromArray(
 					[
@@ -29320,13 +30685,13 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$splSemanticTableauBuilder
 							v: _List_fromArray(
 								[$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat]),
 							s: nid + 1,
-							B: A2(
+							C: A2(
 								$elm$core$List$map,
 								function (x) {
 									return 1 + x;
 								},
 								incons),
-							ab: 4
+							ad: 4
 						})
 					]));
 		} else {
@@ -29342,9 +30707,9 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$splSemanticTableauBuilder
 					{
 						v: xs,
 						s: nid,
-						B: _List_fromArray(
+						C: _List_fromArray(
 							[parent]),
-						ab: rule
+						ad: rule
 					},
 					_List_fromArray(
 						[child]));
@@ -29361,9 +30726,9 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$splSemanticTableauBuilder
 						{
 							v: xs,
 							s: nid,
-							B: _List_fromArray(
+							C: _List_fromArray(
 								[parent]),
-							ab: rule
+							ad: rule
 						},
 						_List_fromArray(
 							[child]));
@@ -29383,9 +30748,9 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$splSemanticTableauBuilder
 							{
 								v: xs,
 								s: nid,
-								B: _List_fromArray(
+								C: _List_fromArray(
 									[parent]),
-								ab: rule
+								ad: rule
 							},
 							_List_fromArray(
 								[child1, child2]));
@@ -29395,14 +30760,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$splSemanticTableauBuilder
 							{
 								v: xs,
 								s: nid,
-								B: _List_fromArray(
+								C: _List_fromArray(
 									[parent]),
-								ab: rule
+								ad: rule
 							},
 							_List_fromArray(
 								[
 									$elm_community$graph$Graph$Tree$leaf(
-									{v: xs, s: nid + 1, B: _List_Nil, ab: 5})
+									{v: xs, s: nid + 1, C: _List_Nil, ad: 5})
 								]));
 					}
 				}
@@ -29423,7 +30788,7 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauOpenLeaves
 		if (!_v0.a.b.b) {
 			var _v1 = _v0.a;
 			var label = _v1.a;
-			return (label.ab === 5) ? _List_fromArray(
+			return (label.ad === 5) ? _List_fromArray(
 				[label.v]) : _List_Nil;
 		} else {
 			var _v2 = _v0.a;
@@ -29498,28 +30863,28 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauNodeToDOTA
 					var _v1 = A3($logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauNodeToDOTAux, gid + 1, gid, c);
 					var res = _v1.a;
 					var lgid = _v1.b;
-					var _v2 = ni.ab;
+					var _v2 = ni.ad;
 					switch (_v2) {
 						case 2:
 							return _Utils_Tuple2(
 								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(ni.v) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛼(' + (A2(
 									$elm$core$String$join,
 									',',
-									A2($elm$core$List$map, $elm$core$String$fromInt, ni.B)) + ')')) + '\"];'))))) + res)))),
+									A2($elm$core$List$map, $elm$core$String$fromInt, ni.C)) + ')')) + '\"];'))))) + res)))),
 								lgid);
 						case 3:
 							return _Utils_Tuple2(
 								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(ni.v) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛽(' + (A2(
 									$elm$core$String$join,
 									',',
-									A2($elm$core$List$map, $elm$core$String$fromInt, ni.B)) + ')')) + '\"];'))))) + res)))),
+									A2($elm$core$List$map, $elm$core$String$fromInt, ni.C)) + ')')) + '\"];'))))) + res)))),
 								lgid);
 						case 1:
 							return _Utils_Tuple2(
 								$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(ni.v) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝒹𝒩(' + (A2(
 									$elm$core$String$join,
 									',',
-									A2($elm$core$List$map, $elm$core$String$fromInt, ni.B)) + ')')) + '\"];'))))) + res)))),
+									A2($elm$core$List$map, $elm$core$String$fromInt, ni.C)) + ')')) + '\"];'))))) + res)))),
 								lgid);
 						case 0:
 							return _Utils_Tuple2(
@@ -29539,28 +30904,28 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauNodeToDOTA
 						var _v5 = A3($logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauNodeToDOTAux, lgid1 + 1, gid, c2);
 						var res2 = _v5.a;
 						var lgid2 = _v5.b;
-						var _v6 = ni.ab;
+						var _v6 = ni.ad;
 						switch (_v6) {
 							case 2:
 								return _Utils_Tuple2(
 									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(ni.v) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛼(' + (A2(
 										$elm$core$String$join,
 										',',
-										A2($elm$core$List$map, $elm$core$String$fromInt, ni.B)) + ')')) + '\"];'))))) + (res1 + ('\n' + res2)))))),
+										A2($elm$core$List$map, $elm$core$String$fromInt, ni.C)) + ')')) + '\"];'))))) + (res1 + ('\n' + res2)))))),
 									lgid2);
 							case 3:
 								return _Utils_Tuple2(
 									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(ni.v) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝛽(' + (A2(
 										$elm$core$String$join,
 										',',
-										A2($elm$core$List$map, $elm$core$String$fromInt, ni.B)) + ')')) + '\"];'))))) + (res1 + ('\n' + res2)))))),
+										A2($elm$core$List$map, $elm$core$String$fromInt, ni.C)) + ')')) + '\"];'))))) + (res1 + ('\n' + res2)))))),
 									lgid2);
 							case 1:
 								return _Utils_Tuple2(
 									$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(ni.v) + ('\"];\n' + (($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (('𝒹𝒩(' + (A2(
 										$elm$core$String$join,
 										',',
-										A2($elm$core$List$map, $elm$core$String$fromInt, ni.B)) + ')')) + '\"];'))))) + (res1 + ('\n' + res2)))))),
+										A2($elm$core$List$map, $elm$core$String$fromInt, ni.C)) + ')')) + '\"];'))))) + (res1 + ('\n' + res2)))))),
 									lgid2);
 							case 0:
 								return _Utils_Tuple2(
@@ -29577,14 +30942,14 @@ var $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauNodeToDOTA
 				break _v0$2;
 			}
 		}
-		var _v7 = ni.ab;
+		var _v7 = ni.ad;
 		switch (_v7) {
 			case 4:
 				return _Utils_Tuple2(
 					$elm$core$String$fromInt(gid) + (' [label=\"' + ($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat) + ('\"];\n' + ($elm$core$String$fromInt(p) + (' -> ' + ($elm$core$String$fromInt(gid) + (' [label=\"' + (A2(
 						$elm$core$String$join,
 						'→←',
-						A2($elm$core$List$map, $elm$core$String$fromInt, ni.B)) + '\"];')))))))),
+						A2($elm$core$List$map, $elm$core$String$fromInt, ni.C)) + '\"];')))))))),
 					gid);
 			case 5:
 				return _Utils_Tuple2(
@@ -29603,7 +30968,7 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 			$elm$json$Json$Decode$map3,
 			F3(
 				function (x, y, z) {
-					return {bt: x, bf: y, bg: z};
+					return {bE: x, br: y, bs: z};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -29624,7 +30989,7 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -29640,7 +31005,7 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -29655,22 +31020,22 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
-				var _v2 = A2($elm$json$Json$Decode$decodeString, optionDecoder, c.af);
+				var _v2 = A2($elm$json$Json$Decode$decodeString, optionDecoder, c.ah);
 				if (!_v2.$) {
 					var o = _v2.a;
-					var _v3 = o.bt;
+					var _v3 = o.bE;
 					switch (_v3) {
 						case 'spl':
 							var _v4 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(source.ag, source.ah),
+								_Utils_Tuple2(source.ai, source.aj),
 								outputsSPL);
 							if (!_v4.$) {
 								var s = _v4.a;
-								var _v5 = _Utils_Tuple2(o.bf, o.bg);
+								var _v5 = _Utils_Tuple2(o.br, o.bs);
 								_v5$3:
 								while (true) {
 									if (_v5.a === 'full') {
@@ -29695,8 +31060,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 																$elm$json$Json$Encode$string(
 																	$logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauToDOT(st)))
 															])),
-													i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: res},
-													cZ: 1
+													i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: res},
+													c2: 1
 												};
 											case 'minimal':
 												var st = $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableau(s);
@@ -29718,8 +31083,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 																$elm$json$Json$Encode$string(
 																	$logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauToDOT(st)))
 															])),
-													i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: res},
-													cZ: 1
+													i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: res},
+													c2: 1
 												};
 											case 'asdnf':
 												var st = $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableau(s);
@@ -29742,8 +31107,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 																$elm$json$Json$Encode$string(
 																	$logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauToDOT(st)))
 															])),
-													i: {cK: res, c$: _List_Nil},
-													cZ: 2
+													i: {cQ: res, c4: _List_Nil},
+													c2: 2
 												};
 											default:
 												break _v5$3;
@@ -29754,27 +31119,27 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 								}
 								return {
 									c: 4,
-									d: $elm$json$Json$Encode$string('Unknown option (' + (o.bf + (',' + (o.bg + ') for PLSemanticTableau (SetPL)')))),
-									i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-									cZ: 0
+									d: $elm$json$Json$Encode$string('Unknown option (' + (o.br + (',' + (o.bs + ') for PLSemanticTableau (SetPL)')))),
+									i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+									c2: 0
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source (SetPL): (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')')))),
-									i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-									cZ: 0
+										'Unknown source (SetPL): (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')')))),
+									i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+									c2: 0
 								};
 							}
 						case 'fpl':
 							var _v6 = A2(
 								$elm$core$Dict$get,
-								_Utils_Tuple2(source.ag, source.ah),
+								_Utils_Tuple2(source.ai, source.aj),
 								outputsFPL);
 							if (!_v6.$) {
 								var f = _v6.a;
-								var _v7 = _Utils_Tuple2(o.bf, o.bg);
+								var _v7 = _Utils_Tuple2(o.br, o.bs);
 								_v7$3:
 								while (true) {
 									if (_v7.a === 'full') {
@@ -29801,8 +31166,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 																$elm$json$Json$Encode$string(
 																	$logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauToDOT(st)))
 															])),
-													i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: res},
-													cZ: 1
+													i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: res},
+													c2: 1
 												};
 											case 'minimal':
 												var st = $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableau(
@@ -29826,8 +31191,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 																$elm$json$Json$Encode$string(
 																	$logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauToDOT(st)))
 															])),
-													i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: res},
-													cZ: 1
+													i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: res},
+													c2: 1
 												};
 											case 'asdnf':
 												var st = $logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableau(
@@ -29852,8 +31217,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 																$elm$json$Json$Encode$string(
 																	$logicUSLIB$logicus_pl$LogicUS$PL$SemanticTableaux$semanticTableauToDOT(st)))
 															])),
-													i: {cK: res, c$: _List_Nil},
-													cZ: 2
+													i: {cQ: res, c4: _List_Nil},
+													c2: 2
 												};
 											default:
 												break _v7$3;
@@ -29864,25 +31229,25 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 								}
 								return {
 									c: 4,
-									d: $elm$json$Json$Encode$string('Unknown options (' + (o.bf + (',' + (o.bg + ') for PLSemanticTableau (FormulaPL)')))),
-									i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-									cZ: 0
+									d: $elm$json$Json$Encode$string('Unknown options (' + (o.br + (',' + (o.bs + ') for PLSemanticTableau (FormulaPL)')))),
+									i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+									c2: 0
 								};
 							} else {
 								return {
 									c: 2,
 									d: $elm$json$Json$Encode$string(
-										'Unknown source (FormulaPL): (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')')))),
-									i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-									cZ: 0
+										'Unknown source (FormulaPL): (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')')))),
+									i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+									c2: 0
 								};
 							}
 						default:
 							return {
 								c: 4,
-								d: $elm$json$Json$Encode$string('Unknown option (' + (o.bt + ') for PLSemanticTableau (FormulaPL)')),
-								i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-								cZ: 0
+								d: $elm$json$Json$Encode$string('Unknown option (' + (o.bE + ') for PLSemanticTableau (FormulaPL)')),
+								i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+								c2: 0
 							};
 					}
 				} else {
@@ -29891,8 +31256,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 						c: 3,
 						d: $elm$json$Json$Encode$string(
 							$elm$json$Json$Decode$errorToString(e)),
-						i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-						cZ: 0
+						i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+						c2: 0
 					};
 				}
 			} else {
@@ -29901,8 +31266,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 					c: 3,
 					d: $elm$json$Json$Encode$string(
 						$elm$json$Json$Decode$errorToString(e)),
-					i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-					cZ: 0
+					i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+					c2: 0
 				};
 			}
 		} else {
@@ -29911,8 +31276,8 @@ var $author$project$PLAlgProcessors$processSemanticTableauPL = F3(
 				c: 3,
 				d: $elm$json$Json$Encode$string(
 					$elm$json$Json$Decode$errorToString(e)),
-				i: {cK: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c$: _List_Nil},
-				cZ: 0
+				i: {cQ: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, c4: _List_Nil},
+				c2: 0
 			};
 		}
 	});
@@ -29936,7 +31301,7 @@ var $author$project$FOLBasicProcessors$processSetFOLNode = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -29951,12 +31316,12 @@ var $author$project$FOLBasicProcessors$processSetFOLNode = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = c.af;
+			var _v1 = c.ah;
 			switch (_v1) {
 				case 'fromFile':
 					var parsedSet = function () {
 						var _v5 = $elm_community$list_extra$List$Extra$unconsLast(
-							A2($elm$core$String$split, '.', c.aH));
+							A2($elm$core$String$split, '.', c.aL));
 						if (!_v5.$) {
 							if (_v5.a.a === '') {
 								if (!_v5.a.b.b) {
@@ -30031,7 +31396,7 @@ var $author$project$FOLBasicProcessors$processSetFOLNode = F3(
 						};
 					}
 				case 'collect':
-					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v9.$) {
 						var sources = _v9.a;
 						var fs = A2(
@@ -30091,7 +31456,7 @@ var $author$project$FOLBasicProcessors$processSetFOLNode = F3(
 						};
 					}
 				case 'union':
-					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v13.$) {
 						var sources = _v13.a;
 						var fss = A2(
@@ -30191,7 +31556,7 @@ var $author$project$PLBasicProcessors$processSetPLNode = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -30206,12 +31571,12 @@ var $author$project$PLBasicProcessors$processSetPLNode = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = c.af;
+			var _v1 = c.ah;
 			switch (_v1) {
 				case 'fromFile':
 					var parsedSet = function () {
 						var _v5 = $elm_community$list_extra$List$Extra$unconsLast(
-							A2($elm$core$String$split, '.', c.aH));
+							A2($elm$core$String$split, '.', c.aL));
 						if (!_v5.$) {
 							if (_v5.a.a === '') {
 								if (!_v5.a.b.b) {
@@ -30286,7 +31651,7 @@ var $author$project$PLBasicProcessors$processSetPLNode = F3(
 						};
 					}
 				case 'collect':
-					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v9 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v9.$) {
 						var sources = _v9.a;
 						var fs = A2(
@@ -30346,7 +31711,7 @@ var $author$project$PLBasicProcessors$processSetPLNode = F3(
 						};
 					}
 				case 'union':
-					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+					var _v13 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 					if (!_v13.$) {
 						var sources = _v13.a;
 						var fss = A2(
@@ -30655,12 +32020,12 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToPrenex2 = function (f)
 		_Utils_Tuple2(4, _List_Nil),
 		nodes_extra).b;
 	return _Utils_Tuple3(
-		ret1.C,
-		ret1.bm,
+		ret1.D,
+		ret1.by,
 		A2(
 			$elm_community$graph$Graph$fromNodesAndEdges,
-			_Utils_ap(nodes_extra, ret1.D),
-			_Utils_ap(edges_extra, ret1.Y)));
+			_Utils_ap(nodes_extra, ret1.E),
+			_Utils_ap(edges_extra, ret1._)));
 };
 var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$prenexGraphToDOT = function (g) {
 	var toStringQuantifier = function (c) {
@@ -30700,7 +32065,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -30716,7 +32081,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -30731,22 +32096,22 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var sources = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(sources.ag, sources.ah),
+					_Utils_Tuple2(sources.ai, sources.aj),
 					outputsffol);
 				if (!_v2.$) {
 					var f = _v2.a;
-					var _v3 = c.af;
+					var _v3 = c.ah;
 					switch (_v3) {
 						case 'replaceEquiv':
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolRemoveAllEquiv(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30755,7 +32120,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolRemoveAllImpl(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30764,7 +32129,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolInteriorizeNeg(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30773,7 +32138,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToNNF(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30782,7 +32147,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToCNF(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30791,7 +32156,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToDNF(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30800,7 +32165,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolUniversalClosure(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30809,7 +32174,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolExistentialClosure(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30818,7 +32183,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolRenameVars(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30832,7 +32197,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = A2($logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolApplyQuantifiers, cs, g);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$object(
 									_List_fromArray(
 										[
@@ -30850,7 +32215,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 							var f_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$ffolToSkolem(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(f_)),
 								i: f_
@@ -30858,7 +32223,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 						default:
 							return {
 								c: 4,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string('undefined option for node of type transformFFOL'),
 								i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 							};
@@ -30868,7 +32233,7 @@ var $author$project$FOLBasicProcessors$processTransformFFOLNode = F2(
 						c: 2,
 						s: _Utils_Tuple2(-1, -1),
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(sources.ag) + (', ' + ($elm$core$String$fromInt(sources.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(sources.ai) + (', ' + ($elm$core$String$fromInt(sources.aj) + ')')))),
 						i: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat
 					};
 				}
@@ -31353,7 +32718,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -31369,7 +32734,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -31384,22 +32749,22 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var sources = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(sources.ag, sources.ah),
+					_Utils_Tuple2(sources.ai, sources.aj),
 					outputsFPL);
 				if (!_v2.$) {
 					var f = _v2.a;
-					var _v3 = c.af;
+					var _v3 = c.ah;
 					switch (_v3) {
 						case 'replaceEquiv':
 							var f_ = $logicUSLIB$logicus_pl$LogicUS$PL$NormalForms$fplRemoveAllEquiv(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31408,7 +32773,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 							var f_ = $logicUSLIB$logicus_pl$LogicUS$PL$NormalForms$fplRemoveAllImpl(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31417,7 +32782,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 							var f_ = $author$project$Auxiliar$fplInteriorizeAllNeg2(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31426,7 +32791,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 							var f_ = $author$project$Auxiliar$fplInteriorizeAllConj2(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31435,7 +32800,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 							var f_ = $author$project$Auxiliar$fplInteriorizeAllDisj2(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31444,7 +32809,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 							var f_ = $logicUSLIB$logicus_pl$LogicUS$PL$NormalForms$fplToNNF(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31453,7 +32818,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 							var f_ = $logicUSLIB$logicus_pl$LogicUS$PL$NormalForms$fplToCNF(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31462,7 +32827,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 							var f_ = $logicUSLIB$logicus_pl$LogicUS$PL$NormalForms$fplToDNF(f);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(f_)),
 								i: f_
@@ -31470,7 +32835,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 						default:
 							return {
 								c: 4,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string('undefined option for node of type transformSetPL'),
 								i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 							};
@@ -31480,7 +32845,7 @@ var $author$project$PLBasicProcessors$processTransformFPLNode = F2(
 						c: 2,
 						s: _Utils_Tuple2(-1, -1),
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(sources.ag) + (', ' + ($elm$core$String$fromInt(sources.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(sources.ai) + (', ' + ($elm$core$String$fromInt(sources.aj) + ')')))),
 						i: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat
 					};
 				}
@@ -31545,12 +32910,12 @@ var $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sfolToDNF = function (fs) {
 };
 var $author$project$FOLBasicProcessors$processTransformSetFOLNode = F2(
 	function (content, outputsSPL) {
-		var result = {bN: _List_Nil, bm: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat, aB: _List_Nil};
+		var result = {bY: _List_Nil, by: $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$Insat, aF: _List_Nil};
 		var inputDecoder = A3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -31566,7 +32931,7 @@ var $author$project$FOLBasicProcessors$processTransformSetFOLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -31581,132 +32946,132 @@ var $author$project$FOLBasicProcessors$processTransformSetFOLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var sources = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(sources.ag, sources.ah),
+					_Utils_Tuple2(sources.ai, sources.aj),
 					outputsSPL);
 				if (!_v2.$) {
 					var fs = _v2.a;
-					var _v3 = c.af;
+					var _v3 = c.ah;
 					switch (_v3) {
 						case 'neg_all':
 							var fs_ = A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolNegation, fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 1
+									{aF: fs_}),
+								cy: 1
 							};
 						case 'conj_all':
 							var fs_ = $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolConjunction(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{bm: fs_}),
-								cm: 2
+									{by: fs_}),
+								cy: 2
 							};
 						case 'disj_all':
 							var fs_ = $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolDisjunction(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{bm: fs_}),
-								cm: 3
+									{by: fs_}),
+								cy: 3
 							};
 						case '∀-closure':
 							var fs_ = A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolUniversalClosure, fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 4
+									{aF: fs_}),
+								cy: 4
 							};
 						case '∃-closure':
 							var fs_ = A2($elm$core$List$map, $logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$ffolExistentialClosure, fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 5
+									{aF: fs_}),
+								cy: 5
 							};
 						case 'toSkolem':
 							var fs_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sfolToSkolem(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 6
+									{aF: fs_}),
+								cy: 6
 							};
 						case 'toCNF':
 							var fs_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sfolToCNF(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 7
+									{aF: fs_}),
+								cy: 7
 							};
 						case 'toDNF':
 							var fs_ = $logicUSLIB$logicus_fol$LogicUS$FOL$NormalForms$sfolToDNF(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$SyntaxSemantics$sfolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 8
+									{aF: fs_}),
+								cy: 8
 							};
 						case 'toClauses':
 							var fs_ = $logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$sfolToClauses(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_fol$LogicUS$FOL$Clauses$csfolToString(fs_)),
 								i: _Utils_update(
 									result,
-									{bN: fs_}),
-								cm: 9
+									{bY: fs_}),
+								cy: 9
 							};
 						default:
 							return {
 								c: 4,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string('undefined option for node of type TransformSetFOL'),
 								i: result,
-								cm: 0
+								cy: 0
 							};
 					}
 				} else {
@@ -31714,9 +33079,9 @@ var $author$project$FOLBasicProcessors$processTransformSetFOLNode = F2(
 						c: 2,
 						s: _Utils_Tuple2(-1, -1),
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(sources.ag) + (', ' + ($elm$core$String$fromInt(sources.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(sources.ai) + (', ' + ($elm$core$String$fromInt(sources.aj) + ')')))),
 						i: result,
-						cm: 0
+						cy: 0
 					};
 				}
 			} else {
@@ -31727,7 +33092,7 @@ var $author$project$FOLBasicProcessors$processTransformSetFOLNode = F2(
 					d: $elm$json$Json$Encode$string(
 						$elm$json$Json$Decode$errorToString(e)),
 					i: result,
-					cm: 0
+					cy: 0
 				};
 			}
 		} else {
@@ -31738,19 +33103,19 @@ var $author$project$FOLBasicProcessors$processTransformSetFOLNode = F2(
 				d: $elm$json$Json$Encode$string(
 					$elm$json$Json$Decode$errorToString(e)),
 				i: result,
-				cm: 0
+				cy: 0
 			};
 		}
 	});
 var $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splNegation = $elm$core$List$map($logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplNegation);
 var $author$project$PLBasicProcessors$processTransformSetPLNode = F2(
 	function (content, outputsSPL) {
-		var result = {bN: _List_Nil, bm: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, aB: _List_Nil};
+		var result = {bY: _List_Nil, by: $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$Insat, aF: _List_Nil};
 		var inputDecoder = A3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -31766,7 +33131,7 @@ var $author$project$PLBasicProcessors$processTransformSetPLNode = F2(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -31781,96 +33146,96 @@ var $author$project$PLBasicProcessors$processTransformSetPLNode = F2(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var sources = _v1.a;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					_Utils_Tuple2(sources.ag, sources.ah),
+					_Utils_Tuple2(sources.ai, sources.aj),
 					outputsSPL);
 				if (!_v2.$) {
 					var fs = _v2.a;
-					var _v3 = c.af;
+					var _v3 = c.ah;
 					switch (_v3) {
 						case 'neg_all':
 							var fs_ = $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splNegation(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 1
+									{aF: fs_}),
+								cy: 1
 							};
 						case 'conj_all':
 							var fs_ = $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splConjunction(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(fs_)),
 								i: _Utils_update(
 									result,
-									{bm: fs_}),
-								cm: 2
+									{by: fs_}),
+								cy: 2
 							};
 						case 'disj_all':
 							var fs_ = $logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splDisjunction(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$fplToString(fs_)),
 								i: _Utils_update(
 									result,
-									{bm: fs_}),
-								cm: 3
+									{by: fs_}),
+								cy: 3
 							};
 						case 'to_cnf':
 							var fs_ = A2($elm$core$List$map, $logicUSLIB$logicus_pl$LogicUS$PL$NormalForms$fplToCNF, fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 4
+									{aF: fs_}),
+								cy: 4
 							};
 						case 'to_dnf':
 							var fs_ = A2($elm$core$List$map, $logicUSLIB$logicus_pl$LogicUS$PL$NormalForms$fplToDNF, fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$SyntaxSemantics$splToString(fs_)),
 								i: _Utils_update(
 									result,
-									{aB: fs_}),
-								cm: 5
+									{aF: fs_}),
+								cy: 5
 							};
 						case 'to_clauses':
 							var fs_ = $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$splToClauses(fs);
 							return {
 								c: 0,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string(
 									$logicUSLIB$logicus_pl$LogicUS$PL$Clauses$csplToString(fs_)),
 								i: _Utils_update(
 									result,
-									{bN: fs_}),
-								cm: 6
+									{bY: fs_}),
+								cy: 6
 							};
 						default:
 							return {
 								c: 4,
-								s: _Utils_Tuple2(sources.ag, sources.ah),
+								s: _Utils_Tuple2(sources.ai, sources.aj),
 								d: $elm$json$Json$Encode$string('undefined option for node of type transformSetPL'),
 								i: result,
-								cm: 0
+								cy: 0
 							};
 					}
 				} else {
@@ -31878,9 +33243,9 @@ var $author$project$PLBasicProcessors$processTransformSetPLNode = F2(
 						c: 2,
 						s: _Utils_Tuple2(-1, -1),
 						d: $elm$json$Json$Encode$string(
-							'Unknown source: (' + ($elm$core$String$fromInt(sources.ag) + (', ' + ($elm$core$String$fromInt(sources.ah) + ')')))),
+							'Unknown source: (' + ($elm$core$String$fromInt(sources.ai) + (', ' + ($elm$core$String$fromInt(sources.aj) + ')')))),
 						i: result,
-						cm: 0
+						cy: 0
 					};
 				}
 			} else {
@@ -31891,7 +33256,7 @@ var $author$project$PLBasicProcessors$processTransformSetPLNode = F2(
 					d: $elm$json$Json$Encode$string(
 						$elm$json$Json$Decode$errorToString(e)),
 					i: result,
-					cm: 0
+					cy: 0
 				};
 			}
 		} else {
@@ -31902,7 +33267,7 @@ var $author$project$PLBasicProcessors$processTransformSetPLNode = F2(
 				d: $elm$json$Json$Encode$string(
 					$elm$json$Json$Decode$errorToString(e)),
 				i: result,
-				cm: 0
+				cy: 0
 			};
 		}
 	});
@@ -32118,7 +33483,7 @@ var $author$project$PLAlgProcessors$processTruthTablePL = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {ag: x, ah: y};
+					return {ai: x, aj: y};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -32134,7 +33499,7 @@ var $author$project$PLAlgProcessors$processTruthTablePL = F3(
 			$elm$json$Json$Decode$map2,
 			F2(
 				function (x, y) {
-					return {aH: y, af: x};
+					return {aL: y, ah: x};
 				}),
 			A2(
 				$elm$json$Json$Decode$at,
@@ -32149,15 +33514,15 @@ var $author$project$PLAlgProcessors$processTruthTablePL = F3(
 		var _v0 = A2($elm$json$Json$Decode$decodeString, contentDecoder, content);
 		if (!_v0.$) {
 			var c = _v0.a;
-			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aH);
+			var _v1 = A2($elm$json$Json$Decode$decodeString, inputDecoder, c.aL);
 			if (!_v1.$) {
 				var source = _v1.a;
-				var _v2 = c.af;
+				var _v2 = c.ah;
 				switch (_v2) {
 					case 'FPL':
 						var _v3 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(source.ag, source.ah),
+							_Utils_Tuple2(source.ai, source.aj),
 							outputsFPL);
 						if (!_v3.$) {
 							var f = _v3.a;
@@ -32170,13 +33535,13 @@ var $author$project$PLAlgProcessors$processTruthTablePL = F3(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+									'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 							};
 						}
 					case 'SPL_full':
 						var _v4 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(source.ag, source.ah),
+							_Utils_Tuple2(source.ai, source.aj),
 							outputsSPL);
 						if (!_v4.$) {
 							var s = _v4.a;
@@ -32189,13 +33554,13 @@ var $author$project$PLAlgProcessors$processTruthTablePL = F3(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+									'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 							};
 						}
 					case 'SPL_lite':
 						var _v5 = A2(
 							$elm$core$Dict$get,
-							_Utils_Tuple2(source.ag, source.ah),
+							_Utils_Tuple2(source.ai, source.aj),
 							outputsSPL);
 						if (!_v5.$) {
 							var s = _v5.a;
@@ -32208,13 +33573,13 @@ var $author$project$PLAlgProcessors$processTruthTablePL = F3(
 							return {
 								c: 2,
 								d: $elm$json$Json$Encode$string(
-									'Unknown source: (' + ($elm$core$String$fromInt(source.ag) + (', ' + ($elm$core$String$fromInt(source.ah) + ')'))))
+									'Unknown source: (' + ($elm$core$String$fromInt(source.ai) + (', ' + ($elm$core$String$fromInt(source.aj) + ')'))))
 							};
 						}
 					default:
 						return {
 							c: 4,
-							d: $elm$json$Json$Encode$string('Unknown option (' + (c.af + ') for TruthTable'))
+							d: $elm$json$Json$Encode$string('Unknown option (' + (c.ah + ') for TruthTable'))
 						};
 				}
 			} else {
@@ -32236,7 +33601,7 @@ var $author$project$PLAlgProcessors$processTruthTablePL = F3(
 	});
 var $author$project$AppCore$Query = F3(
 	function (nodeId, nodeType, content) {
-		return {h: content, a: nodeId, bv: nodeType};
+		return {g: content, a: nodeId, bG: nodeType};
 	});
 var $author$project$AppCore$queryDecoder = A4(
 	$elm$json$Json$Decode$map3,
@@ -32263,7 +33628,7 @@ var $author$project$AppCore$update = F2(
 		var _v1 = A2($elm$json$Json$Decode$decodeString, $author$project$AppCore$queryDecoder, s);
 		if (!_v1.$) {
 			var q = _v1.a;
-			var _v2 = q.bv;
+			var _v2 = q.bG;
 			switch (_v2) {
 				case 'ClearModel':
 					return $author$project$AppCore$init(0);
@@ -32272,41 +33637,41 @@ var $author$project$AppCore$update = F2(
 						_Utils_update(
 							model,
 							{
-								aJ: A2(
+								aN: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v3) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.aJ),
-								aA: A2(
+									model.aN),
+								aE: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v4) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.aA),
-								an: A2(
+									model.aE),
+								ap: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v5) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.an),
-								O: A2(
+									model.ap),
+								P: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v6) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.O),
-								aK: A2(
+									model.P),
+								aO: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v7) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.aK),
+									model.aO),
 								x: A2(
 									$elm$core$Dict$filter,
 									F2(
@@ -32314,13 +33679,13 @@ var $author$project$AppCore$update = F2(
 											return !_Utils_eq(k.a, q.a);
 										}),
 									model.x),
-								ao: A2(
+								aq: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v9) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.ao),
+									model.aq),
 								j: A2(
 									$elm$core$Dict$filter,
 									F2(
@@ -32328,27 +33693,27 @@ var $author$project$AppCore$update = F2(
 											return !_Utils_eq(k.a, q.a);
 										}),
 									model.j),
-								ap: A2(
+								ar: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v11) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.ap),
-								aL: A2(
+									model.ar),
+								aP: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v12) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.aL),
-								av: A2(
+									model.aP),
+								ax: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (k, _v13) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.av),
+									model.ax),
 								p: A2(
 									$elm$core$Dict$filter,
 									F2(
@@ -32362,11 +33727,12 @@ var $author$project$AppCore$update = F2(
 										function (k, _v15) {
 											return !_Utils_eq(k.a, q.a);
 										}),
-									model.l)
+									model.l),
+								aS: A2($elm$core$Dict$remove, q.a, model.aS)
 							}),
 						$elm$core$Platform$Cmd$none);
 				case 'FormulaPL':
-					var pq = $author$project$PLBasicProcessors$processFormulaPLNode(q.h);
+					var pq = $author$project$PLBasicProcessors$processFormulaPLNode(q.g);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -32393,7 +33759,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'SetPL':
-					var pq = A3($author$project$PLBasicProcessors$processSetPLNode, q.h, model.j, model.l);
+					var pq = A3($author$project$PLBasicProcessors$processSetPLNode, q.g, model.j, model.l);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -32420,7 +33786,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ConnectivePL':
-					var pq = A2($author$project$PLBasicProcessors$processConnectivePLNode, q.h, model.j);
+					var pq = A2($author$project$PLBasicProcessors$processConnectivePLNode, q.g, model.j);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -32447,7 +33813,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'TransformFPL':
-					var pq = A2($author$project$PLBasicProcessors$processTransformFPLNode, q.h, model.j);
+					var pq = A2($author$project$PLBasicProcessors$processTransformFPLNode, q.g, model.j);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -32474,19 +33840,19 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'TransformSetPL':
-					var pq = A2($author$project$PLBasicProcessors$processTransformSetPLNode, q.h, model.l);
+					var pq = A2($author$project$PLBasicProcessors$processTransformSetPLNode, q.g, model.l);
 					if (!pq.c) {
 						var model_ = _Utils_update(
 							model,
 							{
-								O: A2(
+								P: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (_v17, _v18) {
 											var kid = _v17.a;
 											return !_Utils_eq(kid, q.a);
 										}),
-									model.O),
+									model.P),
 								j: A2(
 									$elm$core$Dict$filter,
 									F2(
@@ -32506,7 +33872,7 @@ var $author$project$AppCore$update = F2(
 							});
 						return _Utils_Tuple2(
 							function () {
-								var _v16 = pq.cm;
+								var _v16 = pq.cy;
 								switch (_v16) {
 									case 1:
 										return _Utils_update(
@@ -32515,7 +33881,7 @@ var $author$project$AppCore$update = F2(
 												l: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.l)
 											});
 									case 2:
@@ -32525,7 +33891,7 @@ var $author$project$AppCore$update = F2(
 												j: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.bm,
+													pq.i.by,
 													model.j)
 											});
 									case 3:
@@ -32535,7 +33901,7 @@ var $author$project$AppCore$update = F2(
 												j: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.bm,
+													pq.i.by,
 													model.j)
 											});
 									case 4:
@@ -32545,7 +33911,7 @@ var $author$project$AppCore$update = F2(
 												l: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.l)
 											});
 									case 5:
@@ -32555,18 +33921,18 @@ var $author$project$AppCore$update = F2(
 												l: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.l)
 											});
 									default:
 										return _Utils_update(
 											model_,
 											{
-												O: A3(
+												P: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.bN,
-													model.O)
+													pq.i.bY,
+													model.P)
 											});
 								}
 							}(),
@@ -32605,16 +33971,16 @@ var $author$project$AppCore$update = F2(
 											])))));
 					}
 				case 'ClausePL':
-					var pq = $author$project$PLBasicProcessors$processClausePLNode(q.h);
+					var pq = $author$project$PLBasicProcessors$processClausePLNode(q.g);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aA: (!pq.c) ? A3(
+								aE: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.aA) : model.aA
+									model.aE) : model.aE
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -32632,16 +33998,16 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ClauseSetPL':
-					var pq = A4($author$project$PLBasicProcessors$processClauseSetPLNode, q.h, model.aA, model.l, model.O);
+					var pq = A4($author$project$PLBasicProcessors$processClauseSetPLNode, q.g, model.aE, model.l, model.P);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								O: (!pq.c) ? A3(
+								P: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.O) : model.O
+									model.P) : model.P
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -32659,16 +34025,16 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HornFactPL':
-					var pq = $author$project$PLBasicProcessors$processHornFactPLNode(q.h);
+					var pq = $author$project$PLBasicProcessors$processHornFactPLNode(q.g);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ao: (!pq.c) ? A3(
+								aq: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.ao) : model.ao
+									model.aq) : model.aq
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -32686,16 +34052,16 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HornFactSetPL':
-					var pq = A3($author$project$PLBasicProcessors$processHornFactSetPLNode, q.h, model.ao, model.ap);
+					var pq = A3($author$project$PLBasicProcessors$processHornFactSetPLNode, q.g, model.aq, model.ar);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								ap: (!pq.c) ? A3(
+								ar: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.ap) : model.ap
+									model.ar) : model.ar
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -32713,16 +34079,16 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HornRulePL':
-					var pq = A3($author$project$PLBasicProcessors$processHornRulePLNode, q.h, model.ao, model.ap);
+					var pq = A3($author$project$PLBasicProcessors$processHornRulePLNode, q.g, model.aq, model.ar);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aL: (!pq.c) ? A3(
+								aP: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.aL) : model.aL
+									model.aP) : model.aP
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -32740,16 +34106,16 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HornRuleSetPL':
-					var pq = A3($author$project$PLBasicProcessors$processHornRuleSetPLNode, q.h, model.aL, model.av);
+					var pq = A3($author$project$PLBasicProcessors$processHornRuleSetPLNode, q.g, model.aP, model.ax);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								av: (!pq.c) ? A3(
+								ax: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.av) : model.av
+									model.ax) : model.ax
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -32767,7 +34133,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HornFwChPL':
-					var pq = A4($author$project$PLAlgProcessors$processHornFwChPL, q.h, model.av, model.ap, model.ao);
+					var pq = A4($author$project$PLAlgProcessors$processHornFwChPL, q.g, model.ax, model.ar, model.aq);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -32786,7 +34152,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HornBWCh':
-					var pq = A4($author$project$PLAlgProcessors$processHornBwChPL, q.h, model.av, model.ap, model.ao);
+					var pq = A4($author$project$PLAlgProcessors$processHornBwChPL, q.g, model.ax, model.ar, model.aq);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -32805,9 +34171,9 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'SemanticTableauPL':
-					var pq = A3($author$project$PLAlgProcessors$processSemanticTableauPL, q.h, model.j, model.l);
+					var pq = A3($author$project$PLAlgProcessors$processSemanticTableauPL, q.g, model.j, model.l);
 					if (!pq.c) {
-						var _v23 = pq.cZ;
+						var _v23 = pq.c2;
 						if (_v23 === 1) {
 							return _Utils_Tuple2(
 								_Utils_update(
@@ -32828,7 +34194,7 @@ var $author$project$AppCore$update = F2(
 																_Utils_Tuple2(q.a, i),
 																ls);
 														}),
-													pq.i.c$)),
+													pq.i.c4)),
 											model.l)
 									}),
 								$author$project$AppCore$sendMessage(
@@ -32854,7 +34220,7 @@ var $author$project$AppCore$update = F2(
 										j: A3(
 											$elm$core$Dict$insert,
 											_Utils_Tuple2(q.a, 0),
-											pq.i.cK,
+											pq.i.cQ,
 											model.j),
 										l: A2(
 											$elm$core$Dict$filter,
@@ -32900,7 +34266,7 @@ var $author$project$AppCore$update = F2(
 											])))));
 					}
 				case 'TruthTablePL':
-					var pq = A3($author$project$PLAlgProcessors$processTruthTablePL, q.h, model.j, model.l);
+					var pq = A3($author$project$PLAlgProcessors$processTruthTablePL, q.g, model.j, model.l);
 					return (!pq.c) ? _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -32935,7 +34301,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ResolutionPL':
-					var pq = A2($author$project$PLAlgProcessors$processResolutionPL, q.h, model.O);
+					var pq = A2($author$project$PLAlgProcessors$processResolutionPL, q.g, model.P);
 					return (!pq.c) ? _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -32970,7 +34336,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ResolutionGraphPL':
-					var pq = A2($author$project$PLAlgProcessors$processResolutionGraphPL, q.h, model.O);
+					var pq = A2($author$project$PLAlgProcessors$processResolutionGraphPL, q.g, model.P);
 					return (!pq.c) ? _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33005,7 +34371,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'DPLLGraphPL':
-					var pq = A2($author$project$PLAlgProcessors$processDPLLGraphPL, q.h, model.O);
+					var pq = A2($author$project$PLAlgProcessors$processDPLLGraphPL, q.g, model.P);
 					return (!pq.c) ? _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33040,7 +34406,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'FormulaFOL':
-					var pq = $author$project$FOLBasicProcessors$processFormulaFOLNode(q.h);
+					var pq = $author$project$FOLBasicProcessors$processFormulaFOLNode(q.g);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33067,7 +34433,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'TransformFFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processTransformFFOLNode, q.h, model.x);
+					var pq = A2($author$project$FOLBasicProcessors$processTransformFFOLNode, q.g, model.x);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33094,7 +34460,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'SetFOL':
-					var pq = A3($author$project$FOLBasicProcessors$processSetFOLNode, q.h, model.x, model.p);
+					var pq = A3($author$project$FOLBasicProcessors$processSetFOLNode, q.g, model.x, model.p);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33121,19 +34487,19 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'TransformSetFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processTransformSetFOLNode, q.h, model.p);
+					var pq = A2($author$project$FOLBasicProcessors$processTransformSetFOLNode, q.g, model.p);
 					if (!pq.c) {
 						var model_ = _Utils_update(
 							model,
 							{
-								O: A2(
+								P: A2(
 									$elm$core$Dict$filter,
 									F2(
 										function (_v26, _v27) {
 											var kid = _v26.a;
 											return !_Utils_eq(kid, q.a);
 										}),
-									model.O),
+									model.P),
 								j: A2(
 									$elm$core$Dict$filter,
 									F2(
@@ -33153,7 +34519,7 @@ var $author$project$AppCore$update = F2(
 							});
 						return _Utils_Tuple2(
 							function () {
-								var _v25 = pq.cm;
+								var _v25 = pq.cy;
 								switch (_v25) {
 									case 1:
 										return _Utils_update(
@@ -33162,7 +34528,7 @@ var $author$project$AppCore$update = F2(
 												p: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.p)
 											});
 									case 2:
@@ -33172,7 +34538,7 @@ var $author$project$AppCore$update = F2(
 												x: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.bm,
+													pq.i.by,
 													model.x)
 											});
 									case 3:
@@ -33182,7 +34548,7 @@ var $author$project$AppCore$update = F2(
 												x: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.bm,
+													pq.i.by,
 													model.x)
 											});
 									case 4:
@@ -33192,7 +34558,7 @@ var $author$project$AppCore$update = F2(
 												p: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.p)
 											});
 									case 5:
@@ -33202,7 +34568,7 @@ var $author$project$AppCore$update = F2(
 												p: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.p)
 											});
 									case 6:
@@ -33212,7 +34578,7 @@ var $author$project$AppCore$update = F2(
 												p: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.p)
 											});
 									case 7:
@@ -33222,7 +34588,7 @@ var $author$project$AppCore$update = F2(
 												p: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.p)
 											});
 									case 8:
@@ -33232,18 +34598,18 @@ var $author$project$AppCore$update = F2(
 												p: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.aB,
+													pq.i.aF,
 													model.p)
 											});
 									default:
 										return _Utils_update(
 											model_,
 											{
-												an: A3(
+												ap: A3(
 													$elm$core$Dict$insert,
 													_Utils_Tuple2(q.a, 0),
-													pq.i.bN,
-													model.an)
+													pq.i.bY,
+													model.ap)
 											});
 								}
 							}(),
@@ -33282,7 +34648,7 @@ var $author$project$AppCore$update = F2(
 											])))));
 					}
 				case 'ConnectiveFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processConnectiveFOLNode, q.h, model.x);
+					var pq = A2($author$project$FOLBasicProcessors$processConnectiveFOLNode, q.g, model.x);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33309,7 +34675,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'QuantifierFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processQuantifierFOLNode, q.h, model.x);
+					var pq = A2($author$project$FOLBasicProcessors$processQuantifierFOLNode, q.g, model.x);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33336,16 +34702,16 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ClauseFOL':
-					var pq = $author$project$FOLBasicProcessors$processClauseFOLNode(q.h);
+					var pq = $author$project$FOLBasicProcessors$processClauseFOLNode(q.g);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								aJ: (!pq.c) ? A3(
+								aN: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.aJ) : model.aJ
+									model.aN) : model.aN
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -33363,16 +34729,16 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ClauseSetFOL':
-					var pq = A4($author$project$FOLBasicProcessors$processClauseSetFOLNode, q.h, model.aJ, model.p, model.an);
+					var pq = A4($author$project$FOLBasicProcessors$processClauseSetFOLNode, q.g, model.aN, model.p, model.ap);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
 							{
-								an: (!pq.c) ? A3(
+								ap: (!pq.c) ? A3(
 									$elm$core$Dict$insert,
 									_Utils_Tuple2(q.a, 0),
 									pq.i,
-									model.an) : model.an
+									model.ap) : model.ap
 							}),
 						$author$project$AppCore$sendMessage(
 							A2(
@@ -33390,7 +34756,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'SemanticTableauFOL':
-					var pq = A3($author$project$FOLAlgProcessors$processSemanticTableauFOL, q.h, model.x, model.p);
+					var pq = A3($author$project$FOLAlgProcessors$processSemanticTableauFOL, q.g, model.x, model.p);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33409,7 +34775,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ResolutionGraphFOL':
-					var pq = A2($author$project$FOLAlgProcessors$processResolutionGraphFOL, q.h, model.an);
+					var pq = A2($author$project$FOLAlgProcessors$processResolutionGraphFOL, q.g, model.ap);
 					return (!pq.c) ? _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33444,7 +34810,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HerbrandUniverseFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processHerbrandUniverseFOLNode, q.h, model.p);
+					var pq = A2($author$project$FOLBasicProcessors$processHerbrandUniverseFOLNode, q.g, model.p);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33463,7 +34829,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HerbrandBaseFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processHerbrandBaseFOLNode, q.h, model.p);
+					var pq = A2($author$project$FOLBasicProcessors$processHerbrandBaseFOLNode, q.g, model.p);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33482,7 +34848,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HerbrandInterpretationsFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processHerbrandInterpretationsFOLNode, q.h, model.p);
+					var pq = A2($author$project$FOLBasicProcessors$processHerbrandInterpretationsFOLNode, q.g, model.p);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33501,7 +34867,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HerbrandModelsFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processHerbrandModelsFOLNode, q.h, model.p);
+					var pq = A2($author$project$FOLBasicProcessors$processHerbrandModelsFOLNode, q.g, model.p);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33520,7 +34886,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'HerbrandExtensionFOL':
-					var pq = A2($author$project$FOLBasicProcessors$processHerbrandExtensionFOLNode, q.h, model.p);
+					var pq = A2($author$project$FOLBasicProcessors$processHerbrandExtensionFOLNode, q.g, model.p);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33547,7 +34913,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'CSPPL':
-					var pq = $author$project$PLBasicProcessors$processCSPPL(q.h);
+					var pq = $author$project$PLBasicProcessors$processCSPPL(q.g);
 					var _v32 = pq.i;
 					if (!_v32.b) {
 						return _Utils_Tuple2(
@@ -33573,11 +34939,11 @@ var $author$project$AppCore$update = F2(
 							_Utils_update(
 								model,
 								{
-									aK: (!pq.c) ? A3(
+									aO: (!pq.c) ? A3(
 										$elm$core$Dict$insert,
 										_Utils_Tuple2(q.a, 0),
 										bfs,
-										model.aK) : model.aK
+										model.aO) : model.aO
 								}),
 							$author$project$AppCore$sendMessage(
 								A2(
@@ -33596,7 +34962,7 @@ var $author$project$AppCore$update = F2(
 											])))));
 					}
 				case 'CSPPLtoDIMACS':
-					var pq = A2($author$project$PLBasicProcessors$processCSPPLToDIMACS, q.h, model.aK);
+					var pq = A2($author$project$PLBasicProcessors$processCSPPLToDIMACS, q.g, model.aO);
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33615,7 +34981,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ForeignVarsFPL':
-					var pq = A2($author$project$ExtProcessors$processForeignVarsFPL, q.h, model.j);
+					var pq = A2($author$project$ExtProcessors$processForeignVarsFPL, q.g, model.j);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33642,7 +35008,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ForeignVarsSPL':
-					var pq = A2($author$project$ExtProcessors$processForeignVarsSPL, q.h, model.l);
+					var pq = A2($author$project$ExtProcessors$processForeignVarsSPL, q.g, model.l);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33669,7 +35035,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ConservativeRetractFPL':
-					var pq = A2($author$project$ExtProcessors$processConservativeRetractionFPL, q.h, model.j);
+					var pq = A2($author$project$ExtProcessors$processConservativeRetractionFPL, q.g, model.j);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33696,7 +35062,7 @@ var $author$project$AppCore$update = F2(
 											_Utils_Tuple2('message', pq.d)
 										])))));
 				case 'ConservativeRetractSPL':
-					var pq = A2($author$project$ExtProcessors$processConservativeRetractionSPL, q.h, model.l);
+					var pq = A2($author$project$ExtProcessors$processConservativeRetractionSPL, q.g, model.l);
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -33722,8 +35088,42 @@ var $author$project$AppCore$update = F2(
 											$elm$json$Json$Encode$int(q.a)),
 											_Utils_Tuple2('message', pq.d)
 										])))));
-				case 'Prover9Mace4':
-					var pq = A2($author$project$ExtProcessors$processP9M4Solver, q.h, model.p);
+				case 'ProverProblem':
+					var pq = A2($author$project$ProverProcessors$processProverProblem, q.g, model.p);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								aS: function () {
+									var _v33 = pq.i;
+									if (!_v33.$) {
+										var problem = _v33.a;
+										return A3($elm$core$Dict$insert, q.a, problem, model.aS);
+									} else {
+										return A2($elm$core$Dict$remove, q.a, model.aS);
+									}
+								}()
+							}),
+						$author$project$AppCore$sendMessage(
+							A2(
+								$elm$json$Json$Encode$encode,
+								0,
+								$elm$json$Json$Encode$object(
+									_List_fromArray(
+										[
+											_Utils_Tuple2(
+											'errorCode',
+											$elm$json$Json$Encode$int(pq.c)),
+											_Utils_Tuple2(
+											'nodeId',
+											$elm$json$Json$Encode$int(q.a)),
+											_Utils_Tuple2('message', pq.d)
+										])))));
+				case 'Mace4Models':
+					var pq = A2(
+						$author$project$ProverProcessors$processMace4Models,
+						q.g,
+						A2($elm$core$Dict$get, q.a, model.aS));
 					return _Utils_Tuple2(
 						model,
 						$author$project$AppCore$sendMessage(
@@ -33759,7 +35159,7 @@ var $author$project$AppCore$update = F2(
 											$elm$json$Json$Encode$int(q.a)),
 											_Utils_Tuple2(
 											'message',
-											$elm$json$Json$Encode$string('Error : nodeType ' + (q.bv + ' not available in core')))
+											$elm$json$Json$Encode$string('Error : nodeType ' + (q.bG + ' not available in core')))
 										])))));
 			}
 		} else {
@@ -33785,10 +35185,10 @@ var $author$project$AppCore$update = F2(
 	});
 var $author$project$AppCore$main = $elm$browser$Browser$element(
 	{
-		cO: $author$project$AppCore$init,
-		c1: $author$project$AppCore$subscriptions,
-		c3: $author$project$AppCore$update,
-		c6: function (model) {
+		cU: $author$project$AppCore$init,
+		c6: $author$project$AppCore$subscriptions,
+		c8: $author$project$AppCore$update,
+		c9: function (model) {
 			return A2(
 				$elm$html$Html$div,
 				_List_fromArray(
@@ -33819,7 +35219,7 @@ var $author$project$AppCore$main = $elm$browser$Browser$element(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								'outputsCPL:' + A2($author$project$AppCore$modelDictToString, model.aA, $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$cplToString))
+								'outputsCPL:' + A2($author$project$AppCore$modelDictToString, model.aE, $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$cplToString))
 							])),
 						A2(
 						$elm$html$Html$div,
@@ -33827,7 +35227,7 @@ var $author$project$AppCore$main = $elm$browser$Browser$element(
 						_List_fromArray(
 							[
 								$elm$html$Html$text(
-								'outputsCSPL:' + A2($author$project$AppCore$modelDictToString, model.O, $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$csplToString))
+								'outputsCSPL:' + A2($author$project$AppCore$modelDictToString, model.P, $logicUSLIB$logicus_pl$LogicUS$PL$Clauses$csplToString))
 							])),
 						A2(
 						$elm$html$Html$div,

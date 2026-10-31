@@ -1,0 +1,35 @@
+/* Results of the prover nodes (Prover9, Mace4, E) in the tables panel */
+
+#popup #graph-display .prover-result {
+    width: 100%;
+}
+
+#popup #graph-display .prover-result table.lus-model-table {
+    display: inline-table;
+    vertical-align: top;
+    border-collapse: collapse;
+    margin: 0 16px 16px 0;
+}
+
+#popup #graph-display .prover-result table.lus-model-table th,
+#popup #graph-display .prover-result table.lus-model-table td {
+    border: 1px solid #1a2935;
+    padding: 3px 8px;
+    text-align: center;
+}
+
+#popup #graph-display .prover-result table.lus-model-table td:first-child {
+    text-align: left;
+}
+
+#popup #graph-display .prover-result pre.prover-output {
+    background-color: #f2f4f6;
+    padding: 8px;
+    max-height: 60vh;
+    overflow: auto;
+    font-size: 12px;
+}
+
+#popup #graph-display .prover-result details {
+    margin-top: 8px;
+}

@@ -5,10 +5,6 @@ import Json.Decode as JSOND
 import Json.Encode as JSONE
 import ForeignOperators exposing (canonicFO, fplConservativeRetraction, splConservativeRetraction)
 import LogicUS.PL.SyntaxSemantics as LUS_SS exposing (FormulaPL(..), SetPL)
-import LogicUS.FOL.SyntaxSemantics exposing (SetFOL)
-import LogicUS.FOL.ToStringP9M4 exposing (sfol2P9M4Str2)
-import LogicUS.FOL.ToStringP9M4 exposing (sfol2P9M4StrUnsafe)
--- import LogicUS.FOL.SyntaxSemantics exposing (SetFOL, ffol2P9M4Str)
 
 
 processForeignVarsFPL : String -> Dict ( Int, Int ) FormulaPL -> { errorCode : Int, result : FormulaPL, message : JSONE.Value }
@@ -297,66 +293,3 @@ processConservativeRetractionSPL content outputsSPL =
 
         Err e ->
             { errorCode = 3, message = JSONE.string (JSOND.errorToString e), result = [] }
-
-
-processP9M4Solver : String -> Dict ( Int, Int ) SetFOL -> { errorCode : Int, message : JSONE.Value }
-processP9M4Solver content outputsSFOL =
-    let
-        contentDecoder = 
-            JSOND.map3 (\x y z -> {a = x, g = y, u = z}) (JSOND.at [ "a" ] JSOND.string) (JSOND.at [ "g" ] JSOND.string) (JSOND.at [ "u" ] JSOND.bool)
-        slotDecoder = JSOND.map2 (Tuple.pair) (JSOND.at [ "origin_id" ] JSOND.int) (JSOND.at [ "origin_slot" ] JSOND.int)
-    in
-    case JSOND.decodeString contentDecoder content of
-        Ok c ->
-            case (JSOND.decodeString slotDecoder c.a, JSOND.decodeString slotDecoder c.g) of
-                (Ok a, Ok g) ->
-                    case (Dict.get a outputsSFOL, Dict.get g outputsSFOL) of
-                        (Just ass, Just gs) ->
-                             if not c.u then
-                                let
-                                    ass_str = 
-                                            sfol2P9M4StrUnsafe ass 
-                                    goals_str = sfol2P9M4StrUnsafe gs
-                                in
-                                { errorCode = 0
-                                , message = JSONE.string <|  
-                                    "set(prolog_style_variables).\n" ++ "formulas(assumptions). \n" ++ ass_str ++ "\nend_of_list.\n\nformulas(goals). \n" ++ goals_str ++ "\nend_of_list."
-                                }
-                             else
-                                let
-                                    (ass_str, info) = 
-                                            sfol2P9M4Str2 ass {vi = 0, vdic = Dict.empty, ci = 0, cdic = Dict.empty, fi = 0, fdic = Dict.empty, pi = 0, pdic = Dict.empty}
-                                    (goals_str, _) = sfol2P9M4Str2 gs info
-                                in
-                                { errorCode = 0
-                                , message = JSONE.string <|  
-                                    "set(prolog_style_variables).\n" ++ "formulas(assumptions). \n" ++ ass_str ++ "\nend_of_list.\n\nformulas(goals). \n" ++ goals_str ++ "\nend_of_list."
-                                }
-
-                        (Just _ , _) -> 
-                            { errorCode = 2
-                            , message = JSONE.string ("Unknown source: (" ++ String.fromInt (Tuple.first g) ++ ", " ++ String.fromInt (Tuple.second g) ++ ")")
-                            }
-
-                        (_ , Just _) -> 
-                            { errorCode = 2
-                            , message = JSONE.string ("Unknown source: (" ++ String.fromInt (Tuple.first a) ++ ", " ++ String.fromInt (Tuple.second a) ++ ")")
-                            }
-
-                        (_ , _) -> 
-                            { errorCode = 2
-                            , message = JSONE.string ("Unknown sources: a=(" ++ String.fromInt (Tuple.first a) ++ ", " ++ String.fromInt (Tuple.second a) ++ "), g=(" ++ String.fromInt (Tuple.first g) ++ ", " ++ String.fromInt (Tuple.second g) ++ ")")
-                            }
-
-                (Err ea, Err eg) ->  
-                    { errorCode = 3, message = JSONE.string (JSOND.errorToString ea ++ ". " ++ JSOND.errorToString eg) }
-
-                (Err ea, _) ->  
-                    { errorCode = 3, message = JSONE.string (JSOND.errorToString ea) }
-
-                (_, Err eg) ->  
-                    { errorCode = 3, message = JSONE.string (JSOND.errorToString eg) }
-
-                
-        Err e -> 
-            { errorCode = 3, message = JSONE.string (JSOND.errorToString e) }
