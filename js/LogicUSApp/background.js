@@ -489,7 +489,7 @@ function openEXAMPLESPANEL(){
         <span id="popup-title">EXAMPLES</span>
         <button id="popup-close" onclick="document.getElementById('popup').style.zIndex = 0;">CLOSE</button>
     </div>
-    <div id="popup-content2"><div id="examples-list">
+    <div id="popup-content2" class="examples"><div id="examples-list">
         ${LOGICUS_EXAMPLES.map((e, i) => `
             <div class="example">
                 <div><b>${e.title}</b><p>${e.description}</p></div>

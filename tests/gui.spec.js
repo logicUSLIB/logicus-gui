@@ -14,6 +14,9 @@ test('the examples panel lists and opens the examples', async ({ page }) => {
     await page.getByRole('button', { name: 'EXAMPLES' }).click();
     const examples = page.locator('#examples-list .example');
     await expect(examples).toHaveCount(4);
+    // the list fills the panel (it used to be squeezed into the 70px column of the panel grid)
+    const width = await page.locator('#examples-list').evaluate(e => e.getBoundingClientRect().width);
+    expect(width).toBeGreaterThan(page.viewportSize().width * 0.8);
     await examples.filter({ hasText: 'Automated provers' }).getByRole('button', { name: 'OPEN' }).click();
     await expect.poll(() => page.evaluate(() => graph._nodes.length)).toBe(6);
     await expect(page.locator('#popup')).toHaveCSS('z-index', '0');

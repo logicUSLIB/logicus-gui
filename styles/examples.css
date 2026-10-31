@@ -1,5 +1,10 @@
 /* Examples panel */
 
+/* the other panels use a two-column grid (selector buttons and display): the list takes the whole width */
+#popup #popup-content2.examples {
+    display: block;
+}
+
 #examples-list {
     background-color: rgb(255, 255, 255);
     opacity: 90%;
