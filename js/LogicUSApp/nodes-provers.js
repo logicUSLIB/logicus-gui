@@ -148,15 +148,40 @@ const ProverNode = {
         },
 
         proverArguments() {
-            const s = String(Math.max(1, Math.round(this.properties.seconds)));
-            switch (this.properties.mode) {
-                case "prover9": return ["-t", s];
-                case "mace4": return ["-t", s, "-N", String(Math.max(2, Math.round(this.properties.domain)))];
-                default: return ["--auto", "--proof-object", "-s", `--cpu-limit=${s}`];
+            // Prover9 and Mace4 get the time limit and the other options in the input file (P9M4.header)
+            if (this.properties.mode !== "eprover") return [];
+            return ["--auto", "--proof-object", "-s", `--cpu-limit=${Math.max(1, Math.round(this.properties.seconds))}`];
+        },
+
+        // It asks the core for the input of the prover (without running it): callback({ input } or { error }).
+        requestProblem(callback) {
+            if (!this.inputs.every(i => i.link != null)) {
+                callback({ error: "Connect the sets A and G to the node." });
+                return;
             }
+            this.problemCallback = callback;
+            app.ports.messageReceiver.send(this.generateQuery());
+        },
+
+        syncWidgets() {
+            if (this.widget) this.widget.value = this.properties.mode;
+            if (this.widget5) this.widget5.value = this.properties.seconds;
+            if (this.widget6) this.widget6.value = this.properties.domain;
+            graph.setDirtyCanvas(true, true);
+        },
+
+        stopRun() {
+            if (this.controller) this.controller.abort();
         },
 
         processResponse(response) {
+            if (this.problemCallback) {
+                const callback = this.problemCallback;
+                this.problemCallback = null;
+                callback(response.errorCode == 0 ? { input: response.message.input }
+                    : { error: `${response.message} (run the sets connected to the node first)` });
+                return;
+            }
             if (response.errorCode != 0) {
                 this.fail(response.message);
                 return;
@@ -165,22 +190,25 @@ const ProverNode = {
             if (message.kind === "problem") {
                 this.runProver(message.input);
             } else if (message.kind === "models") {
-                this.finish(message.sizes.length > 0
-                    ? { status: `MODEL FOUND (size ${message.sizes.join(", ")})` }
-                    : {}, message.html);
+                const n = message.sizes.length, sizes = [...new Set(message.sizes)].join(", ");
+                this.finish(n === 0 ? {} : { status: n > 1 ? `${n} MODELS FOUND (size ${sizes})` : `MODEL FOUND (size ${sizes})` },
+                            message.html);
             }
         },
 
         runProver(input) {
             const node = this;
             const mode = this.properties.mode;
-            this.input = (this.properties.xopts ? this.properties.xopts.trim() + "\n\n" : "") + input;
+            this.input = mode === "eprover" ? input : P9M4.header(P9M4Panel.nodeConfig(this)) + "\n" + input;
             this.hasGoals = /formulas\(goals\)|, conjecture,/.test(input);
             this.hideResultWidgets();
             this.boxcolor = "#eb7f1a";
             this.properties["value_"] = "running…";
             graph.setDirtyCanvas(true, true);
-            LogicUSProvers.run(mode, this.proverArguments(), this.input, { timeoutMs: (this.properties.seconds + 15) * 1000 })
+            const seconds = this.properties.seconds;
+            this.controller = new AbortController();
+            LogicUSProvers.run(mode, this.proverArguments(), this.input,
+                               { timeoutMs: seconds > 0 ? (seconds + 15) * 1000 : null, signal: this.controller.signal })
                 .then(run => {
                     node.lastRun = run;
                     node.verdict = PROVER_VERDICTS[mode](run, node);
@@ -214,41 +242,17 @@ const ProverNode = {
             this.showResultWidgets();
             this.size = this.computeSize();
             graph.setDirtyCanvas(true, true);
+            P9M4Panel.nodeFinished(this, this.lastRun, this.input);
         },
 
         fail(message) {
             ERRORS[this.id] = message;
             delete MEMORY['Tables'][this.id];
             this.setState("error");
+            P9M4Panel.nodeFinished(this, { stdout: "", stderr: String(message), exitCode: null }, this.input || "");
         },
     },
 };
-
-function editProverOptions(node) {
-    const desc_title = document.getElementById("desc-node_title");
-    const desc_content = document.getElementById("desc-content");
-    desc_title.innerHTML = "Prover9/Mace4 options";
-    desc_content.innerHTML = "<p>LADR commands added at the start of the input, e.g. <code>assign(max_weight, 40).</code> "
-        + "or <code>assign(max_models, 3).</code></p>";
-    const ta = document.createElement("textarea");
-    ta.value = node.properties.xopts;
-    const ok = document.createElement("button");
-    ok.innerHTML = "OK";
-    ok.className = "btOK";
-    ok.onclick = function () {
-        node.properties.xopts = ta.value;
-        node.onPropertyChanged();
-        node.onDeselected();
-    };
-    const cancel = document.createElement("button");
-    cancel.innerHTML = "CANCEL";
-    cancel.className = "btCANCEL";
-    cancel.onclick = function () { node.onDeselected(); };
-    desc_title.appendChild(ok);
-    desc_title.appendChild(cancel);
-    desc_content.appendChild(ta);
-    ta.focus();
-}
 
 // Prover9 / Mace4
 
@@ -256,9 +260,9 @@ function Prover9Mace4() {
     const that = this;
     ProverNode.setup(this, ["prover9", "mace4"], "ladr");
     this.addProperty("domain", 10);
-    this.addProperty("xopts", "");
+    this.addProperty("xopts", "");      // additional input of schemas saved before the options panel
     this.widget6 = this.addWidget("number", "max size", 10, "domain", { min: 2, max: 100, step: 10, precision: 0 });
-    this.widget3 = this.addWidget("button", "OPTIONS", "", function () { editProverOptions(that); });
+    this.widget3 = this.addWidget("button", "OPTIONS", "", function () { P9M4Panel.open(that); });
     // keep RUN NODE (pushed by setState) below the options
     this.size = this.computeSize();
     this.title = "Prover9Mace4";
@@ -267,6 +271,7 @@ function Prover9Mace4() {
     <br><br>The goals are proved together (their conjunction). With an empty set of goals, Prover9 looks for a
     contradiction in A and Mace4 for a model of A.
     <br><br><i>seconds</i> limits the search; <i>max size</i> is the largest universe that Mace4 tries (it starts at 2).
+    OPTIONS opens the Prover9/Mace4 panel with all the options of both programs for this node.
     The programs run in your browser.`;
 }
 Object.assign(Prover9Mace4.prototype, ProverNode.methods);

@@ -15,6 +15,11 @@ formula in them.
 
 ![A counter-model found by Mace4: a non-commutative group where x·x·x·x = e](docs/screenshot-mace4.jpg)
 
+The **PROVER9/MACE4** panel is a workbench in the spirit of the classic Prover9-Mace4 GUI: formulas in the LADR
+language, all the options of both programs (with their dependencies), input files that can be saved and loaded, and
+the proofs and models in the formats of prooftrans and interpformat. Opened from a `Prover9Mace4` node (its OPTIONS
+button), it sets the options of that node.
+
 ## Using it
 
 LogicUS is a static web page: nothing is installed and nothing is sent to a server. Download this folder and open
@@ -36,10 +41,11 @@ JSON files.
 
 ```
 LogicUS.html            the page
-js/LogicUSApp/          the nodes (LiteGraph) and the panels
+js/LogicUSApp/          the nodes (LiteGraph) and the panels (p9m4.js and p9m4-panel.js: the PROVER9/MACE4 panel)
 js/LogicUSApp/AppCore.js  the Elm core, built from logicus-app-core/
 logicus-app-core/       Elm application: runs the algorithms of logicus-pl and logicus-fol for the nodes
-provers/                Prover9, Mace4 and E in WebAssembly, and how to rebuild them (see provers/README.md)
+provers/                Prover9, Mace4, prooftrans, interpformat and E in WebAssembly, the options of Prover9
+                        and Mace4, and how to rebuild them (see provers/README.md)
 examples/               example schemas, listed in examples/index.json for the EXAMPLES panel
 tests/                  browser tests
 ```

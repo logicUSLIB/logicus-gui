@@ -1,0 +1,188 @@
+/* PROVER9/MACE4 panel */
+
+#popup #popup-content2.p9m4 {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 16px;
+    height: calc(100vh - 90px);
+    box-sizing: border-box;
+}
+
+.p9m4 .p9m4-left,
+.p9m4 .p9m4-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    background-color: rgba(255, 255, 255, 0.92);
+    border-radius: 5px;
+    padding: 12px;
+    color: #1a2935;
+    box-sizing: border-box;
+}
+
+.p9m4 button {
+    cursor: pointer;
+}
+
+.p9m4 .p9m4-tabs,
+.p9m4 .p9m4-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.p9m4 .p9m4-tabs button,
+.p9m4 .p9m4-groups button {
+    background-color: #e3e9ef;
+    color: #1a2935;
+    border: 1px solid #9fb0c0;
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+
+.p9m4 .p9m4-tabs button.selected,
+.p9m4 .p9m4-groups button.selected {
+    background-color: #1a2935;
+    color: white;
+}
+
+.p9m4 .p9m4-tab {
+    flex: 1;
+    overflow: auto;
+    min-height: 0;
+}
+
+.p9m4 .p9m4-file {
+    display: flex;
+    gap: 8px;
+}
+
+.p9m4 .p9m4-hint {
+    color: #4d5f6e;
+    font-size: 0.9em;
+}
+
+.p9m4 .p9m4-hint.error,
+.p9m4 .p9m4-state.error {
+    color: #a32020;
+}
+
+.p9m4 .p9m4-hint.yes {
+    color: #1d6b2c;
+}
+
+.p9m4 .p9m4-area {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.p9m4 .p9m4-area textarea {
+    font-family: monospace;
+    font-weight: normal;
+    font-size: 13px;
+    min-height: 150px;
+    resize: vertical;
+}
+
+.p9m4 .p9m4-area textarea.tall {
+    min-height: 320px;
+}
+
+.p9m4 .p9m4-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 6px 16px;
+    margin: 12px 0;
+}
+
+.p9m4 .p9m4-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.p9m4 .p9m4-option.flag {
+    justify-content: flex-start;
+}
+
+.p9m4 .p9m4-option input[type="number"] {
+    width: 95px;
+}
+
+.p9m4 .p9m4-option select {
+    width: 130px;
+}
+
+.p9m4 .p9m4-option.changed {
+    background-color: #fdf0c2;
+    font-weight: bold;
+}
+
+.p9m4 .p9m4-option.dependency {
+    outline: 2px solid #e0a020;
+}
+
+.p9m4 .p9m4-run {
+    border: 1px solid #c8d0d8;
+    border-radius: 5px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.p9m4 .p9m4-run-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.p9m4 .p9m4-run-controls input[type="number"] {
+    width: 70px;
+}
+
+.p9m4 .p9m4-state {
+    font-weight: bold;
+}
+
+.p9m4 .p9m4-state.yes {
+    color: #1d6b2c;
+}
+
+.p9m4 .p9m4-state.no {
+    color: #8a5a00;
+}
+
+.p9m4 .p9m4-result {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.p9m4 .p9m4-result-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.p9m4 .p9m4-result pre,
+.p9m4 pre.p9m4-input {
+    flex: 1;
+    margin: 0;
+    overflow: auto;
+    background-color: #f2f4f6;
+    padding: 8px;
+    font-size: 12px;
+    min-height: 120px;
+}
