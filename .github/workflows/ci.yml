@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  core:
+    name: Elm core is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Elm 0.19.1
+        run: |
+          curl -sSL https://github.com/elm/compiler/releases/download/0.19.1/binary-for-linux-64-bit.gz | gunzip > elm
+          chmod +x elm && sudo mv elm /usr/local/bin/elm
+      - name: Build js/LogicUSApp/AppCore.js
+        run: scripts/build-core.sh
+      - name: Check that the committed build matches the sources
+        run: git diff --exit-code js/LogicUSApp/AppCore.js
+
+  browser-tests:
+    name: Browser tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npx playwright install --with-deps
+      - run: npm test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: test-results/
