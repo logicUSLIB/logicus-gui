@@ -2094,25 +2094,11 @@ TruthTablePL.prototype.onConnectionsChange = function( connection ){
 TruthTablePL.prototype.onPropertyChanged = function(){
     var widget4Index = this.widgets.indexOf(this.widget4);
     if(widget4Index > -1){this.widgets.splice(widget4Index, 1);};
-    const new_entry_type = this.properties.performMode.split("_")[0];
-    switch (new_entry_type) {
-            case "FPL":
-                if (new_entry_type != "FormulaPL"){
-                    this.disconnectInput(0);
-                    this.inputs[0].type = "FormulaPL";
-                }
-                break;
-        
-            case "SPL":
-                if (new_entry_type != "SetPL"){
-                    this.disconnectInput(0);
-                    this.inputs[0].type = "SetPL";
-                }
-        }
-    if (new_entry_type != this.inputs[0].type){
+    // FPL takes a formula, SPL_full and SPL_lite a set: disconnect the input only if its type changes
+    const inputType = this.properties.performMode.startsWith("FPL") ? "FormulaPL" : "SetPL";
+    if (this.inputs[0].type != inputType){
         this.disconnectInput(0);
-        
-        
+        this.inputs[0].type = inputType;
     }
     this.size = this.computeSize();
 }
