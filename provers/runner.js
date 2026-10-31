@@ -5,8 +5,10 @@
 // but not .wasm files when LogicUS is opened as a local file. A run happens in its own Web Worker, so the page stays
 // responsive and a run that does not stop on time can be killed.
 //
-//   LogicUSProvers.run("prover9", ["-t", "10"], input, { timeoutMs: 15000 })
-//       .then(({ exitCode, stdout, stderr, timedOut }) => ...)
+//   LogicUSProvers.run("prover9", ["-t", "10"], input, { timeoutMs: 15000, signal })
+//       .then(({ exitCode, stdout, stderr, timedOut, stopped }) => ...)
+//
+// `timeoutMs` (optional) kills a run that takes longer; `signal` (an AbortSignal, optional) stops it on demand.
 
 const LogicUSProvers = (function () {
     const base = new URL('.', document.currentScript.src);
@@ -46,22 +48,28 @@ const LogicUSProvers = (function () {
 
     let workerURL = null;
 
-    function run(name, args, stdin, { timeoutMs = 60000 } = {}) {
+    function run(name, args, stdin, { timeoutMs = null, signal = null } = {}) {
         return load(name).then(module => new Promise((resolve, reject) => {
             // the worker comes from a Blob, which also works for pages opened as local files
             workerURL = workerURL || URL.createObjectURL(new Blob([`(${proverWorker})();`], { type: 'text/javascript' }));
             const worker = new Worker(workerURL);
-            const timer = setTimeout(() => {
+            const kill = (why) => {
+                clearTimeout(timer);
                 worker.terminate();
-                resolve({ exitCode: null, stdout: '', stderr: '', timedOut: true });
-            }, timeoutMs);
+                resolve({ exitCode: null, stdout: '', stderr: '', timedOut: why === 'timeout', stopped: why === 'stop' });
+            };
+            const timer = timeoutMs ? setTimeout(() => kill('timeout'), timeoutMs) : null;
+            if (signal) {
+                if (signal.aborted) return kill('stop');
+                signal.addEventListener('abort', () => kill('stop'), { once: true });
+            }
             worker.onmessage = (event) => {
                 clearTimeout(timer);
                 worker.terminate();
                 if (event.data.error) {
                     reject(new Error(`${name}: ${event.data.error}`));
                 } else {
-                    resolve({ ...event.data, timedOut: false });
+                    resolve({ ...event.data, timedOut: false, stopped: false });
                 }
             };
             worker.onerror = (event) => {

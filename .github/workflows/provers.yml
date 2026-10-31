@@ -15,5 +15,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: provers/build/build.sh
-      - run: git diff --exit-code provers/*.wasm
+      - run: git diff --exit-code provers/*.wasm provers/options.js
       - run: python3 provers/build/embed.py --check

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build Prover9, Mace4 and E for WebAssembly (wasm32-wasi), copy them to provers/ and write the
+# Build Prover9, Mace4, prooftrans, interpformat and E for WebAssembly (wasm32-wasi), copy them to provers/ and write the
 # provers/<name>.wasm.js scripts that the page loads (embed.py).
 #
 #   provers/build/build.sh
@@ -58,6 +58,11 @@ LADR_FLAGS="-DPRIMITIVE_ENVIRONMENT $EMULATION -mllvm -wasm-enable-sjlj -Wno-eve
 PROVER9_OBJS="index_lits.o forward_subsume.o demodulate.o pred_elim.o unfold.o semantics.o giv_select.o white_black.o actions.o search.o utilities.o provers.o foffer.o"
 (cd "$LADR/provers.src" && make -s prover9.o $PROVER9_OBJS CC="$CC" XFLAGS="$LADR_FLAGS" \
     && $CC -O2 -o prover9.wasm prover9.o $PROVER9_OBJS ../ladr/libladr.a -lm $EMULATION_LIBS -lsetjmp $STACK)
+# prooftrans and interpformat: the output formats of proofs and models
+(cd "$LADR/apps.src" && make -s prooftrans.o interpformat.o CC="$CC" XFLAGS="$LADR_FLAGS" \
+    && for app in prooftrans interpformat; do
+           $CC -O2 -o $app.wasm $app.o ../ladr/libladr.a -lm $EMULATION_LIBS -lsetjmp $STACK || exit 1
+       done)
 
 # --- E ----------------------------------------------------------------------------------------------------------
 E=$WORK/eprover
@@ -88,9 +93,11 @@ $E_CC -O2 -c -o "$WORK/stubs.o" "$HERE/compat/stubs.c"
     "$WORK/stubs.o" -lm $EMULATION_LIBS $STACK)
 
 # --- Install ------------------------------------------------------------------------------------------------------
-for f in "$LADR/provers.src/prover9.wasm" "$LADR/mace4.src/mace4.wasm" "$E/PROVER/eprover.wasm"; do
+for f in "$LADR/provers.src/prover9.wasm" "$LADR/mace4.src/mace4.wasm" "$LADR/apps.src/prooftrans.wasm" \
+         "$LADR/apps.src/interpformat.wasm" "$E/PROVER/eprover.wasm"; do
     "$STRIP" --strip-all -o "$OUT/$(basename "$f")" "$f"
 done
-# the scripts that the page loads (provers/<name>.wasm.js)
+# the scripts that the page loads (provers/<name>.wasm.js), and the options of Prover9 and Mace4 (provers/options.js)
 python3 "$HERE/embed.py"
+python3 "$HERE/options.py" "$LADR"
 ls -l "$OUT"/*.wasm "$OUT"/*.wasm.js

@@ -14,7 +14,8 @@ import re
 import sys
 
 PROVERS = pathlib.Path(__file__).resolve().parent.parent
-NAMES = {"prover9": "Prover9", "mace4": "Mace4", "eprover": "E"}
+NAMES = {"prover9": "Prover9", "mace4": "Mace4", "prooftrans": "prooftrans (LADR)", "interpformat": "interpformat (LADR)",
+         "eprover": "E"}
 
 if sys.argv[1:] == ["--check"]:
     for name in NAMES:

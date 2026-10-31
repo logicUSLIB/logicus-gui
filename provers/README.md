@@ -1,12 +1,14 @@
 # Automated provers in the browser
 
-The nodes `Prover9Mace4` and `EProver` run these programs inside the browser, compiled to WebAssembly
-(wasm32-wasi). Nothing is sent to a server.
+The nodes `Prover9Mace4` and `EProver`, and the PROVER9/MACE4 panel, run these programs inside the browser,
+compiled to WebAssembly (wasm32-wasi). Nothing is sent to a server.
 
 | File | Program | Version | Author | License |
 |------|---------|---------|--------|---------|
 | `prover9.wasm` | Prover9 (proof search) | LADR 2017-11A (CIIRC), commit [`cdca95a`](https://github.com/ai4reason/Prover9/tree/cdca95a51d3c3459b8fd2ebbb5ac1504be2172e3) | William McCune | GPL-2.0 |
 | `mace4.wasm` | Mace4 (finite model search) | same | William McCune | GPL-2.0 |
+| `prooftrans.wasm` | prooftrans (proof formats: parents only, XML, Ivy) | same | William McCune | GPL-2.0 |
+| `interpformat.wasm` | interpformat (model formats: tabular, portable, cooked, XML...) | same | William McCune | GPL-2.0 |
 | `eprover.wasm` | E (saturation prover) | [E 3.5.4](https://github.com/eprover/eprover/tree/E-3.5.4) | Stephan Schulz and contributors | GPL-2.0-or-later |
 
 They are separate programs, distributed here unmodified except for the portability patches below. Their source code
@@ -44,6 +46,10 @@ The script downloads the [WASI SDK](https://github.com/WebAssembly/wasi-sdk) 25 
 the sources at the versions above, applies `patch_ladr.py` and `patch_e.py`, builds with the stubs in `compat/`,
 copies the stripped `.wasm` files here and writes the `.wasm.js` scripts. The build is reproducible: it gives
 the same `.wasm` files byte for byte.
+
+It also writes `options.js` (`build/options.py`): every flag and parameter of Prover9 and Mace4, with its default,
+range and the dependencies between them, read from the LADR sources. The PROVER9/MACE4 panel builds its option tabs
+from it.
 
 The patches:
 
