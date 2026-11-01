@@ -1,8 +1,9 @@
 // PROVER9 / MACE4 / E: options, input files and the panel.
 //
 // A configuration holds the formulas (in the LADR language), the language declarations, the options of Prover9, Mace4
-// and E that differ from their defaults, and additional input. E receives the formulas translated to TPTP by LADR's
-// ladr_to_tptp, and its options on the command line (E_OPTIONS, provers/eoptions.js, generated from E's sources). The options and their dependencies come from
+// and E that differ from their defaults, and additional input; the free problem can also be written directly in TPTP
+// for E. E receives the formulas translated to TPTP by LADR's ladr_to_tptp (or the TPTP problem), and its options on
+// the command line (E_OPTIONS, provers/eoptions.js, generated from E's sources). The options and their dependencies come from
 // provers/options.js (LADR_OPTIONS), generated from the LADR sources. As in the classic Prover9-Mace4 GUI, the panel
 // applies the dependencies itself (setting hyper_resolution also sets pos_hyper_resolution...) and writes
 // set(ignore_option_dependencies) in the input, so the file says exactly what the panel shows.
@@ -22,6 +23,8 @@ const P9M4 = (function () {
             eprover: { 'cpu-limit': 60 },
             eprover_extra: '',      // more command-line options for E
             additional: '',
+            e_language: 'ladr',     // what E reads in the free problem: the LADR formulas translated, or `tptp`
+            tptp: '',               // the problem written directly in TPTP
         };
     }
 
@@ -141,12 +144,30 @@ const P9M4 = (function () {
         return `assign(${name}, ${value}).`;
     }
 
+    // The options of E that differ from the defaults, as a comment line of an input file (LADR or TPTP), or ''.
+    function eOptionsLine(config) {
+        const line = eArgs(config).join(' ');
+        return line && line !== eArgs(new Config(newState())).join(' ') ? `${E_LINE} ${line}` : '';
+    }
+
+    // It reads the options of E of an input file, if it has them. It says whether it had them.
+    function readEOptions(config, text) {
+        const line = text.split('\n').find(l => l.startsWith(E_LINE));
+        if (line) setEArgs(config, line.slice(E_LINE.length).trim().split(/\s+/).filter(a => a));
+        return !!line;
+    }
+
+    // An input file without the line of the options of E.
+    function withoutEOptions(text) {
+        return text.split('\n').filter(l => !l.startsWith(E_LINE)).join('\n').replace(/^\n+/, '');
+    }
+
     // The options, declarations and additional input of a configuration, as the start of an input file.
     function header(config) {
         const lines = ['% Written by LogicUS (Prover9/Mace4 panel)'];
         // the options of E travel as a comment (only for the free problem and E nodes, see Config.withE)
-        const eLine = config.withE ? eArgs(config).join(' ') : '';
-        if (eLine && eLine !== eArgs(new Config(newState())).join(' ')) lines.push(`${E_LINE} ${eLine}`);
+        const eLine = config.withE ? eOptionsLine(config) : '';
+        if (eLine) lines.push(eLine);
         lines.push('', 'set(ignore_option_dependencies). % the options below already include their dependencies');
         const lang = config.state.language;
         if (lang.prolog_style_variables) lines.push('set(prolog_style_variables).');
@@ -258,11 +279,8 @@ const P9M4 = (function () {
                 additional.push(inBlock(block, s));
             }
         }
-        const eLine = text.split('\n').find(l => l.startsWith(E_LINE));
-        if (eLine) {
-            config.ignoreDependencies = false;
-            setEArgs(config, eLine.slice(E_LINE.length).trim().split(/\s+/).filter(a => a));
-        }
+        config.ignoreDependencies = false;
+        readEOptions(config, text);
         state.assumptions = lists.assumptions.join('\n');
         state.goals = lists.goals.join('\n');
         state.language.declarations = declarations.join('\n');
@@ -290,6 +308,6 @@ const P9M4 = (function () {
         return /^\s*(fof|cnf|tff)\(/m.test(text) && !/^\s*formulas\(/m.test(text);
     }
 
-    return { PROGRAMS, INFINITY, newState, spec, Config, header, input, parse, formulasSection, eArgs, tptp, fromTPTP,
-             isTPTP };
+    return { PROGRAMS, INFINITY, newState, spec, Config, header, input, parse, formulasSection, eArgs, eOptionsLine,
+             readEOptions, withoutEOptions, tptp, fromTPTP, isTPTP };
 })();

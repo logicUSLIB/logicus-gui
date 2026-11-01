@@ -10,6 +10,10 @@ async function openPanel(page) {
     await page.getByRole('button', { name: 'PROVER9/MACE4' }).click();
 }
 
+async function chooseProver(page, system) {
+    await page.locator(`.p9m4-systems input[value="${system}"]`).check();
+}
+
 async function run(page, program) {
     await page.locator(`#p9m4-run-${program} .p9m4-start`).click();
     const state = page.locator(`#p9m4-run-${program} .p9m4-state`);
@@ -92,10 +96,13 @@ test('an input file is saved and loaded back', async ({ page }) => {
     await page.getByRole('button', { name: 'PROVER9 OPTIONS' }).click();
     const order = page.locator('.p9m4-option', { hasText: /^\s*order/ }).locator('select');
     await order.selectOption('kbo');
+    // the options of E are kept in the input file too
+    await chooseProver(page, 'e');
     await page.getByRole('button', { name: 'E OPTIONS' }).click();
     await page.locator('.p9m4-groups button', { hasText: 'Search' }).click();
     await page.fill('#p9m4-e-term-ordering-arg', 'KBO6');
     await page.locator('#p9m4-e-term-ordering-arg').dispatchEvent('change');
+    await chooseProver(page, 'ladr');
     await page.getByRole('button', { name: 'ADDITIONAL INPUT' }).click();
     await page.locator('#p9m4-tab textarea').fill('formulas(hints).\nx * y = y * x.\nend_of_list.');
     await page.locator('#p9m4-tab textarea').dispatchEvent('input');
@@ -146,9 +153,36 @@ async function runE(page) {
     return run(page, 'eprover');
 }
 
+test('the free problem shows only the tabs and programs of the chosen prover, and keeps the formulas', async ({ page }) => {
+    const problems = await openApp(page);
+    await openPanel(page);
+    await expect(page.locator('.p9m4-tabs button')).toHaveText(['FORMULAS', 'LANGUAGE', 'PROVER9 OPTIONS', 'MACE4 OPTIONS', 'ADDITIONAL INPUT', 'INPUT FILE']);
+    await expect(page.locator('.p9m4-run')).toHaveCount(2);
+    await page.fill('#p9m4-assumptions', 'p(a).');
+    await chooseProver(page, 'e');
+    await expect(page.locator('.p9m4-tabs button')).toHaveText(['FORMULAS', 'LANGUAGE', 'E OPTIONS', 'INPUT FILE']);
+    await expect(page.locator('.p9m4-run')).toHaveCount(1);
+    await expect(page.locator('#p9m4-run-eprover')).toBeVisible();
+    await expect(page.locator('#p9m4-assumptions')).toHaveValue('p(a).');
+    // the input file is the one of the chosen prover
+    await page.getByRole('button', { name: 'INPUT FILE', exact: true }).click();
+    await expect(page.locator('#p9m4-input-tptp')).toContainText('cnf(sos,axiom,p(a)).');
+    await expect(page.locator('#p9m4-input-ladr')).toHaveCount(0);
+    // the choice is kept when the panel is opened again
+    await page.getByRole('button', { name: 'CLOSE' }).click();
+    await page.evaluate(() => openP9M4PANEL());
+    await expect(page.locator('.p9m4-systems input[value="e"]')).toBeChecked();
+    await chooseProver(page, 'ladr');
+    await page.getByRole('button', { name: 'INPUT FILE', exact: true }).click();
+    await expect(page.locator('#p9m4-input-tptp')).toHaveCount(0);
+    await expect(page.locator('#p9m4-input-ladr')).toContainText('p(a).');
+    expect(problems).toEqual([]);
+});
+
 test('E on a free problem: the formulas go to TPTP, the options to the command line', async ({ page }) => {
     const problems = await openApp(page);
     await openPanel(page);
+    await chooseProver(page, 'e');
     await page.fill('#p9m4-assumptions', GROUP + 'x * x = e.');
     await page.fill('#p9m4-goals', 'x * y = y * x.');
     expect(await runE(page)).toBe('SZS status Theorem.');
@@ -177,7 +211,64 @@ test('a TPTP problem is loaded with tptp_to_ladr, keeping its variables', async 
     await expect(page.locator('#p9m4-file-message')).toHaveText(/TPTP problem read/);
     await expect(page.locator('#p9m4-goals')).toHaveValue(/q\(a\)/);
     expect(await run(page, 'prover9')).toBe('THEOREM PROVED.');
+    await chooseProver(page, 'e');
     expect(await runE(page)).toBe('SZS status Theorem.');
+});
+
+test('E reads a problem written in TPTP, which is saved and loaded as it is', async ({ page }, testInfo) => {
+    const problems = await openApp(page);
+    await openPanel(page);
+    await chooseProver(page, 'e');
+    await page.fill('#p9m4-assumptions', GROUP + 'x * x = e.');
+    await page.fill('#p9m4-goals', 'x * y = y * x.');
+    // the TPTP problem starts as the translation of the LADR formulas
+    await page.locator('.p9m4-elang input[value="tptp"]').check();
+    await expect(page.locator('#p9m4-tptp')).toHaveValue(/fof\(goals,conjecture,/);
+    await expect(page.locator('#p9m4-syntax')).toHaveText(/ladr_to_tptp/);
+    await expect(page.locator('.p9m4-tabs button')).toHaveText(['FORMULAS', 'E OPTIONS', 'INPUT FILE']);
+    expect(await runE(page)).toBe('SZS status Theorem.');
+    // a problem of the user, checked by E
+    await page.fill('#p9m4-tptp', 'fof(a, axiom, ![X]: (p(X) => q(X))).\nfof(b, axiom, p(c).');
+    await page.getByRole('button', { name: 'WELL FORMED?' }).click();
+    await expect(page.locator('#p9m4-syntax')).toHaveText(/^Line 2, column \d+ \(after '\.'\): Closing bracket/);
+    const problem = 'fof(a, axiom, ![X]: (p(X) => q(X))).\nfof(b, axiom, p(c)).\nfof(g, conjecture, q(c)).\n';
+    await page.fill('#p9m4-tptp', problem);
+    await page.getByRole('button', { name: 'WELL FORMED?' }).click();
+    await expect(page.locator('#p9m4-syntax')).toHaveText('The problem is well formed.');
+    expect(await runE(page)).toBe('SZS status Theorem.');
+    await page.getByRole('button', { name: 'INPUT FILE', exact: true }).click();
+    await expect(page.locator('#p9m4-input-tptp')).toHaveText(problem);
+    // saved with the options of E as a comment
+    await page.getByRole('button', { name: 'E OPTIONS' }).click();
+    await page.locator('.p9m4-groups button', { hasText: 'Basic' }).click();
+    await page.locator('#p9m4-e-print-statistics').check();
+    const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'SAVE INPUT FILE' }).click()]);
+    expect(download.suggestedFilename()).toBe('problem.p');
+    const saved = fs.readFileSync(await download.path(), 'utf8');
+    expect(saved).toMatch(/^% LogicUS E options: .*--print-statistics/);
+    expect(saved.endsWith(problem)).toBe(true);
+    // loaded back in a new page, as it is
+    await page.reload();
+    await page.waitForFunction(() => typeof app !== 'undefined');
+    await page.evaluate(() => { document.getElementById('popup').style.zIndex = 0; });
+    await openPanel(page);
+    await chooseProver(page, 'e');
+    const file = testInfo.outputPath('saved.p');
+    fs.writeFileSync(file, saved);
+    const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.getByRole('button', { name: 'LOAD INPUT FILE' }).click()]);
+    await chooser.setFiles(file);
+    await expect(page.locator('#p9m4-file-message')).toHaveText('Read saved.p (TPTP, with options of E).');
+    await expect(page.locator('#p9m4-tptp')).toHaveValue(problem);
+    await page.getByRole('button', { name: 'E OPTIONS' }).click();
+    await page.locator('.p9m4-groups button', { hasText: 'Basic' }).click();
+    await expect(page.locator('#p9m4-e-print-statistics')).toBeChecked();
+    // back to LADR: the empty formulas are filled with the translation of the problem
+    await page.getByRole('button', { name: 'FORMULAS' }).click();
+    await page.locator('.p9m4-elang input[value="ladr"]').check();
+    await expect(page.locator('#p9m4-goals')).toHaveValue(/q\(c\)/);
+    await expect(page.locator('#p9m4-syntax')).toHaveText(/tptp_to_ladr/);
+    expect(await runE(page)).toBe('SZS status Theorem.');
+    expect(problems).toEqual([]);
 });
 
 test('an EProver node keeps its options and runs with them', async ({ page }) => {
@@ -197,6 +288,15 @@ test('an EProver node keeps its options and runs with them', async ({ page }) =>
     });
     expect(node.value).toMatch(/^Theorem/);
     expect(node.args).toEqual(['--silent', '--proof-object', '--print-statistics', '--auto', '--cpu-limit=10']);
+    // opened as a free problem, E keeps reading the TPTP of the node
+    await page.evaluate(() => graph.getNodeById(5).widget3.callback());
+    await expect(page.locator('pre.p9m4-input')).toContainText('fof(');
+    const tptp = await page.locator('pre.p9m4-input').textContent();
+    await page.getByRole('button', { name: 'OPEN AS A FREE PROBLEM' }).click();
+    await expect(page.locator('.p9m4-systems input[value="e"]')).toBeChecked();
+    await expect(page.locator('#p9m4-tptp')).toHaveValue(tptp);
+    expect(await runE(page)).toBe('SZS status Theorem.');
+    await page.getByRole('button', { name: 'CLOSE' }).click();
     const saved = await page.evaluate(() => JSON.stringify(graph.serialize()));
     await page.evaluate(s => loadSchema(JSON.parse(s)), saved);
     expect(await page.evaluate(() => graph.getNodeById(5).properties.p9m4.eprover)).toEqual(node.options);

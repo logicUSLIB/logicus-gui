@@ -15,11 +15,13 @@ formula in them.
 
 ![A counter-model found by Mace4: a non-commutative group where x·x·x·x = e](docs/screenshot-mace4.jpg)
 
-The **PROVER9/MACE4** panel is a workbench in the spirit of the classic Prover9-Mace4 GUI, with E as a third
-program: formulas in the LADR language (E receives them translated to TPTP), all the options of Prover9 and Mace4
-(with their dependencies) and the main options of E (with the descriptions of `eprover --help`), input files that can
-be saved and loaded (LADR, or TPTP problems), and the proofs and models in the formats of prooftrans and interpformat.
-Opened from a `Prover9Mace4` or `EProver` node (its OPTIONS button), it sets the options of that node.
+The **PROVER9/MACE4** panel is a workbench in the spirit of the classic Prover9-Mace4 GUI, with E as another prover:
+the user chooses Prover9 and Mace4, or E, and the panel shows only the tabs and options of that choice (the formulas
+are kept when it changes). Prover9 and Mace4 read formulas in the LADR language, with all their options (and their
+dependencies), and the proofs and models can be shown in the formats of prooftrans and interpformat. E reads the LADR
+formulas translated to TPTP, or a problem written directly in TPTP (checked with `eprover --syntax-only`), with the
+main options of E (and the descriptions of `eprover --help`). Input files can be saved and loaded (LADR, or TPTP
+problems). Opened from a `Prover9Mace4` or `EProver` node (its OPTIONS button), it sets the options of that node.
 
 The **DEDUCTION** panel checks proofs in the style of Fitch (natural deduction, or an axiomatic system), propositional
 or first order, with the rules that each exercise allows: they are chosen from the systems of the libraries

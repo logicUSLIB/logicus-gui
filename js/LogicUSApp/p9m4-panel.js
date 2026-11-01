@@ -1,12 +1,14 @@
-// The PROVER9/MACE4 panel, in the spirit of the classic Prover9-Mace4 GUI by William McCune, with E as a third
-// program.
+// The PROVER9/MACE4 panel, in the spirit of the classic Prover9-Mace4 GUI by William McCune, with E as another
+// prover.
 //
-// It works on the free problem of the panel (formulas typed in the LADR language) or, opened from a Prover9Mace4 or
-// EProver node, on the options of that node (whose formulas come from its sets). The programs run in the browser;
-// Prover9 and Mace4 results can be shown in the formats of prooftrans and interpformat, and E receives the problem
-// translated to TPTP by ladr_to_tptp.
+// It works on the free problem of the panel or, opened from a Prover9Mace4 or EProver node, on the options of that
+// node (whose formulas come from its sets). In the free problem the user chooses the prover: Prover9 and Mace4 (which
+// read the same LADR input), or E, which reads the LADR formulas translated to TPTP by ladr_to_tptp or a problem
+// written directly in TPTP. Only the tabs and the options of the chosen prover are shown. The programs run in the
+// browser; Prover9 and Mace4 results can be shown in the formats of prooftrans and interpformat.
 
 let P9M4_FREE = P9M4.newState();   // the free problem of the panel
+let P9M4_SYSTEM = 'ladr';          // the prover of the free problem: 'ladr' (Prover9 and Mace4) or 'e'
 
 const P9M4Panel = (function () {
     const NAMES = { prover9: 'Prover9', mace4: 'Mace4', eprover: 'E' };
@@ -26,6 +28,8 @@ const P9M4Panel = (function () {
     const LADR_DECLARATIONS = `op(800, infix, "<->").   op(800, infix, "->").   op(790, infix_right, "|").
 op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(700, infix, "!=").
 (These are the defaults; write here only new or changed declarations.)`;
+
+    const SYSTEMS = [['ladr', 'Prover9 and Mace4'], ['e', 'E']];
 
     let ctx = null;   // the panel as it is open
 
@@ -53,15 +57,29 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         return new P9M4.Config(state, bindings, isENode(node));
     }
 
+    // The tabs of the panel: those of the prover (for E, the LANGUAGE of the LADR formulas, if it reads them).
+    function tabs() {
+        if (ctx.system === 'ladr') return ['formulas', 'language', 'prover9', 'mace4', 'additional', 'input'];
+        if (ctx.node) return ['formulas', 'eprover', 'input'];
+        return ['formulas', ...(ctx.config.state.e_language === 'tptp' ? [] : ['language']), 'eprover', 'input'];
+    }
+
+    function programsOf(system) {
+        return system === 'e' ? ['eprover'] : ['prover9', 'mace4'];
+    }
+
+    // Whether E reads the free problem written in TPTP.
+    function directTPTP() {
+        return !ctx.node && ctx.config.state.e_language === 'tptp';
+    }
+
     function open(node = null) {
-        const programs = !node ? ['prover9', 'mace4', 'eprover'] : isENode(node) ? ['eprover'] : ['prover9', 'mace4'];
-        const tabs = !node ? TABS.map(t => t[0])
-            : isENode(node) ? ['formulas', 'eprover', 'input']
-            : ['formulas', 'language', 'prover9', 'mace4', 'additional', 'input'];
+        const system = !node ? P9M4_SYSTEM : isENode(node) ? 'e' : 'ladr';
+        const previous = ctx && ctx.node === node ? ctx.tab : null;
         ctx = {
-            node, programs, tabs,
+            node, system, programs: programsOf(system),
             config: node ? nodeConfig(node) : new P9M4.Config(P9M4_FREE),
-            tab: ctx && ctx.node === node && tabs.includes(ctx.tab) ? ctx.tab : 'formulas',
+            tab: 'formulas',
             group: { prover9: 'Basic', mace4: 'Basic', eprover: 'Basic' },
             runs: {},
             controllers: {},
@@ -69,7 +87,9 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
             nodeProblem: null,
             tptp: null,
             result: { title: '', text: '', file: '' },
+            note: '',
         };
+        if (previous && tabs().includes(previous)) ctx.tab = previous;
         render();
         if (node) {
             // (the core may answer at once, so the panel must be drawn before asking)
@@ -99,17 +119,35 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         node.onPropertyChanged();
     }
 
+    // The prover of the free problem. The formulas and the options of every prover are kept.
+    function system(id) {
+        if (ctx.node || ctx.system === id) return;
+        P9M4_SYSTEM = ctx.system = id;
+        ctx.programs = programsOf(id);
+        for (const program of Object.keys(ctx.controllers)) {
+            if (!ctx.programs.includes(program)) ctx.controllers[program].abort();
+        }
+        if (!tabs().includes(ctx.tab)) ctx.tab = 'formulas';
+        ctx.note = '';
+        render();
+    }
+
     function render() {
         const node = ctx.node;
         const title = isENode(node) ? 'E' : node ? 'PROVER9 / MACE4' : 'PROVER9 / MACE4 / E';
+        const systems = node ? '' : `
+                <div class="p9m4-systems"><b>Prover</b>${SYSTEMS.map(([id, label]) => `
+                    <label><input type="radio" name="p9m4-system" value="${id}" ${ctx.system === id ? 'checked' : ''}
+                        onchange="P9M4Panel.system('${id}')"> ${label}</label>`).join('')}
+                </div>`;
         POPUP.innerHTML = `
         <div id="popup-head">
             <span id="popup-title">${title}${node ? ` &nbsp;·&nbsp; options of node [${node.id}] ${escape(node.title)}` : ''}</span>
             <button id="popup-close" onclick="P9M4Panel.close()">CLOSE</button>
         </div>
         <div id="popup-content2" class="p9m4">
-            <div class="p9m4-left">
-                <div class="p9m4-tabs">${TABS.filter(([id]) => ctx.tabs.includes(id)).map(([id, label]) =>
+            <div class="p9m4-left">${systems}
+                <div class="p9m4-tabs">${TABS.filter(([id]) => tabs().includes(id)).map(([id, label]) =>
                     `<button data-tab="${id}" onclick="P9M4Panel.tab('${id}')">${label}</button>`).join('')}</div>
                 <div class="p9m4-tab" id="p9m4-tab"></div>
                 <div class="p9m4-file">
@@ -183,17 +221,7 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         const state = ctx.config.state;
         switch (ctx.tab) {
             case 'formulas':
-                el.innerHTML = ctx.node ? nodeFormulas() : `
-                    <p class="p9m4-hint">Formulas in the language of Prover9 and Mace4 (LADR), each ending with a period,
-                    e.g. <code>all x (man(x) -> mortal(x)).</code> Variables in clauses start with u–z
-                    (or are capitalised with <i>prolog style variables</i>). E receives them translated to TPTP.</p>
-                    <label class="p9m4-area">Assumptions<textarea id="p9m4-assumptions" spellcheck="false"
-                        oninput="P9M4Panel.setText('assumptions', this.value)">${escape(state.assumptions)}</textarea></label>
-                    <label class="p9m4-area">Goals<textarea id="p9m4-goals" spellcheck="false"
-                        oninput="P9M4Panel.setText('goals', this.value)">${escape(state.goals)}</textarea></label>
-                    <div><button onclick="P9M4Panel.checkSyntax()">WELL FORMED?</button>
-                        <button onclick="P9M4Panel.clearFormulas()">CLEAR</button>
-                        <span id="p9m4-syntax" class="p9m4-hint"></span></div>`;
+                el.innerHTML = ctx.node ? nodeFormulas() : freeFormulas();
                 break;
             case 'language':
                 el.innerHTML = `
@@ -225,6 +253,82 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         }
     }
 
+    function freeFormulas() {
+        const state = ctx.config.state;
+        const e = ctx.system === 'e';
+        const choice = !e ? '' : `
+            <div class="p9m4-elang"><b>Formulas in</b>
+                <label><input type="radio" name="p9m4-elang" value="ladr" ${directTPTP() ? '' : 'checked'}
+                    onchange="P9M4Panel.setELanguage('ladr')"> LADR, translated to TPTP by ladr_to_tptp</label>
+                <label><input type="radio" name="p9m4-elang" value="tptp" ${directTPTP() ? 'checked' : ''}
+                    onchange="P9M4Panel.setELanguage('tptp')"> TPTP</label>
+            </div>`;
+        const note = `<span id="p9m4-syntax" class="p9m4-hint">${escape(ctx.note)}</span>`;
+        if (directTPTP()) {
+            return choice + `
+                <p class="p9m4-hint">A problem in the TPTP language, as E reads it: <code>fof(name, role, formula).</code>
+                or <code>cnf(name, role, clause).</code>, with the roles <code>axiom</code>, <code>hypothesis</code>,
+                <code>conjecture</code>... Variables are capitalised; the connectives are <code>~ &amp; | =&gt; &lt;=&gt;</code>
+                and the quantifiers <code>![X]:</code> and <code>?[X]:</code>. The files of the TPTP library cannot be
+                included.</p>
+                <label class="p9m4-area">Problem<textarea id="p9m4-tptp" class="tall" spellcheck="false"
+                    oninput="P9M4Panel.setText('tptp', this.value)">${escape(state.tptp)}</textarea></label>
+                <div><button onclick="P9M4Panel.checkSyntax()">WELL FORMED?</button>
+                    <button onclick="P9M4Panel.clearFormulas()">CLEAR</button>
+                    <button onclick="P9M4Panel.translate('tptp')" title="ladr_to_tptp">FROM THE LADR FORMULAS</button>
+                    ${note}</div>`;
+        }
+        return choice + `
+            <p class="p9m4-hint">Formulas in the language of Prover9 and Mace4 (LADR), each ending with a period,
+            e.g. <code>all x (man(x) -> mortal(x)).</code> Variables in clauses start with u–z
+            (or are capitalised with <i>prolog style variables</i>).${e ? ' E receives them translated to TPTP.' : ''}</p>
+            <label class="p9m4-area">Assumptions<textarea id="p9m4-assumptions" spellcheck="false"
+                oninput="P9M4Panel.setText('assumptions', this.value)">${escape(state.assumptions)}</textarea></label>
+            <label class="p9m4-area">Goals<textarea id="p9m4-goals" spellcheck="false"
+                oninput="P9M4Panel.setText('goals', this.value)">${escape(state.goals)}</textarea></label>
+            <div><button onclick="P9M4Panel.checkSyntax()">WELL FORMED?</button>
+                <button onclick="P9M4Panel.clearFormulas()">CLEAR</button>
+                ${e && state.tptp.trim() ? `<button onclick="P9M4Panel.translate('ladr')" title="tptp_to_ladr">FROM THE TPTP PROBLEM</button>` : ''}
+                ${note}</div>`;
+    }
+
+    // E reads the LADR formulas (translated) or the TPTP problem. The side that is empty is filled with the
+    // translation of the other one.
+    async function setELanguage(lang) {
+        const state = ctx.config.state;
+        state.e_language = lang;
+        ctx.tptp = null;
+        ctx.note = '';
+        const ladrEmpty = !state.assumptions.trim() && !state.goals.trim();
+        if (lang === 'tptp' && !state.tptp.trim() && !ladrEmpty) await translate('tptp', false);
+        else if (lang === 'ladr' && ladrEmpty && state.tptp.trim()) await translate('ladr', false);
+        if (!tabs().includes(ctx.tab)) ctx.tab = 'formulas';
+        render();
+    }
+
+    // It replaces the formulas of one language (`to`) with the translation of those of the other one.
+    async function translate(to, redraw = true) {
+        const state = ctx.config.state;
+        const myCtx = ctx;
+        try {
+            if (to === 'tptp') {
+                // without the messages of LADR that ladr_to_tptp copies
+                state.tptp = (await P9M4.tptp(ctx.config)).replace(/^\s*% Enabling option dependencies.*\n/, '').replace(/^\n+/, '');
+                ctx.note = 'Translated from the LADR formulas by ladr_to_tptp.';
+            } else {
+                const read = await P9M4.fromTPTP(state.tptp);
+                state.assumptions = read.assumptions;
+                state.goals = read.goals;
+                state.language.prolog_style_variables = read.language.prolog_style_variables;
+                ctx.note = 'Translated from the TPTP problem by tptp_to_ladr (with prolog style variables).';
+            }
+        } catch (e) {
+            ctx.note = String(e.message || e);
+        }
+        ctx.tptp = null;
+        if (redraw && myCtx === ctx) renderTab();
+    }
+
     function nodeFormulas() {
         const language = isENode(ctx.node) ? 'TPTP language' : 'LADR language';
         return `<p class="p9m4-hint">The formulas come from the sets connected to the node, translated to the ${language}
@@ -237,13 +341,13 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
 
     function renderInputTab(el) {
         const parts = [];
-        if (!isENode(ctx.node)) {
+        if (ctx.programs.includes('prover9')) {
             parts.push(`<p class="p9m4-hint">The input file that Prover9 and Mace4 receive.</p>
                 <pre class="p9m4-input" id="p9m4-input-ladr">${escape(currentInput() || '(the formulas of the node are not available yet)')}</pre>`);
         }
         if (ctx.programs.includes('eprover')) {
             parts.push(`<p class="p9m4-hint">What E receives: <code>eprover ${escape(P9M4.eArgs(ctx.config).join(' '))}</code>
-                with the problem in TPTP${ctx.node ? '' : ' (translated by ladr_to_tptp)'}:</p>
+                with the problem in TPTP${ctx.node ? '' : directTPTP() ? ' (as it is written in FORMULAS)' : ' (translated by ladr_to_tptp)'}:</p>
                 <pre class="p9m4-input" id="p9m4-input-tptp">…</pre>`);
         }
         el.innerHTML = parts.join('');
@@ -412,9 +516,14 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
     }
 
     function clearFormulas() {
-        ctx.config.state.assumptions = '';
-        ctx.config.state.goals = '';
+        if (directTPTP()) {
+            ctx.config.state.tptp = '';
+        } else {
+            ctx.config.state.assumptions = '';
+            ctx.config.state.goals = '';
+        }
         ctx.tptp = null;
+        ctx.note = '';
         renderTab();
     }
 
@@ -423,12 +532,14 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         return ctx.nodeProblem && ctx.nodeProblem.input ? P9M4.header(ctx.config) + '\n' + ctx.nodeProblem.input : null;
     }
 
-    // The problem for E: the TPTP of the node, or the free problem translated by ladr_to_tptp.
+    // The problem for E: the TPTP of the node, the free problem written in TPTP, or the free problem translated by
+    // ladr_to_tptp.
     async function eInput() {
         if (ctx.node) {
             if (!ctx.nodeProblem || !ctx.nodeProblem.input) throw new Error('The formulas of the node are not available yet.');
             return ctx.nodeProblem.input;
         }
+        if (directTPTP()) return ctx.config.state.tptp;
         if (ctx.tptp === null) ctx.tptp = await P9M4.tptp(ctx.config);
         return ctx.tptp;
     }
@@ -488,7 +599,9 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
             app.ports.messageReceiver.send(node.generateQuery());
             return;
         }
-        if (!ctx.config.state.assumptions.trim() && !ctx.config.state.goals.trim()) {
+        const empty = program === 'eprover' && directTPTP() ? !ctx.config.state.tptp.trim()
+            : !ctx.config.state.assumptions.trim() && !ctx.config.state.goals.trim();
+        if (empty) {
             ctx.runs[program] = { summary: 'Write some formulas first.', kind: 'error' };
             renderRun(program);
             return;
@@ -516,6 +629,7 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         ctx.runs[program] = { run, input, summary, kind };
         renderRun(program);
         const select = document.querySelector(`#p9m4-run-${program} .p9m4-view`);
+        if (!select) return;   // the user chose another prover meanwhile
         select.value = kind === 'yes' ? VIEWS[program][0][0] : 'output';
         show(program);
     }
@@ -571,6 +685,12 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
             download(P9M4.header(ctx.config), `node-${ctx.node.id}-options.in`);
             return;
         }
+        if (ctx.system === 'e' && directTPTP()) {
+            // a TPTP problem, with the options of E as a comment
+            const options = P9M4.eOptionsLine(ctx.config);
+            download((options ? options + '\n' : '') + ctx.config.state.tptp, 'problem.p');
+            return;
+        }
         const input = currentInput();
         if (input) download(input, ctx.node ? `node-${ctx.node.id}.in` : 'problem.in');
     }
@@ -580,7 +700,8 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         if (el) el.textContent = text;
     }
 
-    // Input files of LADR (with the E options of the panel, if any) or TPTP problems.
+    // Input files of LADR (with the E options of the panel, if any) or TPTP problems. For Prover9 and Mace4, a TPTP
+    // problem is translated by tptp_to_ladr; for E, it is kept as it is.
     function loadFile() {
         const element = document.createElement('input');
         element.type = 'file';
@@ -591,6 +712,18 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
             const text = await file.text();
             try {
                 const tptp = P9M4.isTPTP(text);
+                if (tptp && !ctx.node && ctx.system === 'e') {
+                    P9M4_FREE.tptp = P9M4.withoutEOptions(text);
+                    P9M4_FREE.e_language = 'tptp';
+                    ctx.config = new P9M4.Config(P9M4_FREE);
+                    const options = P9M4.readEOptions(ctx.config, text);
+                    ctx.tptp = null;
+                    ctx.note = '';
+                    ctx.tab = 'formulas';
+                    render();
+                    fileMessage(`Read ${file.name} (TPTP${options ? ', with options of E' : ''}).`);
+                    return;
+                }
                 const state = tptp ? await P9M4.fromTPTP(text) : P9M4.parse(text);
                 if (ctx.node) {
                     // the formulas of a node come from its sets: take only the options
@@ -620,11 +753,15 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
                         P9M4_FREE.goals = state.goals;
                         P9M4_FREE.additional = state.additional;
                         P9M4_FREE.language.prolog_style_variables = state.language.prolog_style_variables;
+                        P9M4_FREE.tptp = P9M4.withoutEOptions(text);
+                        P9M4.readEOptions(new P9M4.Config(P9M4_FREE), text);
                     } else {
                         P9M4_FREE = state;
                     }
                     ctx.config = new P9M4.Config(P9M4_FREE);
                     ctx.tptp = null;
+                    ctx.note = '';
+                    if (!tabs().includes(ctx.tab)) ctx.tab = 'formulas';
                     render();
                     fileMessage(tptp ? `TPTP problem read with tptp_to_ladr (${file.name}).` : `Read ${file.name}.`);
                 }
@@ -640,19 +777,36 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         saveNode();
         let state;
         if (isENode(ctx.node)) {
+            // E reads the problem as it is; the LADR formulas are its translation
             state = await P9M4.fromTPTP(ctx.nodeProblem.input);
             state.eprover = Object.assign({}, ctx.config.state.eprover, { 'cpu-limit': ctx.config.get('eprover', 'cpu-limit') });
             state.eprover_extra = ctx.config.state.eprover_extra;
+            state.tptp = ctx.nodeProblem.input;
+            state.e_language = 'tptp';
         } else {
             state = P9M4.parse(P9M4.header(ctx.config) + '\n' + ctx.nodeProblem.input);
         }
         P9M4_FREE = state;
+        P9M4_SYSTEM = isENode(ctx.node) ? 'e' : 'ladr';
         open(null);
     }
 
     async function checkSyntax() {
         const msg = document.getElementById('p9m4-syntax');
         msg.textContent = 'checking…';
+        if (directTPTP()) {
+            try {
+                const run = await LogicUSProvers.run('eprover', ['--syntax-only'], ctx.config.state.tptp, { timeoutMs: 20000 });
+                const ok = /Parsing successful/.test(run.stdout);
+                const error = (run.stderr || run.stdout).trim()
+                    .replace(/^eprover: <stdin>:(\d+):\(Column (\d+)\):\(just read '([^']*)'\):\s*/, 'Line $1, column $2 (after \'$3\'): ');
+                msg.textContent = ok ? 'The problem is well formed.' : error;
+                msg.className = ok ? 'p9m4-hint yes' : 'p9m4-hint error';
+            } catch (e) {
+                msg.textContent = String(e.message || e);
+            }
+            return;
+        }
         const input = P9M4.input(ctx.config) + '\nassign(max_given, 0). % only read the input\n';
         try {
             const run = await LogicUSProvers.run('prover9', [], input, { timeoutMs: 20000 });
@@ -674,9 +828,9 @@ op(780, infix_right, "&").   op(350, prefix, "-").   op(700, infix, "=").   op(7
         }
     }
 
-    return { open, close, tab, group, setOption, setEOption, setEExtra, setText, setLanguage, setAdditional, reset,
-             clearFormulas, start, stop, show, saveResult, saveFile, loadFile, openAsFree, checkSyntax, nodeFinished,
-             nodeConfig };
+    return { open, close, system, tab, group, setOption, setEOption, setEExtra, setText, setELanguage, translate,
+             setLanguage, setAdditional, reset, clearFormulas, start, stop, show, saveResult, saveFile, loadFile,
+             openAsFree, checkSyntax, nodeFinished, nodeConfig };
 })();
 
 function openP9M4PANEL() {
