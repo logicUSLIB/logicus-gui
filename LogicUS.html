@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./styles/provers.css">
     <link rel="stylesheet" href="./styles/examples.css">
     <link rel="stylesheet" href="./styles/p9m4.css">
+    <link rel="stylesheet" href="./styles/deduction.css">
     <link rel="shortcut icon" type="image/x-icon" href="./styles/images/logous.ico" />
     <title>LogicUS</title>
 </head>
@@ -52,6 +53,7 @@
                 <button onclick="openGRAPHSPANEL()"> GRAPHS PANEL</button>
                 <button onclick="openCSPPANEL()"> CSP PANEL</button>
                 <button onclick="openP9M4PANEL()"> PROVER9/MACE4</button>
+                <button onclick="openDEDUCTIONPANEL()"> DEDUCTION</button>
                 <button id="error-panel-button" onclick="openERRORSPANEL()"> ERROR PANEL</button>
             </div>
         </div>
@@ -116,6 +118,7 @@
 <script src="./provers/eoptions.js"></script>
 <script src="./js/LogicUSApp/p9m4.js"></script>
 <script src="./js/LogicUSApp/p9m4-panel.js"></script>
+<script src="./js/LogicUSApp/deduction-panel.js"></script>
 <script src="./js/LogicUSApp/nodes-provers.js"></script>
 <script src="./js/LogicUSApp/nodes-setup.js"></script>
 <script id="MathJax-script" async src="./js/mathjax/tex-mml-chtml.js"></script>
@@ -136,6 +139,13 @@
                 break;
 
             default:
+                if (CORE_CALLBACKS[response.nodeId]) {
+                    // an answer for a panel
+                    const callback = CORE_CALLBACKS[response.nodeId];
+                    delete CORE_CALLBACKS[response.nodeId];
+                    callback(response);
+                    break;
+                }
                 console.log(response);
                 const targetNode = graph.getNodeById(response.nodeId);
                 if (targetNode) {

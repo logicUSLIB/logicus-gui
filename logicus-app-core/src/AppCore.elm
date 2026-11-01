@@ -18,6 +18,7 @@ import PLAlgProcessors exposing (..)
 import PLBasicProcessors exposing (..)
 import ExtProcessors exposing (processConservativeRetractionFPL, processConservativeRetractionSPL, processForeignVarsFPL, processForeignVarsSPL)
 import ProverProcessors exposing (ProverProblem, processMace4Models, processProverProblem)
+import DeductionProcessors exposing (processDeduction)
 
 
 
@@ -1110,6 +1111,21 @@ update msg model =
                                         Nothing ->
                                             Dict.remove q.nodeId model.proverProblems
                               }
+                            , sendMessage <|
+                                JSONE.encode 0 <|
+                                    JSONE.object
+                                        [ ( "errorCode", JSONE.int pq.errorCode )
+                                        , ( "nodeId", JSONE.int q.nodeId )
+                                        , ( "message", pq.message )
+                                        ]
+                            )
+
+                        "Deduction" ->
+                            let
+                                pq =
+                                    processDeduction q.content
+                            in
+                            ( model
                             , sendMessage <|
                                 JSONE.encode 0 <|
                                     JSONE.object

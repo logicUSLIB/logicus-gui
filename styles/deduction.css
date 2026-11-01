@@ -1,0 +1,205 @@
+/* DEDUCTION panel */
+
+#popup #popup-content2.deduction {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: 16px;
+    height: calc(100vh - 90px);
+    box-sizing: border-box;
+}
+
+.deduction .ded-left,
+.deduction .ded-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    overflow: auto;
+    background-color: rgba(255, 255, 255, 0.92);
+    border-radius: 5px;
+    padding: 12px;
+    color: #1a2935;
+    box-sizing: border-box;
+}
+
+.deduction label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-weight: bold;
+}
+
+.deduction .ded-row {
+    display: flex;
+    gap: 12px;
+}
+
+.deduction .ded-problem > label:first-child {
+    flex: 3;
+}
+
+.deduction .ded-problem > label:last-child {
+    flex: 2;
+}
+
+.deduction textarea,
+.deduction input[type="text"] {
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.deduction #ded-proof {
+    min-height: 220px;
+    resize: vertical;
+}
+
+.deduction #ded-rules-text {
+    min-height: 200px;
+    width: 100%;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.deduction button {
+    cursor: pointer;
+}
+
+.deduction .ded-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.deduction .ded-hint {
+    color: #4d5f6e;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+.deduction code {
+    font-size: 12px;
+}
+
+.deduction .ded-error {
+    color: #a32020;
+}
+
+.deduction .ded-status {
+    font-weight: bold;
+    margin: 4px 0;
+}
+
+.deduction .ded-status.yes {
+    color: #1d6b2c;
+}
+
+.deduction .ded-status.no {
+    color: #8a5a00;
+}
+
+/* the proof, with the subproofs as boxes */
+
+.deduction .ded-table {
+    border-collapse: collapse;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.deduction .ded-table td {
+    padding: 0 6px;
+    vertical-align: middle;
+    height: 24px;
+}
+
+.deduction .ded-num {
+    color: #4d5f6e;
+    text-align: right;
+}
+
+.deduction .ded-formula {
+    white-space: nowrap;
+    padding-left: 0;
+}
+
+.deduction .ded-bar {
+    display: inline-block;
+    width: 12px;
+    height: 24px;
+    vertical-align: middle;
+    border-left: 2px solid #1a2935;
+}
+
+.deduction .ded-bar.first {
+    border-top: 2px solid #1a2935;
+}
+
+.deduction .ded-f.assumption {
+    border-bottom: 1px solid #1a2935;
+}
+
+.deduction .ded-just {
+    color: #1a2935;
+    white-space: nowrap;
+}
+
+.deduction tr.ok .ded-mark {
+    color: #1d6b2c;
+}
+
+.deduction tr.bad .ded-mark,
+.deduction tr.bad .ded-msg {
+    color: #a32020;
+}
+
+.deduction .ded-msg {
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+/* rules and hints */
+
+.deduction #ded-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 6px 0;
+}
+
+.deduction .ded-rule {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    font-weight: normal;
+}
+
+.deduction .ded-rule.off code {
+    color: #9aa7b2;
+    text-decoration: line-through;
+}
+
+.deduction details summary {
+    cursor: pointer;
+    font-weight: bold;
+    margin: 6px 0;
+}
+
+.deduction .ded-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 8px 0;
+}
+
+.deduction .ded-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.deduction .ded-item button {
+    font-size: 11px;
+}

@@ -16,7 +16,7 @@
             "elm-community/list-extra": "8.5.2",
             "elm-community/maybe-extra": "5.3.0",
             "elm-community/string-extra": "4.0.1",
-            "logicUSLIB/logicus-fol": "3.2.2",
+            "logicUSLIB/logicus-fol": "3.3.0",
             "logicUSLIB/logicus-pl": "4.1.0"
         },
         "indirect": {

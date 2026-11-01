@@ -21,6 +21,12 @@ program: formulas in the LADR language (E receives them translated to TPTP), all
 be saved and loaded (LADR, or TPTP problems), and the proofs and models in the formats of prooftrans and interpformat.
 Opened from a `Prover9Mace4` or `EProver` node (its OPTIONS button), it sets the options of that node.
 
+The **DEDUCTION** panel checks proofs in the style of Fitch (natural deduction, or an axiomatic system), propositional
+or first order, with the rules that each exercise allows: they are chosen from the systems of the library, switched
+off one by one or written as schemas (`rule →I : [A] B ⊢ A → B`). Each wrong line says why, and the panel gives the
+rules that can be used at the end of the proof (from the lines, closing the current subproof, or towards the goal), and
+adds the suggested line. Exercises can be saved and loaded as files.
+
 ## Using it
 
 LogicUS is a static web page: nothing is installed and nothing is sent to a server. Download this folder and open
@@ -42,7 +48,8 @@ JSON files.
 
 ```
 LogicUS.html            the page
-js/LogicUSApp/          the nodes (LiteGraph) and the panels (p9m4.js and p9m4-panel.js: the PROVER9/MACE4 panel)
+js/LogicUSApp/          the nodes (LiteGraph) and the panels (p9m4.js and p9m4-panel.js: the PROVER9/MACE4 panel;
+                        deduction-panel.js: the DEDUCTION panel)
 js/LogicUSApp/AppCore.js  the Elm core, built from logicus-app-core/
 logicus-app-core/       Elm application: runs the algorithms of logicus-pl and logicus-fol for the nodes
 provers/                Prover9, Mace4, prooftrans, interpformat and E in WebAssembly, the options of Prover9
