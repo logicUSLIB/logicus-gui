@@ -92,8 +92,12 @@ q -> r        premise
                 </div>
                 <label class="ded-proof-label">Proof
                     <span class="ded-hint">a line per formula: <code>| p   assumption</code>, <code>q   -&gt;E 1, 3</code>,
-                    <code>p -&gt; r   -&gt;I 3-5</code>; a bar <code>|</code> per open subproof</span>
-                    <textarea id="ded-proof" spellcheck="false">${escape(state.proof)}</textarea>
+                    <code>p -&gt; r   -&gt;I 3-5</code>; a bar <code>|</code> per open subproof. On the left, the number of
+                    each line, as the rules cite it (empty lines are not counted).</span>
+                    <div class="ded-editor">
+                        <div class="ded-gutter" aria-hidden="true"><div id="ded-gutter"></div></div>
+                        <textarea id="ded-proof" spellcheck="false" wrap="off">${escape(state.proof)}</textarea>
+                    </div>
                 </label>
                 <div class="ded-buttons">
                     <button onclick="DeductionPanel.check()">CHECK</button>
@@ -142,13 +146,36 @@ q -> r        premise
         };
         bind('ded-premises', 'premises', scheduleCheck);
         bind('ded-goal', 'goal', scheduleCheck);
-        bind('ded-proof', 'proof', scheduleCheck);
+        bind('ded-proof', 'proof', () => {
+            renderGutter();
+            scheduleCheck();
+        });
+        document.getElementById('ded-proof').addEventListener('scroll', renderGutter);
         bind('ded-target', 'target');
         bind('ded-rules-text', 'rules', () => {
             state.preset = 'Own rules';
             scheduleCheck();
         });
         renderRules();
+        renderGutter();
+    }
+
+    // The numbers of the lines of the proof, next to the text: the lines that are not empty, in order (as readProof
+    // numbers them). The wrong lines are marked once the text has been checked.
+    function renderGutter() {
+        const gutter = document.getElementById('ded-gutter');
+        const text = document.getElementById('ded-proof');
+        if (!gutter || !text) return;
+        const checked = last.check && last.checkedProof === state.proof ? last.check.lines || [] : [];
+        const bad = new Set(checked.filter(l => !l.ok).map(l => l.number));
+        let k = 0;
+        gutter.innerHTML = state.proof.split('\n').map(line => {
+            if (!line.trim()) return '<div>&nbsp;</div>';
+            k++;
+            return `<div${bad.has(k) ? ' class="bad"' : ''}>${k}</div>`;
+        }).join('');
+        // the numbers move with the text (the gutter does not set the height of the editor)
+        gutter.style.transform = `translateY(${-text.scrollTop}px)`;
     }
 
     let timer = null;
@@ -158,10 +185,13 @@ q -> r        premise
     }
 
     function check() {
+        const proof = state.proof;
         askCore('Deduction', request('check'), response => {
             last.check = response.message;
+            last.checkedProof = proof;
             renderRules();
             renderReport();
+            renderGutter();
         });
     }
 
@@ -267,6 +297,7 @@ q -> r        premise
         const line = `${'| '.repeat(Math.max(0, depth))}${formula}`;
         state.proof = (text ? text + '\n' : '') + line.padEnd(Math.max(14, line.length + 3)) + justification + '\n';
         document.getElementById('ded-proof').value = state.proof;
+        renderGutter();
         check();
         hints();
     }

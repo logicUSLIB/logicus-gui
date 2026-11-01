@@ -85,3 +85,20 @@ test('the systems follow the language, and a rule that is not valid is marked', 
     await expect(page.locator('#ded-rules .ded-error')).toContainText('quantifiers are not propositional');
     expect(problems).toEqual([]);
 });
+
+test('the lines of the proof are numbered as the rules cite them', async ({ page }) => {
+    const problems = await openApp(page);
+    await openPanel(page);
+    await typeProof(page, 'p -> q   premise\nq -> r   premise\n\n| p   assumption\n| r   ->E 2, 3\n');
+    // the empty line is not counted, and the wrong line is marked once checked
+    await expect(page.locator('#ded-gutter div')).toHaveText(['1', '2', '', '3', '4', '']);
+    await expect(page.locator('#ded-gutter .bad')).toHaveText(['4']);
+    await expect(page.locator('.ded-table tr').nth(3)).toContainText('→E (A → B, A ⊢ B) does not give this formula from 2, 3');
+    // a line added from the hints gets its number
+    await page.locator('#ded-proof').fill('p -> q   premise\nq -> r   premise\n| p   assumption\n');
+    await page.getByRole('button', { name: 'RULES THAT CAN BE USED' }).click();
+    await page.locator('#ded-hints-list .ded-item', { hasText: '→E 1, 3 gives q' }).locator('button', { hasText: 'ADD' }).click();
+    await expect(page.locator('#ded-gutter div')).toHaveText(['1', '2', '3', '4', '']);
+    await expect(page.locator('#ded-gutter .bad')).toHaveCount(0);
+    expect(problems).toEqual([]);
+});
