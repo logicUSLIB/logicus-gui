@@ -1,7 +1,8 @@
 // The DEDUCTION panel: proofs in the style of Fitch, checked with the rules that the exercise allows
-// (LogicUS.FOL.Deduction), and the rules that can be used at the end of the proof.
+// (LogicUS.PL.Deduction for propositional exercises, LogicUS.FOL.Deduction for first-order ones), and the rules that
+// can be used at the end of the proof.
 //
-// The rules are written as schemas (rule NAME : premises ⊢ conclusion); the systems of the library can be loaded and
+// The rules are written as schemas (rule NAME : premises ⊢ conclusion); the systems of the libraries can be loaded and
 // their rules switched off or edited. The core does the work: the panel sends it requests of type "Deduction".
 
 let CORE_CALLBACKS = {};       // answers of the core for the panels, by request id (negative node ids)
@@ -26,11 +27,15 @@ q -> r        premise
     };
 
     let state = null;        // the exercise: language, rules, switched-off rules, premises, goal, proof, target
-    let presets = [];        // the systems of the library
+    let presets = {};        // the systems of the libraries, by language: { PL: [...], FOL: [...] }
     let last = { check: null, hints: null };
 
     function escape(text) {
         return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function presetsOf(lang) {
+        return presets[lang || state.lang] || [];
     }
 
     function ruleName(line) {
@@ -51,8 +56,8 @@ q -> r        premise
     function open() {
         if (!state) {
             askCore('Deduction', { action: 'presets' }, response => {
-                presets = response.message.presets || [];
-                const first = presets[0];
+                presets = response.message.presets || {};
+                const first = presetsOf('PL')[0];
                 state = Object.assign({ preset: first.name, rules: first.rules, disabled: [], target: '' }, EXAMPLE);
                 render();
                 check();
@@ -103,8 +108,8 @@ q -> r        premise
                     <div class="ded-row">
                         <label>Rules of the exercise
                             <select id="ded-preset" onchange="DeductionPanel.preset(this.value)">
-                                ${presets.map(p => `<option${p.name === state.preset ? ' selected' : ''}>${escape(p.name)}</option>`).join('')}
-                                <option${presets.some(p => p.name === state.preset) ? '' : ' selected'}>Own rules</option>
+                                ${presetsOf().map(p => `<option${p.name === state.preset ? ' selected' : ''} title="${escape(p.description)}">${escape(p.name)}</option>`).join('')}
+                                <option${presetsOf().some(p => p.name === state.preset) ? '' : ' selected'}>Own rules</option>
                             </select>
                         </label>
                     </div>
@@ -113,8 +118,9 @@ q -> r        premise
                         <summary>Edit the rules</summary>
                         <span class="ded-hint">One rule per line: <code>rule NAME : A, [B] C ⊢ D</code> (a premise
                         <code>[B] C</code> is a subproof from B to C), <code>axiom NAME : A → (B → A)</code>; capital letters
-                        are formulas, <code>A[x/t]</code> is a substitution, conditions: <code>if a fresh</code>,
-                        <code>if x not free in A</code>.</span>
+                        are formulas${state.lang === 'FOL' ? `, <code>A[x/t]</code> is a substitution, conditions:
+                        <code>if a fresh</code>, <code>if x not free in A</code>` : `; a rule that is not valid is
+                        marked with a counterexample`}.</span>
                         <textarea id="ded-rules-text" spellcheck="false">${escape(state.rules)}</textarea>
                     </details>
                 </div>
@@ -176,12 +182,19 @@ q -> r        premise
         // every rule of the text, also the switched-off ones
         const all = state.rules.split('\n').map(ruleName).filter(n => n);
         const texts = Object.fromEntries((last.check.rules || []).map(r => [r.name, r.text]));
+        const counter = Object.fromEntries((last.check.rules || []).map(r => [r.name, r.counterexample]));
         const lines = Object.fromEntries(state.rules.split('\n').filter(ruleName).map(l => [ruleName(l), l.trim()]));
+        const warning = name => {
+            const v = counter[name];
+            if (!v) return '';
+            const values = v.map(([m, b]) => `${m} ${b ? 'true' : 'false'}`).join(', ');
+            return `<span class="ded-warn" title="With ${escape(values)}, the premises of the rule are true and its conclusion is false">⚠ not valid (${escape(values)})</span>`;
+        };
         box.innerHTML = all.map(name => `
             <label class="ded-rule${state.disabled.includes(name) ? ' off' : ''}">
                 <input type="checkbox"${state.disabled.includes(name) ? '' : ' checked'}
                     onchange="DeductionPanel.toggle(${escape(JSON.stringify(name))}, this.checked)">
-                <code>${escape(texts[name] || lines[name] || name)}</code>
+                <code>${escape(texts[name] || lines[name] || name)}</code>${warning(name)}
             </label>`).join('');
     }
 
@@ -271,11 +284,17 @@ q -> r        premise
 
     function set(key, value) {
         state[key] = value;
+        if (key === 'lang') {
+            // the same system in the other language (the rules of the connectives are the same)
+            const p = presetsOf().find(q => q.name === state.preset);
+            if (p) state.rules = p.rules;
+            render();
+        }
         check();
     }
 
     function preset(name) {
-        const p = presets.find(q => q.name === name);
+        const p = presetsOf().find(q => q.name === name);
         state.preset = name;
         if (p) {
             state.rules = p.rules;
@@ -310,7 +329,7 @@ q -> r        premise
                         lang: d.lang === 'FOL' ? 'FOL' : 'PL', rules: d.rules || '', disabled: d.disabled || [],
                         premises: d.premises || '', goal: d.goal || '', proof: d.proof || '', target: '',
                     });
-                    state.preset = (presets.find(p => p.rules === state.rules) || { name: 'Own rules' }).name;
+                    state.preset = (presetsOf().find(p => p.rules === state.rules) || { name: 'Own rules' }).name;
                     render();
                     check();
                 } catch (e) {

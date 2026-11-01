@@ -17,7 +17,7 @@
             "elm-community/maybe-extra": "5.3.0",
             "elm-community/string-extra": "4.0.1",
             "logicUSLIB/logicus-fol": "3.3.0",
-            "logicUSLIB/logicus-pl": "4.1.0"
+            "logicUSLIB/logicus-pl": "4.2.0"
         },
         "indirect": {
             "avh4/elm-fifo": "1.0.4",

@@ -22,10 +22,11 @@ be saved and loaded (LADR, or TPTP problems), and the proofs and models in the f
 Opened from a `Prover9Mace4` or `EProver` node (its OPTIONS button), it sets the options of that node.
 
 The **DEDUCTION** panel checks proofs in the style of Fitch (natural deduction, or an axiomatic system), propositional
-or first order, with the rules that each exercise allows: they are chosen from the systems of the library, switched
-off one by one or written as schemas (`rule →I : [A] B ⊢ A → B`). Each wrong line says why, and the panel gives the
-rules that can be used at the end of the proof (from the lines, closing the current subproof, or towards the goal), and
-adds the suggested line. Exercises can be saved and loaded as files.
+or first order, with the rules that each exercise allows: they are chosen from the systems of the libraries
+(LogicUS.PL.Deduction and LogicUS.FOL.Deduction), switched off one by one or written as schemas
+(`rule →I : [A] B ⊢ A → B`); a propositional rule that is not valid is marked with a counterexample. Each wrong line
+says why, and the panel gives the rules that can be used at the end of the proof (from the lines, closing the current
+subproof, or towards the goal), and adds the suggested line. Exercises can be saved and loaded as files.
 
 ## Using it
 

@@ -203,3 +203,9 @@
 .deduction .ded-item button {
     font-size: 11px;
 }
+
+.deduction .ded-warn {
+    color: #8a5a00;
+    font-size: 12px;
+    white-space: nowrap;
+}

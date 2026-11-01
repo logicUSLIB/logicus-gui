@@ -20,7 +20,7 @@ test('the example proof is checked and completed with the hints', async ({ page 
     await page.getByRole('button', { name: 'RULES THAT CAN BE USED' }).click();
     await expect(page.locator('#ded-hints-list')).toContainText('→E 2, 4 gives r');
     await page.locator('#ded-hints-list button', { hasText: 'ADD' }).first().click();
-    await expect(page.locator('#ded-hints-list')).toContainText('close the subproof 3-5 and apply →I 3-5: (p → r)');
+    await expect(page.locator('#ded-hints-list')).toContainText('close the subproof 3-5 and apply →I 3-5: p → r');
     await page.locator('#ded-hints-list button', { hasText: 'ADD' }).first().click();
     await expect(page.locator('.ded-status')).toHaveText('The proof is correct and complete.');
     expect(problems).toEqual([]);
@@ -62,4 +62,26 @@ test('own rules and first-order proofs', async ({ page }) => {
     await typeProof(page, '!A[X](P(X) -> Q(X))   premise\nP(a)   premise\nP(a) -> Q(a)   ∀E 1\nQ(a)   MP 3, 2');
     await expect(page.locator('.ded-status')).toHaveText('The proof is correct and complete.');
     await expect(page.locator('.ded-rule')).toHaveCount(2);
+});
+
+test('the systems follow the language, and a rule that is not valid is marked', async ({ page }) => {
+    const problems = await openApp(page);
+    await openPanel(page);
+    await expect(page.locator('.ded-rule', { hasText: '¬¬E' })).toHaveCount(1);
+    await expect(page.locator('.ded-rule', { hasText: '∀E' })).toHaveCount(0);
+    // the same system in first-order logic, with the rules of the quantifiers and equality
+    await page.locator('#ded-lang').selectOption('FOL');
+    await expect(page.locator('.ded-rule', { hasText: '∀E' })).toHaveCount(1);
+    await expect(page.locator('#ded-preset')).toHaveValue('Natural deduction (classical)');
+    await page.locator('#ded-lang').selectOption('PL');
+    await expect(page.locator('.ded-rule', { hasText: '∀E' })).toHaveCount(0);
+    // own rules: a rule that is not valid gets a counterexample
+    await page.locator('#ded-edit summary').click();
+    await page.locator('#ded-rules-text').fill('rule →E : A → B, A ⊢ B\nrule bad : A → B, B ⊢ A');
+    await expect(page.locator('.ded-rule', { hasText: 'bad' }).locator('.ded-warn')).toHaveText('⚠ not valid (A false, B true)');
+    await expect(page.locator('.ded-rule', { hasText: '→E' }).locator('.ded-warn')).toHaveCount(0);
+    // the rules of first-order logic are not propositional
+    await page.locator('#ded-rules-text').fill('rule ∀E : ∀x A ⊢ A[x/t]');
+    await expect(page.locator('#ded-rules .ded-error')).toContainText('quantifiers are not propositional');
+    expect(problems).toEqual([]);
 });
