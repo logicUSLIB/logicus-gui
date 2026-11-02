@@ -2,8 +2,8 @@
 // (LogicUS.PL.Deduction for propositional exercises, LogicUS.FOL.Deduction for first-order ones), and the rules that
 // can be used at the end of the proof.
 //
-// The rules are written as schemas (rule NAME : premises ⊢ conclusion). The rules that the exercise allows are shown as
-// buttons that add a line with the rule to the proof; EDIT chooses a system of the libraries, switches rules off and
+// The rules are written as schemas (rule NAME : premises ⊢ conclusion). The rules that the exercise allows are shown
+// with their schemas, as buttons that add a line with the rule to the proof; EDIT chooses a system of the libraries, switches rules off and
 // edits them, and nothing changes until SAVE, which reads the rules first. The core does the work: the panel sends it
 // requests of type "Deduction".
 
@@ -153,7 +153,7 @@ q -> r        premise
         renderGutter();
     }
 
-    // The rules of the exercise: a button per rule that the exercise allows (its schema in the tooltip).
+    // The rules of the exercise: a button per rule that the exercise allows, with its name and its schema.
     function paletteHTML() {
         return `
             <div class="ded-system-head"><b>Rules of the exercise</b>
@@ -298,7 +298,8 @@ q -> r        premise
         });
     }
 
-    // The buttons of the rules that the exercise allows, in the groups of the text (separated by empty lines).
+    // The buttons of the rules that the exercise allows (name and schema), in the groups of the text (separated by
+    // empty lines).
     function renderRules() {
         const box = document.getElementById('ded-rules');
         if (!box || !last.check) return;
@@ -321,10 +322,18 @@ q -> r        premise
         });
         box.innerHTML = groups.map(({ items }) => `<div class="ded-palette-group">${items.map(([r, i]) => {
             const values = r.counterexample ? r.counterexample.map(([m, b]) => `${m} ${b ? 'true' : 'false'}`).join(', ') : '';
-            const title = r.text + (values ? `\n⚠ not valid: with ${values}, the premises are true and the conclusion is false` : '');
-            return `<button class="ded-rule-button${values ? ' warn' : ''}" title="${escape(title)}"
-                onclick="DeductionPanel.useRule(${i})">${escape(r.name)}${values ? ' ⚠' : ''}</button>`;
+            return `<button class="ded-rule-button${values ? ' warn' : ''}" data-rule="${escape(r.name)}"
+                title="${escape(values ? `Not valid: with ${values}, the premises are true and the conclusion is false` : 'Add a line with ' + r.name)}"
+                onclick="DeductionPanel.useRule(${i})"><b>${escape(r.name)}</b><span>${escape(schemaText(r))}</span>${values
+                    ? `<span class="ded-warn">⚠ not valid (${escape(values)})</span>` : ''}</button>`;
         }).join('')}</div>`).join('') || '<span class="ded-hint">The exercise allows no rule.</span>';
+    }
+
+    // The schema of a rule, without its name: `A → B, A ⊢ B`, `⊢ A → (B → A)` for an axiom.
+    function schemaText(rule) {
+        const text = rule.text.replace(/^\s*(rule|axiom)\s+/, '');
+        const body = text.slice(text.indexOf(':') + 1).trim();
+        return /^\s*axiom\s/.test(rule.text) ? '⊢ ' + body : body;
     }
 
     // The number of bars of a line of the proof.
