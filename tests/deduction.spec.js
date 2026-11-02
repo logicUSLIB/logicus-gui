@@ -48,6 +48,10 @@ function ruleButton(page, name) {
     return page.locator(`.ded-rule-button[data-rule="${name}"]`);
 }
 
+function ruleRow(page, name) {
+    return page.locator(`.ded-rule-row[data-rule="${name}"]`);
+}
+
 async function ruleNames(page) {
     return page.locator('.ded-rule-button').evaluateAll(bs => bs.map(b => b.dataset.rule));
 }
@@ -97,7 +101,7 @@ test('own rules and first-order proofs', async ({ page }) => {
     await typeProof(page, '!A[X](P(X) -> Q(X))   premise\nP(a)   premise\nP(a) -> Q(a)   ∀E 1\nQ(a)   MP 3, 2');
     await expect(page.locator('.ded-status')).toHaveText('The proof is correct and complete.');
     expect(await ruleNames(page)).toEqual(['∀E', 'MP']);
-    await expect(ruleButton(page, '∀E')).toContainText('∀x A ⊢ A[x/t]');
+    await expect(ruleRow(page, '∀E')).toHaveAttribute('data-schema', '∀x A ⊢ A[x/t]');
     await expect(page.locator('.ded-system-name')).toHaveText('Own rules');
 });
 
@@ -116,10 +120,13 @@ test('the systems follow the language; SAVE checks the rules, and a rule that is
     await editRules(page);
     await page.locator('#ded-rules-text').fill('rule →E : A → B, A ⊢ B\nrule bad : A → B, B ⊢ A');
     await saveRules(page);
-    const bad = ruleButton(page, 'bad');
-    await expect(bad).toHaveText(/bad\s*A → B, B ⊢ A\s*⚠ not valid \(A false, B true\)/);
-    await expect(ruleButton(page, '→E')).toHaveText(/→E\s*A → B, A ⊢ B/);
-    await expect(ruleButton(page, '→E')).not.toHaveClass(/warn/);
+    await expect(ruleRow(page, 'bad')).toHaveAttribute('data-schema', 'A → B, B ⊢ A');
+    await expect(ruleRow(page, 'bad').locator('.ded-warn')).toHaveText('⚠ not valid (A false, B true)');
+    await expect(ruleButton(page, 'bad')).toHaveClass(/warn/);
+    await expect(ruleRow(page, '→E')).toHaveAttribute('data-schema', 'A → B, A ⊢ B');
+    await expect(ruleRow(page, '→E').locator('.ded-warn')).toHaveCount(0);
+    // the name and the schema are drawn by MathJax
+    await expect(ruleRow(page, '→E').locator('mjx-container')).toHaveCount(2);
     // the rules of first-order logic are not propositional: the editor stays open and nothing changes
     await editRules(page);
     await page.locator('#ded-rules-text').fill('rule ∀E : ∀x A ⊢ A[x/t]');

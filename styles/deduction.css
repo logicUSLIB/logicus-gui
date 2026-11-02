@@ -294,30 +294,27 @@
 }
 
 .deduction .ded-palette-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
-/* a rule: its name and its schema */
+/* a rule: a button with its name, and its schema */
+.deduction .ded-rule-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+}
+
 .deduction .ded-rule-button {
-    display: grid;
-    grid-template-columns: 3.5em 1fr;
-    align-items: baseline;
-    gap: 2px 8px;
-    text-align: left;
-    font-family: monospace;
+    min-width: 4.5em;
+    padding: 2px 8px;
     font-size: 13px;
-    padding: 4px 8px;
     background-color: #e3e9ef;
     color: #1a2935;
     border: 1px solid #9fb0c0;
     border-radius: 4px;
-}
-
-.deduction .ded-rule-button .ded-warn {
-    grid-column: 1 / -1;
-    white-space: normal;
 }
 
 .deduction .ded-rule-button:hover {
@@ -329,8 +326,8 @@
     border-color: #c08a20;
 }
 
-.deduction .ded-rule-button:hover .ded-warn {
-    color: #ffd27a;
+.deduction .ded-schema {
+    font-size: 14px;
 }
 
 .deduction #ded-draft-rules {

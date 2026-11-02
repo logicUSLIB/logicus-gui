@@ -2,8 +2,8 @@
 // (LogicUS.PL.Deduction for propositional exercises, LogicUS.FOL.Deduction for first-order ones), and the rules that
 // can be used at the end of the proof.
 //
-// The rules are written as schemas (rule NAME : premises ⊢ conclusion). The rules that the exercise allows are shown
-// with their schemas, as buttons that add a line with the rule to the proof; EDIT chooses a system of the libraries, switches rules off and
+// The rules are written as schemas (rule NAME : premises ⊢ conclusion). The rules that the exercise allows are listed
+// with their schemas (in LaTeX, drawn by MathJax), each with a button that adds a line with the rule to the proof; EDIT chooses a system of the libraries, switches rules off and
 // edits them, and nothing changes until SAVE, which reads the rules first. The core does the work: the panel sends it
 // requests of type "Deduction".
 
@@ -153,7 +153,7 @@ q -> r        premise
         renderGutter();
     }
 
-    // The rules of the exercise: a button per rule that the exercise allows, with its name and its schema.
+    // The rules of the exercise: a row per rule that the exercise allows, a button with its name and its schema.
     function paletteHTML() {
         return `
             <div class="ded-system-head"><b>Rules of the exercise</b>
@@ -298,8 +298,8 @@ q -> r        premise
         });
     }
 
-    // The buttons of the rules that the exercise allows (name and schema), in the groups of the text (separated by
-    // empty lines).
+    // The rules that the exercise allows (a button with the name, and the schema), in the groups of the text
+    // (separated by empty lines).
     function renderRules() {
         const box = document.getElementById('ded-rules');
         if (!box || !last.check) return;
@@ -320,13 +320,83 @@ q -> r        premise
             if (!groups.length || groups[groups.length - 1].k !== k) groups.push({ k, items: [] });
             groups[groups.length - 1].items.push([r, i]);
         });
+        // the same rules are not drawn again (MathJax would redraw them at every check)
+        const key = JSON.stringify([rules, groups.map(x => x.items.length)]);
+        if (box.dataset.key === key) return;
+        box.dataset.key = key;
         box.innerHTML = groups.map(({ items }) => `<div class="ded-palette-group">${items.map(([r, i]) => {
             const values = r.counterexample ? r.counterexample.map(([m, b]) => `${m} ${b ? 'true' : 'false'}`).join(', ') : '';
-            return `<button class="ded-rule-button${values ? ' warn' : ''}" data-rule="${escape(r.name)}"
-                title="${escape(values ? `Not valid: with ${values}, the premises are true and the conclusion is false` : 'Add a line with ' + r.name)}"
-                onclick="DeductionPanel.useRule(${i})"><b>${escape(r.name)}</b><span>${escape(schemaText(r))}</span>${values
-                    ? `<span class="ded-warn">⚠ not valid (${escape(values)})</span>` : ''}</button>`;
+            const schema = schemaText(r);
+            return `<div class="ded-rule-row" data-rule="${escape(r.name)}" data-schema="${escape(schema)}">
+                <button class="ded-rule-button${values ? ' warn' : ''}" data-rule="${escape(r.name)}"
+                    title="Add a line with ${escape(r.name)}" onclick="DeductionPanel.useRule(${i})"><span
+                    data-tex="${escape(nameToTeX(r.name))}" data-text="${escape(r.name)}">${escape(r.name)}</span></button>
+                <span class="ded-schema" data-tex="${escape(schemaToTeX(schema))}" data-text="${escape(schema)}">${escape(schema)}</span>
+                ${values ? `<span class="ded-warn" title="With ${escape(values)}, the premises are true and the conclusion is false">⚠ not valid (${escape(values)})</span>` : ''}
+            </div>`;
         }).join('')}</div>`).join('') || '<span class="ded-hint">The exercise allows no rule.</span>';
+        typeset(box);
+    }
+
+    // The rules in LaTeX, drawn by MathJax when it is available (otherwise they stay as text).
+    function typeset(box) {
+        const mj = window.MathJax;
+        if (!mj || !mj.startup || !mj.typesetPromise) return;
+        const key = box.dataset.key;
+        mj.startup.promise
+            .then(() => {
+                if (box.dataset.key !== key) return null;
+                box.querySelectorAll('[data-tex]').forEach(el => { el.textContent = `\\(${el.dataset.tex}\\)`; });
+                return mj.typesetPromise([box]);
+            })
+            .catch(() => box.querySelectorAll('[data-tex]').forEach(el => { el.textContent = el.dataset.text; }));
+    }
+
+    const TEX = { '∧': '\\land ', '∨': '\\lor ', '→': '\\to ', '↔': '\\leftrightarrow ', '¬': '\\neg ', '⊥': '\\bot ',
+                  '⊤': '\\top ', '⊢': '\\vdash ', '∀': '\\forall ', '∃': '\\exists ', '≠': '\\neq ' };
+
+    function texChar(c) {
+        if (TEX[c]) return TEX[c];
+        if (c === '\\') return '\\backslash ';
+        if (c === '~') return '\\sim ';
+        if (c === '^') return '\\hat{}';
+        return '#$%&_{}'.includes(c) ? '\\' + c : c;
+    }
+
+    // The name of a rule in LaTeX: its letters upright, the digits at the end as a subscript (∧E1: \land\mathrm{E}_{1}).
+    function nameToTeX(name) {
+        const m = /^(.*?)(\d+)$/.exec(name);
+        const base = m && m[1] ? m[1] : name;
+        let out = '', run = '';
+        const flush = () => { if (run) out += `\\mathrm{${run}}`; run = ''; };
+        for (const c of base) {
+            if (/[A-Za-z]/.test(c)) run += c;
+            else { flush(); out += `{${texChar(c).trim()}}`; }   // braces: no space around → in →I
+        }
+        flush();
+        return out + (m && m[1] ? `_{${m[2]}}` : '');
+    }
+
+    // A schema in LaTeX: the letters of formulas with their digits as subscripts (C1: C_{1}), a thin space between
+    // juxtaposed parts (∀x A, [A] B), and the side conditions in text.
+    function schemaToTeX(schema) {
+        const [main, ...conds] = schema.split(/\s+if\s+/);
+        let out = '', prev = '', space = false;
+        for (const [, word, digits, symbol, blank] of main.matchAll(/([A-Za-z][A-Za-z']*)(\d*)|(\S)|(\s+)/g)) {
+            if (blank) { space = true; continue; }
+            const operator = symbol && '⊢∧∨→↔,=≠)]/'.includes(symbol);
+            if (space && (prev === 'word' || prev === ']') && !operator) out += prev === ']' ? '\\;' : '\\,';
+            out += word ? word + (digits ? `_{${digits}}` : '') : texChar(symbol);
+            prev = word ? 'word' : symbol;
+            space = false;
+        }
+        if (conds.length) {
+            const text = conds.join(', ').split(/\s*,\s*/).map(c => c
+                .replace(/^(\S+) fresh$/, '$1\\ \\text{fresh}')
+                .replace(/^(\S+) not free in (\S+)$/, '$1\\ \\text{not free in}\\ $2'));
+            out += `\\quad\\text{if }${text.join(',\\ ')}`;
+        }
+        return out;
     }
 
     // The schema of a rule, without its name: `A → B, A ⊢ B`, `⊢ A → (B → A)` for an axiom.
