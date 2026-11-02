@@ -24,11 +24,13 @@ main options of E (and the descriptions of `eprover --help`). Input files can be
 problems). Opened from a `Prover9Mace4` or `EProver` node (its OPTIONS button), it sets the options of that node.
 
 The **DEDUCTION** panel checks proofs in the style of Fitch (natural deduction, or an axiomatic system), propositional
-or first order, with the rules that each exercise allows: they are chosen from the systems of the libraries
+or first order, with the rules that each exercise allows: in EDIT they are chosen from the systems of the libraries
 (LogicUS.PL.Deduction and LogicUS.FOL.Deduction), switched off one by one or written as schemas
-(`rule →I : [A] B ⊢ A → B`); a propositional rule that is not valid is marked with a counterexample. Each wrong line
-says why, and the panel gives the rules that can be used at the end of the proof (from the lines, closing the current
-subproof, or towards the goal), and adds the suggested line. Exercises can be saved and loaded as files.
+(`rule →I : [A] B ⊢ A → B`), and they are read when they are saved; a propositional rule that is not valid is marked
+with a counterexample. The rules of the exercise are buttons that add a line with the rule to the proof, to be
+completed. Each wrong line says why, and the panel gives the rules that can be used at the end of the proof (from the
+lines, closing the current subproof, or towards the goal), and adds the suggested line. Exercises can be saved and
+loaded as files.
 
 ## Using it
 

@@ -5,7 +5,8 @@ LogicUS.PL.Deduction (propositional exercises) and LogicUS.FOL.Deduction (first-
 
 The request is a JSON object:
 
-  - `action`: `"presets"` (the systems of the libraries, by language), `"check"` or `"hints"`;
+  - `action`: `"presets"` (the systems of the libraries, by language), `"rules"` (it reads the rules, to save them),
+    `"check"` or `"hints"`;
   - `lang`: `"PL"` or `"FOL"`; `rules`: the rules, as text; `premises`: a formula per line; `goal`: a formula;
   - `proof`: the proof, as text (Fitch style); `target`: a formula for the backward hints (optional).
 
@@ -102,6 +103,20 @@ answerPL req =
                                 Nothing ->
                                     JSONE.null
                           )
+                        , ( "closes"
+                          , JSONE.bool
+                                (List.any
+                                    (\p ->
+                                        case p of
+                                            PLD.PSubproof _ _ ->
+                                                True
+
+                                            _ ->
+                                                False
+                                    )
+                                    r.premises
+                                )
+                          )
                         ]
 
                 kind k =
@@ -115,16 +130,24 @@ answerPL req =
                         PLD.Backward ->
                             "backward"
             in
-            JSONE.object
-                (( "rules", JSONE.list rule sys )
-                    :: ( "formulaErrors", JSONE.list JSONE.string exercise.errors )
-                    :: (if req.action == "hints" then
-                            [ ( "hints", JSONE.list (\h -> encodeHint (kind h.kind) h) (PLD.hints sys problem lines exercise.target 12) ) ]
+            case ( req.action, duplicated (PLD.findRule sys) sys ) of
+                ( "rules", Just name ) ->
+                    JSONE.object [ ( "systemError", JSONE.string ("two rules are called " ++ name) ) ]
 
-                        else
-                            encodeReport PLD.formulaToString lines (PLD.checkProof sys problem lines)
-                       )
-                )
+                ( "rules", Nothing ) ->
+                    JSONE.object [ ( "rules", JSONE.list rule sys ) ]
+
+                _ ->
+                    JSONE.object
+                        (( "rules", JSONE.list rule sys )
+                            :: ( "formulaErrors", JSONE.list JSONE.string exercise.errors )
+                            :: (if req.action == "hints" then
+                                    [ ( "hints", JSONE.list (\h -> encodeHint (kind h.kind) h) (PLD.hints sys problem lines exercise.target 12) ) ]
+
+                                else
+                                    encodeReport PLD.formulaToString lines (PLD.checkProof sys problem lines)
+                               )
+                        )
 
 
 answerFOL : Request -> JSONE.Value
@@ -145,7 +168,25 @@ answerFOL req =
                     D.readProof req.proof
 
                 rule r =
-                    JSONE.object [ ( "name", JSONE.string r.name ), ( "text", JSONE.string (D.ruleToString r) ), ( "counterexample", JSONE.null ) ]
+                    JSONE.object
+                        [ ( "name", JSONE.string r.name )
+                        , ( "text", JSONE.string (D.ruleToString r) )
+                        , ( "counterexample", JSONE.null )
+                        , ( "closes"
+                          , JSONE.bool
+                                (List.any
+                                    (\p ->
+                                        case p of
+                                            D.PSubproof _ _ ->
+                                                True
+
+                                            _ ->
+                                                False
+                                    )
+                                    r.premises
+                                )
+                          )
+                        ]
 
                 kind k =
                     case k of
@@ -158,16 +199,37 @@ answerFOL req =
                         D.Backward ->
                             "backward"
             in
-            JSONE.object
-                (( "rules", JSONE.list rule sys )
-                    :: ( "formulaErrors", JSONE.list JSONE.string exercise.errors )
-                    :: (if req.action == "hints" then
-                            [ ( "hints", JSONE.list (\h -> encodeHint (kind h.kind) h) (D.hints sys problem lines exercise.target 12) ) ]
+            case ( req.action, duplicated (D.findRule sys) sys ) of
+                ( "rules", Just name ) ->
+                    JSONE.object [ ( "systemError", JSONE.string ("two rules are called " ++ name) ) ]
 
-                        else
-                            encodeReport D.formulaToString lines (D.checkProof sys problem lines)
-                       )
-                )
+                ( "rules", Nothing ) ->
+                    JSONE.object [ ( "rules", JSONE.list rule sys ) ]
+
+                _ ->
+                    JSONE.object
+                        (( "rules", JSONE.list rule sys )
+                            :: ( "formulaErrors", JSONE.list JSONE.string exercise.errors )
+                            :: (if req.action == "hints" then
+                                    [ ( "hints", JSONE.list (\h -> encodeHint (kind h.kind) h) (D.hints sys problem lines exercise.target 12) ) ]
+
+                                else
+                                    encodeReport D.formulaToString lines (D.checkProof sys problem lines)
+                               )
+                        )
+
+
+
+-- The name of a rule that is not the first one with its name (findRule does not distinguish upper and lower case
+-- nor the ASCII forms of the connectives), if any.
+
+
+duplicated : (String -> Maybe { r | name : String }) -> List { r | name : String } -> Maybe String
+duplicated find rules =
+    rules
+        |> List.filter (\r -> find r.name /= Just r)
+        |> List.head
+        |> Maybe.map .name
 
 
 

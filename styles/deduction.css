@@ -208,9 +208,6 @@
 /* rules and hints */
 
 .deduction #ded-rules {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
     margin: 6px 0;
 }
 
@@ -263,4 +260,70 @@
     top: 4px;
     right: 6px;
     left: 0;
+}
+
+/* the rules of the exercise: buttons that add a line with the rule; EDIT shows the editor */
+
+.deduction .ded-system {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.deduction .ded-system-head {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.deduction .ded-system-name {
+    color: #4d5f6e;
+}
+
+.deduction label.ded-inline {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+}
+
+.deduction .ded-palette {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.deduction .ded-palette-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.deduction .ded-rule-button {
+    font-family: monospace;
+    font-size: 13px;
+    min-width: 3.2em;
+    padding: 3px 8px;
+    background-color: #e3e9ef;
+    color: #1a2935;
+    border: 1px solid #9fb0c0;
+    border-radius: 4px;
+}
+
+.deduction .ded-rule-button:hover {
+    background-color: #1a2935;
+    color: white;
+}
+
+.deduction .ded-rule-button.warn {
+    border-color: #c08a20;
+    color: #8a5a00;
+}
+
+.deduction #ded-draft-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 260px;
+    overflow: auto;
 }

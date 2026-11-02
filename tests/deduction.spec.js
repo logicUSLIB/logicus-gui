@@ -35,20 +35,49 @@ test('each wrong line says why', async ({ page }) => {
     await expect(page.locator('.ded-table tr').nth(5)).toContainText('line 3 is inside a closed subproof');
 });
 
-test('the rules of the exercise can be switched off and chosen from the systems', async ({ page }) => {
-    await openApp(page);
+async function editRules(page) {
+    await page.getByRole('button', { name: 'EDIT' }).click();
+    await expect(page.locator('#ded-rules-text')).toBeVisible();
+}
+
+async function saveRules(page) {
+    await page.getByRole('button', { name: 'SAVE', exact: true }).click();
+}
+
+function ruleButtons(page) {
+    return page.locator('.ded-rule-button');
+}
+
+test('the rules of the exercise are switched off and chosen from the systems in EDIT, and change on SAVE', async ({ page }) => {
+    const problems = await openApp(page);
     await openPanel(page);
     await page.locator('#ded-premises').fill('¬¬p');
     await page.locator('#ded-goal').fill('p');
     await typeProof(page, '¬¬p   premise\np   ¬¬E 1');
     await expect(page.locator('.ded-status')).toHaveText('The proof is correct and complete.');
-    // without ¬¬E
+    await expect(ruleButtons(page).filter({ hasText: /^¬¬E$/ })).toHaveCount(1);
+    // without ¬¬E: nothing changes until SAVE
+    await editRules(page);
     await page.locator('.ded-rule', { hasText: '¬¬E' }).locator('input').uncheck();
+    await expect(page.locator('.ded-status')).toHaveText('The proof is correct and complete.');
+    await saveRules(page);
+    await expect(page.locator('#ded-rules-text')).toHaveCount(0);
+    await expect(ruleButtons(page).filter({ hasText: /^¬¬E$/ })).toHaveCount(0);
     await expect(page.locator('.ded-table tr').nth(1)).toContainText('the rule ¬¬E is not one of the rules of this system');
     // the intuitionistic system has neither ¬¬E nor RAA
+    await editRules(page);
     await page.locator('#ded-preset').selectOption('Natural deduction (intuitionistic)');
-    await expect(page.locator('.ded-rule', { hasText: 'RAA' })).toHaveCount(0);
+    await saveRules(page);
+    await expect(page.locator('.ded-system-name')).toHaveText('Natural deduction (intuitionistic)');
+    await expect(ruleButtons(page).filter({ hasText: /^RAA$/ })).toHaveCount(0);
+    await expect(ruleButtons(page).filter({ hasText: /^→I$/ })).toHaveCount(1);
     await expect(page.locator('.ded-status')).toHaveText('Wrong lines: 2.');
+    // CANCEL leaves the rules as they were
+    await editRules(page);
+    await page.locator('#ded-preset').selectOption('Axiomatic system');
+    await page.getByRole('button', { name: 'CANCEL' }).click();
+    await expect(page.locator('.ded-system-name')).toHaveText('Natural deduction (intuitionistic)');
+    expect(problems).toEqual([]);
 });
 
 test('own rules and first-order proofs', async ({ page }) => {
@@ -57,32 +86,75 @@ test('own rules and first-order proofs', async ({ page }) => {
     await page.locator('#ded-lang').selectOption('FOL');
     await page.locator('#ded-premises').fill('!A[X](P(X) -> Q(X))\nP(a)');
     await page.locator('#ded-goal').fill('Q(a)');
-    await page.locator('#ded-edit summary').click();
+    await editRules(page);
     await page.locator('#ded-rules-text').fill('rule ∀E : ∀x A ⊢ A[x/t]\nrule MP : A → B, A ⊢ B');
+    await expect(page.locator('#ded-preset')).toHaveValue('Own rules');
+    await saveRules(page);
     await typeProof(page, '!A[X](P(X) -> Q(X))   premise\nP(a)   premise\nP(a) -> Q(a)   ∀E 1\nQ(a)   MP 3, 2');
     await expect(page.locator('.ded-status')).toHaveText('The proof is correct and complete.');
-    await expect(page.locator('.ded-rule')).toHaveCount(2);
+    await expect(ruleButtons(page)).toHaveText(['∀E', 'MP']);
+    await expect(page.locator('.ded-system-name')).toHaveText('Own rules');
 });
 
-test('the systems follow the language, and a rule that is not valid is marked', async ({ page }) => {
+test('the systems follow the language; SAVE checks the rules, and a rule that is not valid is marked', async ({ page }) => {
     const problems = await openApp(page);
     await openPanel(page);
-    await expect(page.locator('.ded-rule', { hasText: '¬¬E' })).toHaveCount(1);
-    await expect(page.locator('.ded-rule', { hasText: '∀E' })).toHaveCount(0);
+    await expect(ruleButtons(page).filter({ hasText: /^¬¬E$/ })).toHaveCount(1);
+    await expect(ruleButtons(page).filter({ hasText: /^∀E$/ })).toHaveCount(0);
     // the same system in first-order logic, with the rules of the quantifiers and equality
     await page.locator('#ded-lang').selectOption('FOL');
-    await expect(page.locator('.ded-rule', { hasText: '∀E' })).toHaveCount(1);
-    await expect(page.locator('#ded-preset')).toHaveValue('Natural deduction (classical)');
+    await expect(ruleButtons(page).filter({ hasText: /^∀E$/ })).toHaveCount(1);
+    await expect(page.locator('.ded-system-name')).toHaveText('Natural deduction (classical)');
     await page.locator('#ded-lang').selectOption('PL');
-    await expect(page.locator('.ded-rule', { hasText: '∀E' })).toHaveCount(0);
-    // own rules: a rule that is not valid gets a counterexample
-    await page.locator('#ded-edit summary').click();
+    await expect(ruleButtons(page).filter({ hasText: /^∀E$/ })).toHaveCount(0);
+    // own rules: a rule that is not valid is saved, with a counterexample
+    await editRules(page);
     await page.locator('#ded-rules-text').fill('rule →E : A → B, A ⊢ B\nrule bad : A → B, B ⊢ A');
-    await expect(page.locator('.ded-rule', { hasText: 'bad' }).locator('.ded-warn')).toHaveText('⚠ not valid (A false, B true)');
-    await expect(page.locator('.ded-rule', { hasText: '→E' }).locator('.ded-warn')).toHaveCount(0);
-    // the rules of first-order logic are not propositional
+    await saveRules(page);
+    const bad = ruleButtons(page).filter({ hasText: 'bad' });
+    await expect(bad).toHaveText('bad ⚠');
+    await expect(bad).toHaveAttribute('title', /A false, B true/);
+    await expect(ruleButtons(page).filter({ hasText: '→E' })).not.toHaveClass(/warn/);
+    // the rules of first-order logic are not propositional: the editor stays open and nothing changes
+    await editRules(page);
     await page.locator('#ded-rules-text').fill('rule ∀E : ∀x A ⊢ A[x/t]');
-    await expect(page.locator('#ded-rules .ded-error')).toContainText('quantifiers are not propositional');
+    await saveRules(page);
+    await expect(page.locator('#ded-draft-error')).toContainText('quantifiers are not propositional');
+    await expect(page.locator('#ded-rules-text')).toBeVisible();
+    // two rules with the same name
+    await page.locator('#ded-rules-text').fill('rule R : A ⊢ A\nrule r : A ⊢ A');
+    await saveRules(page);
+    await expect(page.locator('#ded-draft-error')).toHaveText('The rules cannot be saved: two rules are called r');
+    await page.getByRole('button', { name: 'CANCEL' }).click();
+    await expect(ruleButtons(page)).toHaveText(['→E', 'bad ⚠']);
+    expect(problems).toEqual([]);
+});
+
+test('a rule is clicked to add a line with it, which is then completed', async ({ page }) => {
+    const problems = await openApp(page);
+    await openPanel(page);
+    // the example: p → q, q → r ⊢ p → r, with the subproof open at line 4
+    await ruleButtons(page).filter({ hasText: /^→E$/ }).click();
+    await expect(page.locator('#ded-gutter div')).toHaveText(['1', '2', '3', '4', '5']);
+    await page.keyboard.type('r');
+    await page.keyboard.press('End');
+    await page.keyboard.type('2, 4');
+    // →I closes the subproof: one bar less
+    await ruleButtons(page).filter({ hasText: /^→I$/ }).click();
+    await page.keyboard.type('p -> r');
+    await page.keyboard.press('End');
+    await page.keyboard.type('3-5');
+    await expect(page.locator('#ded-proof')).toHaveValue(/\| r +→E 2, 4\np -> r +→I 3-5$/);
+    await expect(page.locator('.ded-status')).toHaveText('The proof is correct and complete.');
+    // after the line of the cursor: a line with R after line 1, at its depth
+    await page.locator('#ded-proof').fill('p -> q   premise\nq -> r   premise');
+    await page.locator('#ded-proof').evaluate(t => { t.focus(); t.setSelectionRange(5, 5); });
+    await ruleButtons(page).filter({ hasText: /^R$/ }).click();
+    await page.keyboard.type('p -> q');
+    await page.keyboard.press('End');
+    await page.keyboard.type('1');
+    await expect(page.locator('#ded-proof')).toHaveValue(/^p -> q   premise\np -> q +R 1\nq -> r   premise$/);
+    await expect(page.locator('.ded-table tr').nth(1)).toHaveClass(/ok/);
     expect(problems).toEqual([]);
 });
 

@@ -2,8 +2,10 @@
 // (LogicUS.PL.Deduction for propositional exercises, LogicUS.FOL.Deduction for first-order ones), and the rules that
 // can be used at the end of the proof.
 //
-// The rules are written as schemas (rule NAME : premises ⊢ conclusion); the systems of the libraries can be loaded and
-// their rules switched off or edited. The core does the work: the panel sends it requests of type "Deduction".
+// The rules are written as schemas (rule NAME : premises ⊢ conclusion). The rules that the exercise allows are shown as
+// buttons that add a line with the rule to the proof; EDIT chooses a system of the libraries, switches rules off and
+// edits them, and nothing changes until SAVE, which reads the rules first. The core does the work: the panel sends it
+// requests of type "Deduction".
 
 let CORE_CALLBACKS = {};       // answers of the core for the panels, by request id (negative node ids)
 let CORE_REQUEST_ID = -1000;
@@ -29,6 +31,8 @@ q -> r        premise
     let state = null;        // the exercise: language, rules, switched-off rules, premises, goal, proof, target
     let presets = {};        // the systems of the libraries, by language: { PL: [...], FOL: [...] }
     let last = { check: null, hints: null };
+    let draft = null;        // the rules being edited (EDIT): { preset, rules, disabled, error }, or null
+    let cursorSet = false;   // whether the user has put the cursor in the proof (the rules are added after its line)
 
     function escape(text) {
         return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -108,26 +112,7 @@ q -> r        premise
                 <div id="ded-report"></div>
             </div>
             <div class="ded-right">
-                <div class="ded-system">
-                    <div class="ded-row">
-                        <label>Rules of the exercise
-                            <select id="ded-preset" onchange="DeductionPanel.preset(this.value)">
-                                ${presetsOf().map(p => `<option${p.name === state.preset ? ' selected' : ''} title="${escape(p.description)}">${escape(p.name)}</option>`).join('')}
-                                <option${presetsOf().some(p => p.name === state.preset) ? '' : ' selected'}>Own rules</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div id="ded-rules"></div>
-                    <details id="ded-edit"${state.preset === 'Own rules' ? ' open' : ''}>
-                        <summary>Edit the rules</summary>
-                        <span class="ded-hint">One rule per line: <code>rule NAME : A, [B] C ⊢ D</code> (a premise
-                        <code>[B] C</code> is a subproof from B to C), <code>axiom NAME : A → (B → A)</code>; capital letters
-                        are formulas${state.lang === 'FOL' ? `, <code>A[x/t]</code> is a substitution, conditions:
-                        <code>if a fresh</code>, <code>if x not free in A</code>` : `; a rule that is not valid is
-                        marked with a counterexample`}.</span>
-                        <textarea id="ded-rules-text" spellcheck="false">${escape(state.rules)}</textarea>
-                    </details>
-                </div>
+                <div class="ded-system">${draft ? editorHTML() : paletteHTML()}</div>
                 <div class="ded-hints">
                     <div class="ded-row">
                         <label>Target <span class="ded-hint">(optional; by default, the goal when no subproof is open)</span>
@@ -151,13 +136,124 @@ q -> r        premise
             scheduleCheck();
         });
         document.getElementById('ded-proof').addEventListener('scroll', renderGutter);
+        ['focus', 'click', 'keyup'].forEach(e => document.getElementById('ded-proof').addEventListener(e, () => { cursorSet = true; }));
+        cursorSet = false;
         bind('ded-target', 'target');
-        bind('ded-rules-text', 'rules', () => {
-            state.preset = 'Own rules';
-            scheduleCheck();
-        });
+        if (draft) {
+            document.getElementById('ded-rules-text').addEventListener('input', e => {
+                draft.rules = e.target.value;
+                draft.preset = 'Own rules';
+                document.getElementById('ded-preset').value = 'Own rules';
+                clearTimeout(draftTimer);
+                draftTimer = setTimeout(renderDraftRules, 300);
+            });
+            renderDraftRules();
+        }
         renderRules();
         renderGutter();
+    }
+
+    // The rules of the exercise: a button per rule that the exercise allows (its schema in the tooltip).
+    function paletteHTML() {
+        return `
+            <div class="ded-system-head"><b>Rules of the exercise</b>
+                <span class="ded-system-name">${escape(state.preset)}</span>
+                <button onclick="DeductionPanel.edit()">EDIT</button></div>
+            <div class="ded-hint">Click a rule to add a line with it to the proof, after the line of the cursor; then
+            write the formula and the lines that it uses.</div>
+            <div id="ded-rules" class="ded-palette"></div>`;
+    }
+
+    // EDIT: the system, the rules that are switched on, and their text. Nothing changes until SAVE.
+    function editorHTML() {
+        return `
+            <div class="ded-system-head"><b>Rules of the exercise</b></div>
+            <label class="ded-inline">System
+                <select id="ded-preset" onchange="DeductionPanel.draftPreset(this.value)">
+                    ${presetsOf().map(p => `<option${p.name === draft.preset ? ' selected' : ''} title="${escape(p.description)}">${escape(p.name)}</option>`).join('')}
+                    <option${presetsOf().some(p => p.name === draft.preset) ? '' : ' selected'}>Own rules</option>
+                </select></label>
+            <div class="ded-hint">Switch off the rules that the exercise does not allow:</div>
+            <div id="ded-draft-rules"></div>
+            <label>The rules
+                <span class="ded-hint">One rule per line: <code>rule NAME : A, [B] C ⊢ D</code> (a premise
+                <code>[B] C</code> is a subproof from B to C), <code>axiom NAME : A → (B → A)</code>; capital letters
+                are formulas${state.lang === 'FOL' ? `, <code>A[x/t]</code> is a substitution, conditions:
+                <code>if a fresh</code>, <code>if x not free in A</code>` : `; a rule that is not valid is
+                marked with a counterexample`}. An empty line separates groups of rules.</span>
+                <textarea id="ded-rules-text" spellcheck="false">${escape(draft.rules)}</textarea></label>
+            <div class="ded-buttons">
+                <button onclick="DeductionPanel.save()">SAVE</button>
+                <button onclick="DeductionPanel.cancel()">CANCEL</button>
+            </div>
+            <div id="ded-draft-error" class="ded-error">${escape(draft.error || '')}</div>`;
+    }
+
+    let draftTimer = null;
+
+    // The rules of the text being edited, with a box to switch each one off.
+    function renderDraftRules() {
+        const box = document.getElementById('ded-draft-rules');
+        if (!box || !draft) return;
+        box.innerHTML = draft.rules.split('\n').filter(ruleName).map(line => {
+            const name = ruleName(line);
+            const off = draft.disabled.includes(name);
+            return `<label class="ded-rule${off ? ' off' : ''}">
+                <input type="checkbox"${off ? '' : ' checked'}
+                    onchange="DeductionPanel.draftToggle(${escape(JSON.stringify(name))}, this.checked)">
+                <code>${escape(line.trim())}</code></label>`;
+        }).join('');
+    }
+
+    function edit() {
+        draft = { preset: state.preset, rules: state.rules, disabled: [...state.disabled], error: '' };
+        render();
+        check();
+    }
+
+    function draftPreset(name) {
+        const p = presetsOf().find(q => q.name === name);
+        draft.preset = name;
+        if (p) {
+            draft.rules = p.rules;
+            draft.disabled = [];
+        }
+        draft.error = '';
+        render();
+        check();
+    }
+
+    function draftToggle(name, on) {
+        draft.disabled = on ? draft.disabled.filter(n => n !== name) : [...draft.disabled, name];
+        renderDraftRules();
+    }
+
+    // The rules are read (all of them, also the switched-off ones) before they replace those of the exercise.
+    function save() {
+        const rules = draft.rules;
+        askCore('Deduction', { action: 'rules', lang: state.lang, rules }, response => {
+            if (!draft || draft.rules !== rules) return;
+            const m = response.message;
+            if (m.systemError) {
+                draft.error = 'The rules cannot be saved: ' + m.systemError;
+                document.getElementById('ded-draft-error').textContent = draft.error;
+                return;
+            }
+            const names = (m.rules || []).map(r => r.name);
+            const p = presetsOf().find(q => q.rules === rules);
+            state.rules = rules;
+            state.preset = p ? p.name : 'Own rules';
+            state.disabled = draft.disabled.filter(n => names.includes(n));
+            draft = null;
+            render();
+            check();
+        });
+    }
+
+    function cancel() {
+        draft = null;
+        render();
+        check();
     }
 
     // The numbers of the lines of the proof, next to the text: the lines that are not empty, in order (as readProof
@@ -202,30 +298,65 @@ q -> r        premise
         });
     }
 
+    // The buttons of the rules that the exercise allows, in the groups of the text (separated by empty lines).
     function renderRules() {
         const box = document.getElementById('ded-rules');
         if (!box || !last.check) return;
         if (last.check.systemError) {
-            box.innerHTML = `<div class="ded-error">${escape(last.check.systemError)}</div>`;
+            box.innerHTML = `<div class="ded-error">The rules cannot be read: ${escape(last.check.systemError)}. Press EDIT to correct them.</div>`;
             return;
         }
-        // every rule of the text, also the switched-off ones
-        const all = state.rules.split('\n').map(ruleName).filter(n => n);
-        const texts = Object.fromEntries((last.check.rules || []).map(r => [r.name, r.text]));
-        const counter = Object.fromEntries((last.check.rules || []).map(r => [r.name, r.counterexample]));
-        const lines = Object.fromEntries(state.rules.split('\n').filter(ruleName).map(l => [ruleName(l), l.trim()]));
-        const warning = name => {
-            const v = counter[name];
-            if (!v) return '';
-            const values = v.map(([m, b]) => `${m} ${b ? 'true' : 'false'}`).join(', ');
-            return `<span class="ded-warn" title="With ${escape(values)}, the premises of the rule are true and its conclusion is false">⚠ not valid (${escape(values)})</span>`;
-        };
-        box.innerHTML = all.map(name => `
-            <label class="ded-rule${state.disabled.includes(name) ? ' off' : ''}">
-                <input type="checkbox"${state.disabled.includes(name) ? '' : ' checked'}
-                    onchange="DeductionPanel.toggle(${escape(JSON.stringify(name))}, this.checked)">
-                <code>${escape(texts[name] || lines[name] || name)}</code>${warning(name)}
-            </label>`).join('');
+        const rules = last.check.rules || [];
+        const group = {};
+        let g = 0;
+        activeRules().split('\n').forEach(line => {
+            if (!line.trim()) g++;
+            else if (ruleName(line)) group[ruleName(line)] = g;
+        });
+        const groups = [];
+        rules.forEach((r, i) => {
+            const k = group[r.name] !== undefined ? group[r.name] : g + 1;
+            if (!groups.length || groups[groups.length - 1].k !== k) groups.push({ k, items: [] });
+            groups[groups.length - 1].items.push([r, i]);
+        });
+        box.innerHTML = groups.map(({ items }) => `<div class="ded-palette-group">${items.map(([r, i]) => {
+            const values = r.counterexample ? r.counterexample.map(([m, b]) => `${m} ${b ? 'true' : 'false'}`).join(', ') : '';
+            const title = r.text + (values ? `\n⚠ not valid: with ${values}, the premises are true and the conclusion is false` : '');
+            return `<button class="ded-rule-button${values ? ' warn' : ''}" title="${escape(title)}"
+                onclick="DeductionPanel.useRule(${i})">${escape(r.name)}${values ? ' ⚠' : ''}</button>`;
+        }).join('')}</div>`).join('') || '<span class="ded-hint">The exercise allows no rule.</span>';
+    }
+
+    // The number of bars of a line of the proof.
+    function barsOf(line) {
+        const m = /^\s*(\d+\.?\s+)?((\|\s*)*)/.exec(line);
+        return (m[2].match(/\|/g) || []).length;
+    }
+
+    // It adds a line with a rule after the line of the cursor (or at the end), with the bars of that line, or one bar
+    // less when the rule closes a subproof; the cursor goes where the formula is written.
+    function useRule(i) {
+        const rule = (last.check.rules || [])[i];
+        const text = document.getElementById('ded-proof');
+        if (!rule || !text) return;
+        const lines = state.proof.split('\n');
+        let at = cursorSet ? state.proof.slice(0, text.selectionStart).split('\n').length - 1 : lines.length - 1;
+        let ref = at;
+        while (ref >= 0 && !lines[ref].trim()) ref--;
+        const bars = ref >= 0 ? barsOf(lines[ref]) : 0;
+        const depth = Math.max(0, bars - (rule.closes && bars > 0 ? 1 : 0));
+        const prefix = '| '.repeat(depth);
+        const line = prefix.padEnd(Math.max(14, prefix.length + 3)) + rule.name + ' ';
+        if (lines[at] !== undefined && !lines[at].trim()) lines[at] = line;   // an empty line is used
+        else lines.splice(++at, 0, line);
+        state.proof = lines.join('\n');
+        text.value = state.proof;
+        const pos = lines.slice(0, at).reduce((n, l) => n + l.length + 1, 0) + prefix.length;
+        text.focus();
+        text.setSelectionRange(pos, pos);
+        cursorSet = true;
+        renderGutter();
+        scheduleCheck();
     }
 
     // The proof as a table, with the subproofs drawn as boxes and the verdict on each line.
@@ -319,24 +450,9 @@ q -> r        premise
             // the same system in the other language (the rules of the connectives are the same)
             const p = presetsOf().find(q => q.name === state.preset);
             if (p) state.rules = p.rules;
+            draft = null;
             render();
         }
-        check();
-    }
-
-    function preset(name) {
-        const p = presetsOf().find(q => q.name === name);
-        state.preset = name;
-        if (p) {
-            state.rules = p.rules;
-            state.disabled = [];
-        }
-        render();
-        check();
-    }
-
-    function toggle(name, on) {
-        state.disabled = on ? state.disabled.filter(n => n !== name) : [...state.disabled, name];
         check();
     }
 
@@ -361,6 +477,7 @@ q -> r        premise
                         premises: d.premises || '', goal: d.goal || '', proof: d.proof || '', target: '',
                     });
                     state.preset = (presetsOf().find(p => p.rules === state.rules) || { name: 'Own rules' }).name;
+                    draft = null;
                     render();
                     check();
                 } catch (e) {
@@ -375,8 +492,8 @@ q -> r        premise
         POPUP.style.zIndex = 0;
     }
 
-    return { open, close, check, hints, use, assume, set, preset, toggle, saveFile, loadFile,
-             state: () => state, last: () => last };
+    return { open, close, check, hints, use, assume, set, edit, draftPreset, draftToggle, save, cancel, useRule,
+             saveFile, loadFile, state: () => state, last: () => last };
 })();
 
 function openDEDUCTIONPANEL() {
